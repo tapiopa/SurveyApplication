@@ -1,21 +1,28 @@
-form {
+/*
+* User.css
+*
+*/
+.Form {
     float: left;
     width: 70%;
     display: inline-block;
     /*border: 1px solid red;*/
 }
-label {
+.Label {
     width: 10rem;
     float: left;
     text-align: right;
+    /*margin-left: 2rem;*/
+    padding-right: 1rem;
     /*border: 1px solid blue;*/
 }
 
-input {
-    width: 10rem;
-    margin: 1px solid lightgray;
-    border-radius: 5px;
-    box-shadow: 1px #cccccc;
+.Input {
+    width: 15rem;
+    /*margin: 1px solid lightgray;*/
+    /*border-radius: 5px;*/
+    /*box-shadow: 1px #cccccc;*/
     /*margin-left: 2rem;*/
+    /*padding-left: 2rem;*/
     /*border: 1px solid green;*/
 }

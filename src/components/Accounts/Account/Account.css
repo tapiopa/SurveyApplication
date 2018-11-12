@@ -1,21 +1,25 @@
-form {
+/*
+* Account.css
+*
+*/
+.form {
     float: left;
     width: 70%;
     display: inline-block;
     /*border: 1px solid red;*/
 }
-label {
+.label {
     width: 10rem;
     float: left;
     text-align: right;
     /*border: 1px solid blue;*/
 }
 
-input {
+.input {
     width: 10rem;
-    margin: 1px solid lightgray;
     border-radius: 5px;
-    box-shadow: 1px #cccccc;
-    /*margin-left: 2rem;*/
-    /*border: 1px solid green;*/
+}
+
+.button {
+    /*border: 5px solid red;*/
 }

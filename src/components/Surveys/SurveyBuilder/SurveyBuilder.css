@@ -1,0 +1,40 @@
+/*
+* SurveyBuilder.css
+*
+*/
+.form {
+    float: left;
+    width: 70%;
+    display: inline-block;
+    /*border: 1px solid red;*/
+}
+.label {
+    width: 10rem;
+    float: left;
+    text-align: right;
+    margin-right: 1rem;
+    /*border: 1px solid blue;*/
+}
+
+.input {
+    width: 15rem;
+    border-radius: 5px;
+}
+
+.group {
+    float: left;
+    /*border: 1px solid red;*/
+}
+
+.table {
+    width: 70%;
+    /*border: 1px solid red;*/
+}
+
+.tableText {
+    text-align: left;
+}
+
+.tableAction {
+    text-align: right;
+}

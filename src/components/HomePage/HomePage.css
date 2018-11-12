@@ -1,0 +1,18 @@
+/*
+* HomePage.css
+*
+*/
+
+.link {
+    /*float: left;*/
+    /*display: block;*/
+    /*border: 1px solid blue;*/
+}
+
+.list {
+    list-style-type: none;
+    margin-left: 10rem;
+    width: 70%;
+    /*border: 1px solid red;*/
+    text-align: left;
+}
