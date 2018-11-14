@@ -13,9 +13,9 @@ const question = (props) => {
             <td>{props.question}</td>
             <td>
                 <ButtonGroup>
-                    <Button bsStyle="success" onClick={props.edit}>Edit</Button>
-                    <Button bsStyle="danger" onClick={props.delete}>Delete</Button>
-                    <Button bsStyle="primary" onClick={props.answers}>Answers</Button>
+                    <Button bsStyle="success" onClick={() => props.edit(props.id)}>Edit</Button>
+                    <Button bsStyle="danger" onClick={() => props.delete(props.id)}>Delete</Button>
+                    <Button bsStyle="primary" onClick={() => props.answers}>Answers</Button>
                 </ButtonGroup>
             </td>
         </tr>

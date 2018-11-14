@@ -7,18 +7,23 @@ import React, {Component} from 'react';
 import {FormControl, FormGroup, ControlLabel, PageHeader, Button, ButtonToolbar} from 'react-bootstrap';
 
 import classes from "./Account.css";
+import axios from "../../../axios-survey";
 // import "./Account.css";
 
 class Account extends Component {
+    constructor(props)  {
+        super(props);
+        this.fetchAccountData(this.props.user_id);
+    }
 
     state = {
-        id: this.props.user_id,
-        username: "user1",
-        password: "user1",
-        joined: "2018-07-07",
-        expires: "2019-07-07",
-        lastEdited: "2018-11-08",
-        Google: "omnomnom",
+        user_id: this.props.user_id,
+        username: "",
+        password: "",
+        joined: "",
+        expires: "",
+        lastEdited: "",
+        Google: "",
         Facebook: "",
         Twitter: ""
     };
@@ -29,6 +34,20 @@ class Account extends Component {
         }
     };
 
+    fetchAccountData = (user_id) => {
+        axios.get(`/accounts/${user_id}`) //
+        .then(response => {
+            this.setState({
+                user_id: response.data[0].id,
+                username: response.data[0].account,
+                password: response.data[0].password,
+                joined: response.data[0].joinedDate,
+                expires: response.data[0].expireDate,
+                lastEdited: response.data[0].modifiedDate
+            });
+        });
+    };
+
     render() {
 
 
@@ -36,11 +55,11 @@ class Account extends Component {
             <div>
                 <PageHeader>Account</PageHeader>
                 <hr/>
-                <ButtonToolbar>
-                    <Button bsStyle="success" bsSize="small"
-                            // bsClass={classes.button}
-                            onClick={this.logState}>Log</Button>
-                </ButtonToolbar>
+                {/*<ButtonToolbar>*/}
+                    {/*<Button bsStyle="success" bsSize="small"*/}
+                            {/*// bsClass={classes.button}*/}
+                            {/*onClick={this.logState}>Log</Button>*/}
+                {/*</ButtonToolbar>*/}
                 <form className={classes.form}>
                     <FormGroup>
                         <ControlLabel className={classes.label} htmlFor="username">Username</ControlLabel>
@@ -75,7 +94,7 @@ class Account extends Component {
                                defaultValue={this.state.lastEdited}/>
                     </FormGroup>
                 </form>
-
+                {/*<Button onClick={this.fetchAccountData} bsStyle="success">Fetch data</Button>*/}
             </div>
         );
     }

@@ -6,19 +6,44 @@ import React, {Component} from 'react';
 import {FormControl, FormGroup, ControlLabel, PageHeader} from 'react-bootstrap';
 
 import classes from "./User.css";
+import axios from "../../../axios-survey";
 
 class User extends Component {
+    constructor(props)  {
+        super(props);
+        this.fetchUserData(this.props.user_id);
+    }
+
+    fetchUserData = (user_id) => {
+        axios.get(`/users/${user_id}`) //
+        .then(response => {
+            this.setState({
+                user_id: response.data[0].accountFK,
+                firstname: response.data[0].firstname,
+                lastname: response.data[0].lastname,
+                email: response.data[0].email,
+                phone: response.data[0].phone,
+                streetAddress: response.data[0].streetAddress,
+                postalCode: response.data[0].postalCode,
+                dateofbirth: response.data[0].birthdate,
+                rewards: response.data[0].rewards,
+                lastEdited: response.data[0].modifiedDate
+            });
+            console.log(`fetchUserData, response.data:`,  response.data);
+        });
+    };
+
     state = {
         id: this.props.user_id,
-        firstname: "Tapio",
-        lastname: "Paloniemi",
-        email: "tapiopa@gmail.com",
-        dateofbirth: "1964-12-26",
-        phone: "050-3595394",
-        streetAddress: "Kalakatu 6",
-        postalCode: "90230 Oulu",
-        rewards: "12",
-        lastEdited: "2018-11-08"
+        firstname: "",
+        lastname: "",
+        email: "",
+        dateofbirth: "",
+        phone: "",
+        streetAddress: "",
+        postalCode: "",
+        rewards: "",
+        lastEdited: ""
     };
 
     handleDataChange = (event) => {
