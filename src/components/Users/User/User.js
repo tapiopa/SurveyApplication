@@ -3,6 +3,8 @@
 *
 */
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+
 import {FormControl, FormGroup, ControlLabel, PageHeader} from 'react-bootstrap';
 
 import classes from "./User.css";
@@ -11,7 +13,7 @@ import axios from "../../../axios-survey";
 class User extends Component {
     constructor(props)  {
         super(props);
-        this.fetchUserData(this.props.user_id);
+        this.fetchUserData(this.props.user.user_id);
     }
 
     fetchUserData = (user_id) => {
@@ -125,4 +127,11 @@ class User extends Component {
     }
     }
 
-    export default User;
+    const mapStateToProps = (state) => {
+        console.log("User, mapStateToProps, state", state);
+        return {
+            user: state.surveyBuilder.user
+        }
+    };
+
+    export default connect(mapStateToProps)(User);

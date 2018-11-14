@@ -46,14 +46,6 @@ class SurveyBuilder extends Component {
         .then(response => {
             console.log('fetchSurveyData, data:', response.data);
             this.props.survey.survey_name = response.data[0].title;
-            // this.setState({
-            //     user_id: response.data[0].id,
-            //     username: response.data[0].account,
-            //     password: response.data[0].password,
-            //     joined: response.data[0].joinedDate,
-            //     expires: response.data[0].expireDate,
-            //     lastEdited: response.data[0].modifiedDate
-            // });
             this.fetchQuestions(survey_id);
         });
     };
@@ -62,13 +54,7 @@ class SurveyBuilder extends Component {
         axios.get(`/surveys/${survey_id}/questions`)
             .then(response => {
                 console.log('fetchQuestions, data:', response.data);
-                //let data = response.data;
                 let questions = response.data;
-                //let i = 1;
-                // data.forEach(question => {
-                //     questions.push({id: i, question: question.question});
-                //     i = i + 1;
-                // });
                 console.log("fetchQuestions, questions", questions);
                 //this.setState({survey: {questions: questions}});
                 this.props.survey.questions = questions;
@@ -78,9 +64,9 @@ class SurveyBuilder extends Component {
             })
     };
 
-    fetchAnswers = (id) => {
-        axios.get()
-    }
+    // fetchAnswers = (id) => {
+    //     axios.get()
+    // }
 
     // fetchAnswers = (id) => {
     //     axios.get(`/answers/`)
@@ -279,7 +265,7 @@ class SurveyBuilder extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log("mapStateToProps, state: ", state);
+    console.log("SurveyBuilder, mapStateToProps, state: ", state);
     return {
         survey: state.surveyBuilder.survey,
         user: state.surveyBuilder.user

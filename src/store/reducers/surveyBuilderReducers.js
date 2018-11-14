@@ -162,7 +162,7 @@ const surveyBuilderReducers = (state = initialState, action) => {
             // console.log("surveyBuilderReducers, delete question, action id: ", action.id);
             newQuestions.forEach((question, index) => {
                 //console.log("surveyBuilderReducers, cancel question, index: ", index);
-                if (question.idd === action.id) {
+                if (question.id === action.id) {
                     //canceledQuestion = question;
                     deletedIndex = index;
                 }

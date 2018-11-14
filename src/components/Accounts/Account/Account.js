@@ -5,6 +5,7 @@
 
 import React, {Component} from 'react';
 import {FormControl, FormGroup, ControlLabel, PageHeader, Button, ButtonToolbar} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
 import classes from "./Account.css";
 import axios from "../../../axios-survey";
@@ -13,11 +14,11 @@ import axios from "../../../axios-survey";
 class Account extends Component {
     constructor(props)  {
         super(props);
-        this.fetchAccountData(this.props.user_id);
+        this.fetchAccountData(this.props.user.user_id);
     }
 
     state = {
-        user_id: this.props.user_id,
+        user_id: this.props.user.user_id,
         username: "",
         password: "",
         joined: "",
@@ -35,8 +36,10 @@ class Account extends Component {
     };
 
     fetchAccountData = (user_id) => {
+        console.log("fetchAccountData, user id", user_id);
         axios.get(`/accounts/${user_id}`) //
         .then(response => {
+            console.log("fetchAccountData, response data", response);
             this.setState({
                 user_id: response.data[0].id,
                 username: response.data[0].account,
@@ -100,4 +103,11 @@ class Account extends Component {
     }
 }
 
-export default Account;
+const mapStateToProps = (state) => {
+    console.log("Account, mapStateToProps, state", state);
+    return {
+        user: state.surveyBuilder.user
+    }
+};
+
+export default connect(mapStateToProps)(Account);
