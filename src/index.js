@@ -1,15 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import './index.css';
 import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from 'react-router-dom';
-import appReducer from "./store/reducers";
 import {Provider} from "react-redux";
+import thunk from 'redux-thunk';
 
-let store = createStore(appReducer);
-console.log("store: ", store.getState());
+import appReducer from "./store/reducers";
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const logger = store => {
+    return next => {
+        return action => {
+            console.log("[Middleware] Dispatching", action);
+            const result = next(action);
+            console.log("[Middleware] next state", store.getState());
+            return result;
+        };
+    };
+};
+
+let store = createStore(appReducer, composeEnhancers(applyMiddleware(logger, thunk)));
+
 const app = (
     <Provider store={store}>
         <BrowserRouter>
@@ -17,8 +32,6 @@ const app = (
         </BrowserRouter>
     </Provider>
 );
-
-//const routing = (<App/>)
 
 ReactDOM.render(app, document.getElementById('root'));
 

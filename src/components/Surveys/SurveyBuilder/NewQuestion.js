@@ -15,16 +15,15 @@ const newQuestion = props => {
     return (
         <tr key={props.id}>
             <td>{props.id}</td>
-            <td><input
-                onChange={evt => props.onChange(evt)}
-                       value={props.inputValue}
-                        id={props.id}/></td>
+            <td><textarea
+                    onChange={evt => props.onChange(evt)}
+                    value={props.inputValue}
+                    id={props.id}/></td>
             {/**/}
             <td>
                 <ButtonGroup>
-                    <Button bsStyle="success" onClick={() => props.save(props.id)}>Save</Button>
-                    {/*onClick={props.save(props.id)}*/}
-                    <Button bsStyle="default" onClick={() => props.cancel(props.id)}>Cancel</Button>
+                    <Button bsStyle="success" onClick={() => props.save(props.id,  props.inputValue)}>Save</Button>
+                    <Button bsStyle="default" onClick={() => props.cancel(props.id, props.inputValue)}>Cancel</Button>
                 </ButtonGroup>
             </td>
         </tr>

@@ -1,26 +1,35 @@
-import {ADD_QUESTION, SAVE_QUESTION, EDIT_QUESTION, DELETE_QUESTION, CANCEL_QUESTION} from "../actions/actionsTypes";
+import {
+    ADD_QUESTION,
+    SAVE_QUESTION,
+    EDIT_QUESTION,
+    DELETE_QUESTION,
+    CANCEL_QUESTION,
+    //FETCH_QUESTIONS, FETCH_QUESTIONS_FAILED,
+    FETCH_SURVEY,
+    FETCH_SURVEY_FAILED
+} from "../actions/actionsTypes";
+import {updateObject} from "../utility";
 const initialState = {
-    user: {
-        user_id: 1,
-        user_name: "Tapio"
-    },
-
     survey: {
-        survey_id: 1,
-        survey_name: "",
-        questions: []
-    }
+        id: null,
+        title: ""
+    },
+    error: false
 };
 
-function getMaxId(questions) {
+const getMaxId = (questions) => {
     let maxId = 0;
-    questions.map(question => {
+    questions.forEach(question => {
         if (question.id > maxId) {
             maxId = question.id;
         }
     });
     return maxId;
-}
+};
+
+const updateQuestionsState = (state, questions) => {
+    return updateObject(state, {survey: {...state.survey, questions: questions}});
+};
 
 const surveyBuilderReducers = (state = initialState, action) => {
     switch (action.type) {
@@ -33,13 +42,13 @@ const surveyBuilderReducers = (state = initialState, action) => {
                 return state;
             } else {
                 //let oldQuestions = null;
-                let newQuestions = null;
+                let questions = null;
                 //const maxId = state.survey.questions.length;
-                const maxId = getMaxId(state.survey.questions);
-                console.log("surveyBuilderReducers, add question, maxId: ", maxId);
+                //const maxId = getMaxId(state.survey.questions);
+                // console.log("surveyBuilderReducers, add question, maxId: ", maxId);
                 //const maxId = action.maxId;
                 const newQuestion = {
-                    id: maxId + 1,
+                    id: getMaxId(state.survey.questions) + 1,
                     question: "",
                     editing: true,
                     answers: null
@@ -48,21 +57,22 @@ const surveyBuilderReducers = (state = initialState, action) => {
                 //
                 if (!state.survey.questions.length) {
                     // console.log("surveyBuilderReducers, add question, empty questions");
-                    newQuestions = [newQuestion];
+                    questions = [newQuestion];
                 } else {
-                    newQuestions = state.survey.questions.slice(0);
+                    questions = state.survey.questions.slice(0);
                     // console.log("surveyBuilderReducers, add question, oldQuestions: ", oldQuestions);
-                    newQuestions.push(newQuestion);
+                    questions.push(newQuestion);
                 }
 
                 // console.log("surveyBuilderReducers, add question, newQuestions: ", newQuestions);
-                const newState = {
-                    ...state,
-                    survey: {
-                        ...state.survey,
-                        questions: newQuestions
-                    }
-                };
+                const newState = updateQuestionsState(state, questions);
+                // const newState = {
+                //     ...state,
+                //     survey: {
+                //         ...state.survey,
+                //         questions: newQuestions
+                //     }
+                // };
                 // console.log("surveyBuilderReducers, add question, newState: ", newState);
                 return {
                     user: newState.user,
@@ -76,7 +86,7 @@ const surveyBuilderReducers = (state = initialState, action) => {
                 // console.log("surveyBuilderReducers, save question, no questions!!!");
                 return state;
             } else {
-                let newQuestions = null;
+                let questions = null;
                 // let oldQuestions = null;
                 const newQuestion = {
                     id: action.id,
@@ -87,12 +97,12 @@ const surveyBuilderReducers = (state = initialState, action) => {
                 // console.log("surveyBuilderReducers, save question, newQuestion", newQuestion);
                 if (!state.survey.questions.length) {
                     // console.log("surveyBuilderReducers, save question, no old questions");
-                    newQuestions = [newQuestion];
+                    questions = [newQuestion];
                 } else {
-                    newQuestions = state.survey.questions.slice(0);
+                    questions = state.survey.questions.slice(0);
                     // console.log("surveyBuilderReducers, save question, BEFORE newQuestions: ", newQuestions);
                     // console.log("surveyBuilderReducers, save question, action id: ", action.id);
-                    newQuestions.forEach(question => {
+                    questions.forEach(question => {
                        if (question.id === action.id) {
                            question.id = newQuestion.id;
                            question.question = newQuestion.question;
@@ -104,13 +114,14 @@ const surveyBuilderReducers = (state = initialState, action) => {
                     //newQuestions.push(newQuestion);
                 }
                 // console.log("surveyBuilderReducers, save question, newQuestions: ", newQuestions);
-                const newState = {
-                    ...state,
-                    survey: {
-                        ...state.survey,
-                        questions: newQuestions
-                    }
-                };
+                const newState = updateQuestionsState(state, questions);
+                // const newState = {
+                //     ...state,
+                //     survey: {
+                //         ...state.survey,
+                //         questions: newQuestions
+                //     }
+                // };
                 console.log("surveyBuilderReducers, save question, newState: ", newState);
                 return {
                     user: newState.user,
@@ -122,24 +133,32 @@ const surveyBuilderReducers = (state = initialState, action) => {
             //let canceledQuestion = null;
             // alert(`cancel question, id ${action.id}`);
             let canceledIndex = null;
-            let newQuestions = state.survey.questions.slice(0);
+            let questions = state.survey.questions.slice(0);
             // console.log("surveyBuilderReducers, save question, BEFORE newQuestions: ", newQuestions);
             // console.log("surveyBuilderReducers, save question, action id: ", action.id);
-            newQuestions.forEach((question, index) => {
+            questions.forEach((question, index) => {
                 //console.log("surveyBuilderReducers, cancel question, index: ", index);
                 if (question.id === action.id) {
                     //canceledQuestion = question;
-                    canceledIndex = index;
+                    if (action.value) {
+                        question.editing = false;
+                        canceledIndex = -1;
+                    } else {
+                        canceledIndex = index;
+                    }
                 }
             });
-            newQuestions.splice(canceledIndex, 1);
-            const newState = {
-                ...state,
-                survey: {
-                    ...state.survey,
-                    questions: newQuestions
-                }
-            };
+            if (canceledIndex > -1) {
+                questions.splice(canceledIndex, 1);
+            }
+            const newState = updateQuestionsState(state, questions);
+            // const newState = {
+            //     ...state,
+            //     survey: {
+            //         ...state.survey,
+            //         questions: questions
+            //     }
+            // };
             // console.log("surveyBuilderReducers, cancel question, newState: ", newState);
             return {
                 user: newState.user,
@@ -147,39 +166,79 @@ const surveyBuilderReducers = (state = initialState, action) => {
             }
         }
         case EDIT_QUESTION: {
-            const {type, id, ...newQuestion} = action;
-            return state.map((oldQuestion, index) => (
-                oldQuestion.id === index) ? {oldQuestion, ...newQuestion} : oldQuestion
-            );
+            //let canceledQuestion = null;
+            // alert(`cancel question, id ${action.id}`);
+            //let editIndex = null;
+            let questions = state.survey.questions.slice(0);
+            // console.log("surveyBuilderReducers, save question, BEFORE newQuestions: ", newQuestions);
+            // console.log("surveyBuilderReducers, save question, action id: ", action.id);
+            questions.forEach((question, index) => {
+                //console.log("surveyBuilderReducers, cancel question, index: ", index);
+                if (question.id === action.id) {
+                    //canceledQuestion = question;
+                    //editIndex = index;
+                    question.editing = true;
+                }
+            });
+            // newQuestions.splice(editIndex, 1);
+            const newState = updateQuestionsState(state, questions);
+            // const newState = {
+            //     ...state,
+            //     survey: {
+            //         ...state.survey,
+            //         questions: questions
+            //     }
+            // };
+            // console.log("surveyBuilderReducers, cancel question, newState: ", newState);
+            return {
+                user: newState.user,
+                survey: newState.survey
+            }
         }
         case DELETE_QUESTION:{
                 //let canceledQuestion = null;
                 // alert(`cancel question, id ${action.id}`);
-            console.log("surveyBuilderReducers, delete question, state", state);
+            // console.log("surveyBuilderReducers, delete question, state", state);
             let deletedIndex = null;
-            let newQuestions = state.survey.questions.slice(0);
-            console.log("surveyBuilderReducers, delete question, BEFORE newQuestions: ", newQuestions);
+            let questions = state.survey.questions.slice(0);
+            // console.log("surveyBuilderReducers, delete question, BEFORE newQuestions: ", questions);
             // console.log("surveyBuilderReducers, delete question, action id: ", action.id);
-            newQuestions.forEach((question, index) => {
+            questions.forEach((question, index) => {
                 //console.log("surveyBuilderReducers, cancel question, index: ", index);
                 if (question.id === action.id) {
                     //canceledQuestion = question;
                     deletedIndex = index;
                 }
             });
-            newQuestions.splice(deletedIndex, 1);
-            const newState = {
-                ...state,
-                survey: {
-                    ...state.survey,
-                    questions: newQuestions
-                }
-            };
-            console.log("surveyBuilderReducers, delete question, newState: ", newState);
+            questions.splice(deletedIndex, 1);
+            const newState = updateQuestionsState(state, questions);
+            // const newState = {
+            //     ...state,
+            //     survey: {
+            //         ...state.survey,
+            //         questions: questions
+            //     }
+            // };
+            // console.log("surveyBuilderReducers, delete question, newState: ", newState);
             return {
                 user: newState.user,
                 survey: newState.survey
             }
+        }
+        case FETCH_SURVEY: {
+            // console.log("reducer, ffetch survey, questions", action.survey);
+            // const newState = updateObject(state, action.survey);
+            // // = updateObject(state, {error: false});
+            // console.log("reducer, ffetch survey, new state", newState);
+            // return {
+            //     user: newState.user,
+            //     survey: newState.survey,
+            //     error: false
+            // }
+            return updateObject(state, {survey: action.survey});
+        }
+        case FETCH_SURVEY_FAILED: {
+            return updateObject(state, {error: true});
         }
         default:
             return state;

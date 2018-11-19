@@ -14,7 +14,7 @@
 }
 .link {
   float: right;
-  display: block;
+  /*display: block;*/
 }
 
 .header {

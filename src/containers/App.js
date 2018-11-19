@@ -6,48 +6,43 @@ import React, {Component} from 'react';
 import {NavLink, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 
+import {asyncFetchFirstname} from "../store/actions/appActions";
+
 import classes from './App.css';
 
 import Account from "../components/Accounts/Account/Account";
 import User from "../components/Users/User/User";
 import HomePage from "../components/HomePage/HomePage";
 import SurveyBuilder from "../components/Surveys/SurveyBuilder/SurveyBuilder";
-import AddQuestion from "../components/Surveys/SurveyBuilder/NewQuestion";
-import AddAnswer from "../components/Surveys/SurveyBuilder/AddAnswer";
 
 class App extends Component {
-    // state = {
-    //     user: {
-    //         user_id: 1,
-    //         name: "Tapio"
-    //     },
-    //     survey_id: 1
-    // };
+    componentDidMount() {
+        this.props.onFetchFirstname(this.props.account.id);
+    }
 
     render() {
-
-        //console.log("App, props", store.getState());
         return (
             <div className={classes.App}>
                 <header className={classes.header}>
-                    <p>{this.props.user.name}</p>
+                    <p>{this.props.app.firstname}</p>
                 </header>
                 <nav className={classes.nav}>
                     <ul className={classes.list}>
-                        <li><NavLink to="/home" className={classes.link}>Home</NavLink></li>
-                        <li><NavLink to="/account" className={classes.link}>Account</NavLink></li>
-                        <li><NavLink to="/user" className={classes.link}>Personal Data</NavLink></li>
-                        <li><NavLink to="/surveybuilder" className={classes.link}>Survey Builder</NavLink></li>
+                        <li className={classes.link}><NavLink to="/home">Home</NavLink></li>
+                        <br/>
+                        <li className={classes.link}><NavLink to="/account">Account</NavLink></li>
+                        <br/>
+                        <li className={classes.link}><NavLink to="/user">Personal Data</NavLink></li>
+                        <br/>
+                        <li className={classes.link}><NavLink to="/surveybuilder">Survey Builder</NavLink></li>
+                        <br/>
                     </ul>
                 </nav>
 
-                <Route path="/account" render={() => <Account user_id={this.props.user.user_id} isAuthenticated={true}/>}/>
-                <Route path="/user" render={ () => <User user_id={this.props.user.user_id} isAuthenticated={true}/> }/>
-                <Route path="/home"  render={() => <HomePage name={this.props.user.name}/>}/>
-                <Route path="/surveybuilder" render={() => <SurveyBuilder store={this.props.store}/>}/>
-                <Route path="/addquestion" component={AddQuestion}/>
-                <Route path="/addanswer" component={AddAnswer}/>
-                {/*<PageHeader>Welcome {this.state.name}!</PageHeader>*/}
+                <Route path="/account" component={Account}/>
+                <Route path="/user" component={User}/>
+                <Route path="/home" component={HomePage}/>
+                <Route path="/surveybuilder" component={SurveyBuilder}/>
             </div>
         );
     }
@@ -55,11 +50,15 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        user: {
-            user_id: state.user_id,
-            name: state.name
-        }
+        app: state.app,
+        account: state.account
     }
 };
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onFetchFirstname: (account_id) => dispatch(asyncFetchFirstname(account_id))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

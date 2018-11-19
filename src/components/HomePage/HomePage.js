@@ -4,21 +4,26 @@
 */
 
 import React, {Component} from 'react';
-import {NavLink, Route} from "react-router-dom";
+import {
+    NavLink,
+//    Route
+} from "react-router-dom";
+import {connect} from 'react-redux';
+
 import {PageHeader} from 'react-bootstrap';
 
 import classes from "./HomePage.css";
 
-import Account from "../Accounts/Account/Account";
-import User from "../Users/User/User";
+// import Account from "../Accounts/Account/Account";
+// import User from "../Users/User/User";
 
 class HomePage extends Component {
     render() {
         return (
             <div>
                 {/*<PageHeader>Welcome {this.props.name}!</PageHeader>*/}
-                <Route path="/account" render={ () => <Account user_id={this.state.user_id} isAuthenticated={true}/> }/>
-                <Route path="/user" render={ () => <User user_id={this.state.user_id} isAuthenticated={true}/> }/>
+                {/*<Route path="/account" render={ () => <Account user_id={this.props.user.user_id} isAuthenticated={true}/> }/>*/}
+                {/*<Route path="/user" render={ () => <User user_id={this.props.user.user_id} isAuthenticated={true}/> }/>*/}
                 {/*<Route path="/home"  render={() => <HomePage name={this.state.name}/>}/>*/}
                 <PageHeader>Select from following</PageHeader>
                 <ul className={classes.list}>
@@ -32,6 +37,12 @@ class HomePage extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    console.log("HomePage, mapStateToProps, state", state);
+    return {
+
+    }
+};
 
 
-export default HomePage;
+export default connect(mapStateToProps)(HomePage);
