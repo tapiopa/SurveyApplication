@@ -2,12 +2,14 @@
 export const FETCH_USER_FIRSTNAME = 'FETCH_USER_FIRSTNAME';
 
 /**************** LIST ACTIONS **************************/
+export const CREATE_SURVEY = 'CREATE_SURVEY';
 export const FETCH_SURVEY = 'FETCH_SURVEY';
 export const LIST_SURVEYS = 'LIST_SURVEYS';
 export const SAVE_SURVEY = 'SAVE_SURVEY';
 export const FETCH_SURVEY_FAILED = 'FETCH_QUESTIONS_FAILED';
 
 /**************** QUESTION ACTIONS **************************/
+export const CREATE_QUESTION = 'CREATE_QUESTION';
 export const ADD_QUESTION = 'ADD_QUESTION';
 export const SAVE_QUESTION = 'SAVE_QUESTION';
 export const CANCEL_QUESTION = 'CANCEL_QUESTION';
@@ -15,6 +17,7 @@ export const EDIT_QUESTION = 'EDIT_QUESTION';
 export const DELETE_QUESTION = 'DELETE_QUESTION';
 
 /**************** ANSWER ACTIONS **************************/
+export const CREATE_ANSWER = 'CREATE_ANSWER';
 export const ADD_ANSWER = 'ADD_ANSWER';
 export const EDIT_ANSWER = 'EDIT_ANSWER';
 export const DELETE_ANSWER = 'DELETE_ANSWER';

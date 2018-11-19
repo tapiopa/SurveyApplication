@@ -1,8 +1,9 @@
 export {
+    asyncCreateQuestion,
     addQuestion,
-    deleteQuestion,
+    asyncDeleteQuestion,
     cancelQuestion,
-    saveQuestion,
+    asyncSaveQuestion,
     editQuestion
 } from "./surveyBuilderActions";
 

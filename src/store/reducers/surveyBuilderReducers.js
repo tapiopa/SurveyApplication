@@ -1,4 +1,5 @@
 import {
+    CREATE_QUESTION,
     ADD_QUESTION,
     SAVE_QUESTION,
     EDIT_QUESTION,
@@ -17,15 +18,15 @@ const initialState = {
     error: false
 };
 
-const getMaxId = (questions) => {
-    let maxId = 0;
-    questions.forEach(question => {
-        if (question.id > maxId) {
-            maxId = question.id;
-        }
-    });
-    return maxId;
-};
+// const getMaxId = (questions) => {
+//     let maxId = 0;
+//     questions.forEach(question => {
+//         if (question.id > maxId) {
+//             maxId = question.id;
+//         }
+//     });
+//     return maxId;
+// };
 
 const updateQuestionsState = (state, questions) => {
     return updateObject(state, {survey: {...state.survey, questions: questions}});
@@ -33,12 +34,12 @@ const updateQuestionsState = (state, questions) => {
 
 const surveyBuilderReducers = (state = initialState, action) => {
     switch (action.type) {
-        case ADD_QUESTION: {
-            console.log("surveyBuilderReducers, add question, state: ", state);
+        case CREATE_QUESTION: {
+            console.log("surveyBuilderReducers, create question, state: ", state);
             //console.log("surveyBuilderReducers, add question, maxId: ", action.maxId);
             //const {type, ...maxId} = action;
             if (!Array.isArray(state.survey.questions)) { // || !state.survey.questions.length
-                //console.log("surveyBuilderReducers, add question, no questions!!!");
+                console.log("surveyBuilderReducers, create question, no questions!!!");
                 return state;
             } else {
                 //let oldQuestions = null;
@@ -47,9 +48,15 @@ const surveyBuilderReducers = (state = initialState, action) => {
                 //const maxId = getMaxId(state.survey.questions);
                 // console.log("surveyBuilderReducers, add question, maxId: ", maxId);
                 //const maxId = action.maxId;
-                const newQuestion = {
-                    id: getMaxId(state.survey.questions) + 1,
-                    question: "",
+                // const newQuestion = {
+                //     id: getMaxId(state.survey.questions) + 1,
+                //     question: "",
+                //     editing: true,
+                //     answers: null
+                // };
+                let newQuestion = action.question;
+                newQuestion = {
+                    ...newQuestion,
                     editing: true,
                     answers: null
                 };
@@ -80,20 +87,64 @@ const surveyBuilderReducers = (state = initialState, action) => {
                 };
             }
         }
+        case ADD_QUESTION: {
+            // console.log("surveyBuilderReducers, add question, state: ", state);
+            // //console.log("surveyBuilderReducers, add question, maxId: ", action.maxId);
+            // //const {type, ...maxId} = action;
+            // if (!Array.isArray(state.survey.questions)) { // || !state.survey.questions.length
+            //     console.log("surveyBuilderReducers, add question, no questions!!!");
+            //     return state;
+            // } else {
+            //     //let oldQuestions = null;
+            //     let questions = null;
+            //     //const maxId = state.survey.questions.length;
+            //     //const maxId = getMaxId(state.survey.questions);
+            //     // console.log("surveyBuilderReducers, add question, maxId: ", maxId);
+            //     //const maxId = action.maxId;
+            //     const newQuestion = {
+            //         id: getMaxId(state.survey.questions) + 1,
+            //         question: "",
+            //         editing: true,
+            //         answers: null
+            //     };
+            //     //console.log("surveyBuilderReducers, add question, newQuestion: ", newQuestion);
+            //     //
+            //     if (!state.survey.questions.length) {
+            //         // console.log("surveyBuilderReducers, add question, empty questions");
+            //         questions = [newQuestion];
+            //     } else {
+            //         questions = state.survey.questions.slice(0);
+            //         // console.log("surveyBuilderReducers, add question, oldQuestions: ", oldQuestions);
+            //         questions.push(newQuestion);
+            //     }
+            //
+            //     // console.log("surveyBuilderReducers, add question, newQuestions: ", newQuestions);
+            //     const newState = updateQuestionsState(state, questions);
+            //     // const newState = {
+            //     //     ...state,
+            //     //     survey: {
+            //     //         ...state.survey,
+            //     //         questions: newQuestions
+            //     //     }
+            //     // };
+            //     // console.log("surveyBuilderReducers, add question, newState: ", newState);
+            //     return {
+            //         user: newState.user,
+            //         survey: newState.survey
+            //     };
+            // }
+            break;
+        }
         case SAVE_QUESTION: {
-            console.log("save question, state", state);
+            console.log("reducer, save question, state", state);
+            console.log("reducer, save question, question", action.question);
             if (!Array.isArray(state.survey.questions)) { // || !state.survey.questions.length
                 // console.log("surveyBuilderReducers, save question, no questions!!!");
                 return state;
             } else {
                 let questions = null;
                 // let oldQuestions = null;
-                const newQuestion = {
-                    id: action.id,
-                    question: action.value,
-                    editing: false,
-                    answers: null
-                };
+                const newQuestion = action.question;
                 // console.log("surveyBuilderReducers, save question, newQuestion", newQuestion);
                 if (!state.survey.questions.length) {
                     // console.log("surveyBuilderReducers, save question, no old questions");
@@ -103,10 +154,10 @@ const surveyBuilderReducers = (state = initialState, action) => {
                     // console.log("surveyBuilderReducers, save question, BEFORE newQuestions: ", newQuestions);
                     // console.log("surveyBuilderReducers, save question, action id: ", action.id);
                     questions.forEach(question => {
-                       if (question.id === action.id) {
+                       if (question.id === action.question.id) {
                            question.id = newQuestion.id;
                            question.question = newQuestion.question;
-                           question.editing = newQuestion.editing;
+                           question.editing = false;
                            question.answers = newQuestion.answers;
                        }
                     });
@@ -128,6 +179,7 @@ const surveyBuilderReducers = (state = initialState, action) => {
                     survey: newState.survey
                 }
             }
+            return state;
         }
         case CANCEL_QUESTION: {
             //let canceledQuestion = null;
