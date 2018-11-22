@@ -46,3 +46,55 @@
     text-align: center;
     /*border: 1px solid red;*/
 }
+.showAnswers {
+    display: table-row;
+    /*transition: visibility 0s linear 0.33s, opacity 0.33s linear;*/
+    position: static;
+    transition: opacity 1s linear;
+    transform: translateY(0%);
+    /*animation: slide-in 1s forwards;*/
+    opacity: 1;
+    animation: fade 1s;
+    /*visibility: visible;*/
+    border: 1px solid blue;
+}
+
+.hideAnswers {
+    display: none;
+    visibility: hidden;
+    /*transition: visibility 0s, opacity 0.5s linear;*/
+    /*position: fixed;*/
+    opacity: 0;
+    /*transition: opacity 600ms, visibility 600ms;*/
+    transform: translateY(-100%);
+    /*animation: slide-out 3s forwards;*/
+    animation: fade 1s;
+    /*visibility: hidden;*/
+    /*border: 1px solid red;*/
+}
+.slide-in {
+    animation: slide-in 0.5s forwards;
+    /*-webkit-animation: slide-in 0.5s forwards;*/
+}
+
+.slide-out {
+    animation: slide-out 0.5s forwards;
+    /*-webkit-animation: slide-out 0.5s forwards;*/
+}
+@keyframes slide-in {
+    0% {opacity: 0; transform: translateY(-500%); height: 0%;}
+    100% { transform: translateY(0%); opacity: 1; height: 100%;}
+}
+@keyframes slide-out {
+    0% { transform: translateY(0%); height: 100%}
+    100% { transform: translateY(-500%); height: 0%; opacity: 0;}
+}
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

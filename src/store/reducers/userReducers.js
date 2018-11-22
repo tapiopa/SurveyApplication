@@ -1,20 +1,28 @@
+/*
+* userReducers.js
+* */
 import {
     FETCH_USER,
     CREATE_USER,
     EDIT_USER,
     DELETE_USER,
-    LIST_USERS
+    LIST_USERS,
+    RESET_USER,
+    SET_USER_ACCOUNT_ID
 } from "../actions/actionsTypes";
+
+import moment from 'moment';
 
 const initialState = {
     id: null,
     firstname: "",
     lastname: "",
+    accountFK: null,
     email: "",
     phone: "",
     streetAddress: "",
     postalCode: "",
-    birthdate: "",
+    birthdate: null,
     rewards: "",
     modifiedDate: ""
 };
@@ -41,33 +49,38 @@ const userReducers = (state = initialState, action) => {
                     id: user.id,
                     firstname: user.firstname,
                     lastname: user.lastname,
+                    accountFK: user.accountFK,
                     email: user.email,
                     phone: user.phone,
                     streetAddress: user.streetAddress,
                     postalCode: user.postalCode,
                     rewards: user.rewards,
                     birthdate: user.birthdate,
-                    modifiedDate: user.modifiedDate
+                    modifiedDate: user.modifiedDate,
+
+                    // newUser: true
                 };
                 return {...state, ...user_data}
             }
             return state;
         }
         case CREATE_USER: {
-            if (action.user) {
-                const user = action.user;
-                console.log("user reducer, create user, user", user);
+            if (action.id) {
+                // const user = action.user;
+                console.log("user reducer, create user, user id", action.id);
                 const user_data = {
-                    id: user.id,
-                    firstname: user.firstname,
-                    lastname: user.lastname,
-                    email: user.email,
-                    phone: user.phone,
-                    streetAddress: user.streetAddress,
-                    postalCode: user.postalCode,
-                    rewards: user.rewards,
-                    birthdate: user.birthdate,
-                    modifiedDate: user.modifiedDate
+                    id: action.id,
+                    firstname: "",
+                    lastname:"",
+                    accountFK: null,
+                    email: "",
+                    phone: "",
+                    streetAddress: "",
+                    postalCode: "",
+                    rewards: 0,
+                    birthdate: null,
+                    modifiedDate: moment().format("YYYY-MM-DD hh:mm:ss"),
+                    routing: true
                 };
                 return {...state, ...user_data}
             }
@@ -81,13 +94,15 @@ const userReducers = (state = initialState, action) => {
                     id: user.id,
                     firstname: user.firstname,
                     lastname: user.lastname,
+                    accountFK: user.accountFK,
                     email: user.email,
                     phone: user.phone,
                     streetAddress: user.streetAddress,
                     postalCode: user.postalCode,
                     rewards: user.rewards,
                     birthdate: user.birthdate,
-                    modifiedDate: user.modifiedDate
+                    modifiedDate: user.modifiedDate,
+                    routing: true
                 };
                 return {...state, ...user_data}
             }
@@ -96,8 +111,28 @@ const userReducers = (state = initialState, action) => {
         case DELETE_USER: {
             return state;
         }
+        case RESET_USER: {
+            const user = {
+                id: null,
+                firstname: "",
+                lastname: "",
+                accountFK: "",
+                email: "",
+                phone: "",
+                streetAddress: "",
+                postalCode: "",
+                rewards: 0,
+                birthdate: null,
+                modifiedDate: null,
+            };
+            return {...state, ...user};
+        }
         case LIST_USERS: {
             return state;
+        }
+        case SET_USER_ACCOUNT_ID: {
+            const user = {accountFK: action.accountId};
+            return {...state, ...user};
         }
         default:
             return state;

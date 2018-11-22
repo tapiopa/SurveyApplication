@@ -13,8 +13,8 @@ export const asyncFetchFirstname = (account_id) => {
        axios.get(comp)
        .then(response => {
            console.log("asyncFetchFirstname, response", response);
-           const firstname = response.data[0].firstname;
+           const firstname = response && response.data && response.data[0] && response.data[0].firstname;
            dispatch(fetchFirstname(firstname, account_id));
        })
    }
-} ;
+};

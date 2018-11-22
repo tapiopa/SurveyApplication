@@ -1,10 +1,15 @@
+/*
+* accountActions.js
+* */
 import {
     FETCH_ACCOUNT,
     CREATE_ACCOUNT,
-    // EDIT_ACCOUNT,
+    EDIT_ACCOUNT,
     DELETE_ACCOUNT,
-    LIST_ACCOUNTS,
-    SAVE_ACCOUNT
+    // LIST_ACCOUNTS,
+    RESET_ACCOUNT,
+    SAVE_ACCOUNT,
+    SET_ACCOUNT_ID
 } from "./actionsTypes";
 
 import axios from "../../axios-survey";
@@ -14,14 +19,14 @@ const fetchAccount = (account) => {
     return {type: FETCH_ACCOUNT, account: account}
 };
 
-export const asyncFetchAccount = (user_id) => {
-    // console.log("asyncFetchAccount, user id", user_id);
+export const asyncFetchAccount = (account_id) => {
+    console.log("asyncFetchAccount, account id", account_id);
     return dispatch => {
-        axios.get(`/accounts/${user_id}`)
+        axios.get(`/accounts/${account_id}`)
         .then(response => {
-            const account = response.data[0];
+            const accountResponse = response.data[0];
             // console.log("asyncFetchAccount, response data", response.data[0]);
-            dispatch(fetchAccount(account));
+            dispatch(fetchAccount(accountResponse));
         })//then
         // .catch(error => {
         //     console.log("asyncFetchAccount error: ", error)
@@ -29,61 +34,84 @@ export const asyncFetchAccount = (user_id) => {
     }
 };
 
-const createAccount = (account) => {
-    console.log("createAccount, account", account);
-    return {type: CREATE_ACCOUNT, account: account}
+export const setAccountId = (account_id) => {
+    return {type: SET_ACCOUNT_ID, accountId: account_id}
 };
 
-export const asyncCreateAccount = (account) => {
-    console.log("asyncCreateAccount, account", account);
+const createAccount = (id) => {
+    console.log("createAccount, account", id);
+    return {type: CREATE_ACCOUNT, id: id}
+};
+
+export const asyncCreateAccount = () => {
+    // console.log("asyncCreateAccount, account", account);
     return dispatch => {
-        axios.post(`/accounts`, account)
+        axios.get("/accounts/maxId")
+        .then(maxResponse => {
+            console.log("asyncCreateAccount, maxId", maxResponse.data[0].maxId);
+            dispatch(createAccount(maxResponse.data[0].maxId + 1));
+            // axios.post(`/accounts`, account)
+            // .then(response => {
+            //     const receivedAccount = response.data;
+            //     console.log("asyncCreateAccount, received response", response);
+            //     console.log("asyncCreateAccount, received data", response.data);
+            //     console.log("asyncCreateAccount, received account", receivedAccount);
+            //     dispatch(createAccount(receivedAccount));
+            // })
+        })
+
+    }
+};
+
+
+
+// export const saveNewAccount = (account) => {
+//     console.log("saveNewAccount", account);
+//     return {type: SAVE_ACCOUNT, account}
+// };
+
+export const asyncSaveNewAccount = (account) => {
+    console.log("asyncSaveNewAccouint, account", account);
+    return dispatch => {
+        axios.post(`/accounts/`, account)
         .then(response => {
-            const receivedAccount = response.data;
-            console.log("asyncCreateAccount, received response", response);
-            console.log("asyncCreateAccount, received data", response.data);
-            console.log("asyncCreateAccount, received account", receivedAccount);
-            dispatch(createAccount(receivedAccount));
+            console.log("asyncSaveNewAccount, response", response);
+            if (response.status === 200) {
+                account.saveSuccess = true;
+                dispatch(saveAccount(account));
+            }
         })
     }
 };
 
-const listAccounts = (accounts) => {
-    console.log("listAccouints");
-    return {type: LIST_ACCOUNTS, accounts: accounts}
+export const editAccount = (account) => {
+    return {type: EDIT_ACCOUNT, account: account};
 };
 
-export const asyncListAccounts = () => {
-    console.log("asyncListAccounts");
-    return dispatch => {
-        axios.get("/accounts")
-        .then(response => {
-            const receivedAccounts = response.data;
-            console.log("asyncListAccounts, received data", receivedAccounts);
-            dispatch(listAccounts(receivedAccounts));
-        })
-    }
-};
+// const listAccounts = (accounts) => {
+//     console.log("listAccouints");
+//     return {type: LIST_ACCOUNTS, accounts: accounts}
+// };
+//
+// export const asyncListAccounts = () => {
+//     console.log("asyncListAccounts");
+//     return dispatch => {
+//         axios.get("/accounts")
+//         .then(response => {
+//             const receivedAccounts = response.data;
+//             console.log("asyncListAccounts, received data", receivedAccounts);
+//             dispatch(listAccounts(receivedAccounts));
+//         })
+//     }
+// };
 
-const deleteAccount = () => {
-    console.log("deleteAccount");
-    return {type: DELETE_ACCOUNT};
-};
-
-export const asyncDeleteAccount = (account_id) => {
-    console.log("asyncDeleteAccount, account id", account_id);
-    return dispatch => {
-        axios.delete(`/accounts/${account_id}`)
-        .then(response => {
-            console.log("asyncDeleteAccount, response", response.data);
-            dispatch(deleteAccount());
-        })
-    }
+export const resetAccount = () => {
+    return {type: RESET_ACCOUNT}
 };
 
 const saveAccount = (account) => {
-    console.log("saveAccount");
-    return {type: SAVE_ACCOUNT, account: account}
+    console.log("saveAccount", account);
+    return {type: SAVE_ACCOUNT, account}
 };
 
 export const asyncSaveAccount = (account) => {
@@ -92,7 +120,10 @@ export const asyncSaveAccount = (account) => {
         axios.put(`/accounts/${account.id}`, account)
         .then(response => {
             console.log("asyncSaveAccount, response", response);
-            dispatch(saveAccount(response.data));
+            if (response.status === 200) {
+                account.saveSuccess = true;
+                dispatch(saveAccount(account));
+            }
         })
     }
 };

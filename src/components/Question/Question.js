@@ -1,3 +1,7 @@
+/*
+* Question.js
+* */
+
 import React from 'react';
 // import {Aux} from "../../hoc/Aux";
 import {Button,
@@ -9,13 +13,13 @@ const question = (props) => {
 
     return (
         <tr>
-            <td>{props.id}</td>
-            <td>{props.question}</td>
+            <td>{props.question.id}</td>
+            <td>{props.question.question}</td>
             <td>
                 <ButtonGroup>
-                    <Button bsStyle="success" onClick={() => props.edit(props.id, props.question)}>Edit</Button>
-                    <Button bsStyle="danger" onClick={() => props.delete(props.id)}>Delete</Button>
-                    <Button bsStyle="primary" onClick={() => props.answers(props.id)}>Answers</Button>
+                    <Button bsStyle="success" onClick={() => props.edit(props.question.id, props.question.question)}>Edit</Button>
+                    <Button bsStyle="danger" onClick={() => props.delete(props.question.id)}>Delete</Button>
+                    <Button bsStyle="primary" onClick={() => props.answers(props.question)}>Answers</Button>
                 </ButtonGroup>
             </td>
         </tr>

@@ -13,7 +13,7 @@ import Aux from "../../../hoc/Aux/Aux";
 import {
     Table, FormControl, FormGroup, ControlLabel, PageHeader, Button,
     ButtonToolbar,
-    //ButtonGroup,
+    ButtonGroup,
     //Alert
 } from 'react-bootstrap';
 
@@ -22,13 +22,22 @@ import classes from "./SurveyBuilder.css";
 // from "../../././store/actions/actionsTypes";
 import {
     asyncCreateQuestion,
-    addQuestion,
+    // addQuestion,
     cancelQuestion,
     asyncDeleteQuestion,
     editQuestion,
+    showAnswers,
+    hideAnswers,
+    asyncCreateAnswer,
+    asyncSaveAnswer,
+    editAnswer,
+    cancelAnswer,
+    asyncDeleteAnswer,
     // fetchQuestions,
     asyncSaveQuestion,
-    asyncFetchSurvey
+    asyncFetchSurvey,
+    asyncSaveSurvey,
+    editSurvey
 
 } from "../../../store/actions/surveyBuilderActions";
 
@@ -42,7 +51,10 @@ class SurveyBuilder extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            surveyId: null,
+            surveyTitle: "",
             question: null,
+            answer: null,
             editingSurvey: false,
             editingQuestion: false,
             editingAnswer: false,
@@ -63,9 +75,12 @@ class SurveyBuilder extends Component {
         this.editAnswer = this.editAnswer.bind(this);
         this.cancelAnswer = this.cancelAnswer.bind(this);
         this.deleteAnswer = this.deleteAnswer.bind(this);
-        this.addAnswer = this.addAnswer.bind(this);
-        this.submit = this.submit.bind(this);
-        this.saveChange = this.saveChange.bind(this);
+        this.addNewAnswer = this.addNewAnswer.bind(this);
+        // this.submit = this.submit.bind(this);
+        this.saveSurveyIdAndTitle = this.saveSurveyIdAndTitle.bind(this);
+        this.updateSurveyId = this.updateSurveyId.bind(this);
+        this.updateSurveyTitle = this.updateSurveyTitle.bind(this);
+        this.editSurvey = this.editSurvey.bind(this);
     }
 
     logState = () => {
@@ -80,25 +95,76 @@ class SurveyBuilder extends Component {
         }
     };
 
-    componentDidMount () {
+    componentDidMount() {
         // this.fetchSurveyData(this.props.survey.survey_id);
         this.props.onFetchSurvey(1);
+        this.props.surveyBuilder && this.setState({surveyId: this.props.surveyBuilder.survey.id})
     }
 
-    saveAnswer() {
+    editSurvey() {
+        this.setState({
+            surveyId: this.props.survey.id,
+            surveyTitle: this.props.survey.title,
+            editingSurvey: true
+        });
+        const survey = {
+            id: this.props.survey.id,
+            title: this.props.survey.title
+        };
+        console.log("editSurvey, state", this.state);
+        console.log("editSurvey, survey", survey);
+        this.props.onEditSurvey(survey);
+    };
+
+    saveSurveyIdAndTitle() {
+        const surveyId = this.state.surveyId;
+        const surveyTitle = this.state.surveyTitle;
+        const saveSurvey = {
+            id: surveyId,
+            title: surveyTitle
+        };
+        console.log("saveSurveyIdAndTitle, survey", saveSurvey);
+        this.props.onSaveSurvey(saveSurvey);
+        this.setState({editingSurvey: false})
+    };
+
+    saveAnswer(answer) {
+        answer.answer_option = this.state.inputValue;
+        console.log("saveAnswer, answer", answer);
+        this.props.onAnswerSaved(answer);
+        this.setState({editingAnswer: false, newAnswer: false, answer: answer});
+    }
+
+    editAnswer(answer) {
+        console.log("editAnswer, answer", answer);
+        this.setState({answer: answer, inputValue: answer.answer_option});
+
+        this.props.onAnswerEdited(answer);
+        this.setState({editingAnswer: true, newAnswer: false});
+    }
+
+    cancelAnswer(answer) {
+        console.log("cancelAnswer, answer", answer);
+        this.props.onAnswerCanceled(answer);
+        this.setState({editingAnswer: false, newAnswer: false, answer: answer});
+    }
+
+    deleteAnswer(answer) {
+        console.log("deleteAnswer, answer", answer);
+        this.setState({editingAnswer: false, newAnswer: false, answer: null});
+        this.props.onAnswerDeleted(answer);
 
     }
 
-    editAnswer() {
-
-    }
-
-    cancelAnswer() {
-
-    }
-
-    deleteAnswer() {
-
+    addNewAnswer(question) {
+        this.setState({newAnswer: true, editingAnswer: true});
+        const newAnswer = {
+            id: null,
+            answer_option: "",
+            questionFK: question.id,
+        };
+        console.log("addNewQuestion, newAnswer", newAnswer);
+        this.props.onAnswerCreated(newAnswer)
     }
 
     addNewQuestion() {
@@ -117,10 +183,6 @@ class SurveyBuilder extends Component {
         //this.props.onQuestionAdded(question);
     }
 
-    addAnswer() {
-        this.setState({newAnswer: true});
-    }
-
     updateInputValue = (evt) => {
         // console.log("updateInputValue, value: ", evt.target.value);
         this.setState({
@@ -129,6 +191,14 @@ class SurveyBuilder extends Component {
         });
         // console.log("updateInputValue, inputValue: ", this.state.inputValue);
         // console.log("!!!!!!!!!!!!updateInputValue, inputId: ", this.state.inputId);
+    };
+
+    updateSurveyTitle = (evt) => {
+        this.setState({surveyTitle: evt.target.value});
+    };
+
+    updateSurveyId = (evt) => {
+        this.setState({surveyId: evt.target.value});
     };
 
     // const getQuestion = (id) => {
@@ -143,12 +213,9 @@ class SurveyBuilder extends Component {
     //     return foundQuestion;
     // };
 
-    saveChange = () => {
-    };
-
     saveQuestion() {
         console.log("saveQuestion, state", this.state);
-            // this.props.onQuestionSaved(this.state.inputId, this.state.inputValue);
+        // this.props.onQuestionSaved(this.state.inputId, this.state.inputValue);
         console.log("saveQuestion, survey", this.props.survey);
         const question = {
             id: this.state.inputId,
@@ -171,19 +238,10 @@ class SurveyBuilder extends Component {
 
 
     };
-    ////////////////////////////////
 
-    submit = () => {
-        // const maxId = this.state.questions.length;
-        // const addedQuestions = addNewQuestion(this.state.questions, maxId);
-        // //console.log("added state: ", stateadd);
-        // this.setState({questions: addedQuestions});
-        // //console.log("state: ", this.state);
-        // //console.log("store state: ", this.props.store.getState());
-    };
+    ///////////////////////////////
 
-
-    cancelQuestion(id, value){
+    cancelQuestion(id, value) {
         // console.log("!!!!!!!!!!!!!!!!!cancelQuestion, inputId: ", this.state.inputId);
         this.props.onQuestionCanceled(id, value);
         this.setState({inputId: -1, inputValue: ""})
@@ -206,38 +264,88 @@ class SurveyBuilder extends Component {
         //console.log("deleteQuestions, props", this.props.survey.questions);
     };
 
-
-    showAnswers(question_id) {
-        console.log("showAnswers, question id", question_id);
-        alert(`show answers for question no: ${question_id}`);
-
+    showAnswers(question) {
+        console.log("showAnswers, question", question);
+        this.setState({question: question});
+        // alert(`show answers for question no: ${question.id}`);
+        if (question.showAnswers) {
+            this.props.onHideAnswers(question);
+        } else {
+            this.props.onShowAnswers(question);
+        }
+        // question.showAnswers = !question.showAnswers;
     };
+
     render() {
+        // const showAnswers = (question) => {
+        //     console.log("showAnswers, question", question);
+        //     // alert(`show answers for question no: ${question.id}`);
+        //     if (question.showAnswers) {
+        //         this.props.onHideAnswers(question);
+        //     } else {
+        //         this.props.onShowAnswers(question);
+        //     }
+        //     // question.showAnswers = !question.showAnswers;
+        // };
+        function SurveyData(props) {
+            if (props.editing) {
+                return (
+                    <Aux>
+                        <FormGroup className={classes.group}>
+                            <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
+                            <FormControl className={classes.input}
+                                         type="text" name="id" id="id"
+                                         onChange={props.updateId}
+                                         value={this.state.surveyId}/>
+                        </FormGroup>
+                        <FormGroup className={classes.group}>
+                            <ControlLabel className={classes.label} htmlFor="name">Survey Name</ControlLabel>
+                            <FormControl className={classes.input}
+                                         type="text" name="name" id="name"
+                                         onChange={props.updateTitle}
+                                         value={this.state.surveyTitle}
+                            />
+                        </FormGroup>
+                        <Button onClick={props.save} bsStyle="success">Save</Button>
+                    </Aux>
+                );
+            } else {
+                return (
+                <Aux>
+                    <FormGroup className={classes.group}>
+                        <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
+                        <FormControl className={classes.input}
+                                     type="text" name="id" id="id"
+                                     // onChange={props.updateId}
+                                     value={props.id}/>
+                    </FormGroup>
+                    <FormGroup className={classes.group}>
+                        <ControlLabel className={classes.label} htmlFor="name">Survey Title</ControlLabel>
+                        <FormControl className={classes.input}
+                                     type="text" name="name" id="name"
+                                     // onChange={props.updateTitle}
+                                     value={props.title}
+                        />
+                    </FormGroup>
+                    <Button onClick={props.edit} bsStyle="success">Edit</Button>
+                </Aux>
+                )
+            }
+        }
 
         return (
             <div>
                 <PageHeader>Survey Builder</PageHeader>
                 <form className={classes.form}>
-                    <FormGroup className={classes.group}>
-                        <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
-                        <FormControl className={classes.input}
-                                     type="text"
-                                     name="id"
-                                     id="id"
-                                     onChange={this.saveChange}
-                                     value={this.props.survey.id ? this.props.survey.id : ""}/>
-                    </FormGroup>
-                    <FormGroup className={classes.group}>
-                        <ControlLabel className={classes.label} htmlFor="name">Survey Name</ControlLabel>
-                        <FormControl className={classes.input}
-                                     type="text"
-                                     name="name"
-                                     id="name"
-                                     onChange={this.saveChange}
-                                     value={this.props.survey.title ? this.props.survey.title : ""}
-                        />
-                    </FormGroup>
-                    <Button onClick={this.submit} bsStyle="success">Save</Button>
+
+                    <SurveyData
+                        id={this.props.survey && this.props.survey.id ? this.props.survey.id : ""}
+                        title={this.props.survey && this.props.survey.title ? this.props.survey.title : ""}
+                        updateId={this.updateSurveyId}
+                        updateTitle={this.updateSurveyTitle}
+                        edit={this.editSurvey}
+                        save={this.saveSurveyIdAndTitle}
+                    />
                 </form>
                 <br/>
                 <br/>
@@ -252,27 +360,9 @@ class SurveyBuilder extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {/*{this.props ? console.log("tbody, this.props ", this.props) : null}*/}
-                    {/*{this.props.qstns ? console.log("tbody, this.props.qstns not null", this.props.qstns) : null}*/}
-
-
-                    {/*{!this.state || !this.state.survey || !this.state.survey.questions*/}
-                    {/*//|| !this.state.survey.questions[0].answers*/}
-                    {/*? console.log("tbody, no props") : this.state.survey.questions.map(question => {*/}
-                    {/*// {console.log("tbody, state questions", this.state.survey.questions)}*/}
-                    {!this.props || !this.props.survey || !this.props.survey.questions ? null //console.log("tbody, no props")
-                        : this.props.survey.questions.map(question => {
-                            // {/*{console.log("tbody, props", this.props.survey.questions)}*/}
-
-                            // console.log("tbody, not null");
-                            // console.log("!!!!!!tbody, question: ", question);
-                            //return null;
+                    {!this.props || !this.props.survey || !this.props.survey.questions ? null :
+                        this.props.survey.questions.map(question => {
                             if (question.editing) {
-
-                                // console.log("Hep1");
-                                // this.setState({inputId: -1});
-                                // this.setState({inputValue: ""});
-                                // console.log("new question inputValue: ", this.state.inputValue);
                                 return (
                                     <Aux key="newQuestion">
                                         <NewQuestion
@@ -298,31 +388,77 @@ class SurveyBuilder extends Component {
                                 );
                             } else {
                                 // console.log("Hep2");
+                                // {if (question.showAnswers) {console.log("Nakyy")} else {console.log("Ei nay")}}
                                 return (
-                                    <Aux key={question.id}>
+                                    <Aux key={question.id}/* show={question.showAnswers}*/>
                                         <Question
                                             key={question.id}
-                                            id={question.id}
-                                            question={question.question}
+                                            question={question}
+                                            //id={question.id}
+                                            //questionString={question.question}
                                             edit={this.editQuestion}
                                             delete={this.deleteQuestion}
                                             answers={this.showAnswers}
+                                            //showAnswers={question.showAnswers}
                                         />
                                         {/*{console.log("answers table, answers", question.answers)}*/}
-                                        {!question.answers ? null : question.answers.map(answer => {
-                                            return (
-                                                <tr key={answer.answer_option}>
-                                                    <td>&nbsp;&nbsp;</td>
-                                                    <td>&ndash;</td>
-                                                    <td>{answer.answer_option}</td>
-                                                </tr>
-                                            )
+                                        {/*question.showAnswers &&*/ question.answers && question.answers.map(answer => {
+
+                                            if (answer.editing) {
+                                                return (
+                                                    <Aux>
+                                                        <tr key={answer.id}>
+                                                            <td>{answer.id}</td>
+                                                            <td>
+                                                                <textarea
+                                                                    onChange={evt => this.updateInputValue(evt)}
+                                                                    value={this.state.inputValue}
+                                                                    id={answer.id}/>
+                                                            </td>
+                                                            <td>
+                                                                <ButtonGroup>
+                                                                    <Button bsStyle="success"
+                                                                            onClick={() => this.saveAnswer(answer)}>
+                                                                        Save</Button>
+                                                                    <Button bsStyle="default"
+                                                                            onClick={() => this.cancelAnswer(answer)}>
+                                                                        Cancel</Button>
+                                                                </ButtonGroup>
+                                                            </td>
+                                                        </tr>
+                                                    </Aux>
+                                                );
+                                            } else {
+                                                return (
+                                                    <Aux/*  show={question.showAnswers}className={question.showAnswers ? "" : "visibility: hidden"}*/>
+                                                        <tr key={answer.id}
+                                                            className={question.showAnswers ? classes.showAnswers : classes.hideAnswers}>
+                                                            <td>{answer.id}</td>
+                                                            <td>{answer.answer_option}</td>
+                                                            <td>
+                                                                <ButtonGroup>
+                                                                    <Button onClick={() => this.editAnswer(answer)}
+                                                                            bsStyle="success">Edit</Button>
+                                                                    <Button onClick={() => this.deleteAnswer(answer)}
+                                                                            bsStyle="danger">Delete</Button>
+                                                                </ButtonGroup>
+                                                            </td>
+                                                        </tr>
+                                                    </Aux>
+                                                )
+                                            }
                                         })}
-                                        <tr key="addAnswer">
-                                            <td></td>
-                                            <td><Button bsStyle="primary">Add Answer</Button></td>
-                                            <td ></td>
-                                        </tr>
+                                        {!question.showAnswers ? null :
+                                            <Aux>
+                                                <tr key="addAnswer"
+                                                    className={question.showAnswers ? classes.showAnswers : classes.hideAnswers}>
+                                                    <td></td>
+                                                    <td><Button onClick={() => this.addNewAnswer(question)}
+                                                                bsStyle="primary">Add Answer</Button></td>
+                                                    <td></td>
+                                                </tr>
+                                            </Aux>
+                                        }
                                     </Aux>
                                 );
                             }
@@ -361,12 +497,21 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onFetchSurvey: (survey_id) => dispatch(asyncFetchSurvey(survey_id)),
+        onSaveSurvey: (survey) => dispatch(asyncSaveSurvey(survey)),
+        onEditSurvey: (survey) => dispatch(editSurvey(survey)),
         onQuestionCreated: (question) => dispatch(asyncCreateQuestion(question)),
-        onQuestionAdded: (question) => dispatch(addQuestion(question)),
+        // onQuestionAdded: (question) => dispatch(addQuestion(question)),
         onQuestionEdited: (id, value) => dispatch(editQuestion(id, value)),
         onQuestionSaved: (question) => dispatch(asyncSaveQuestion(question)),
         onQuestionCanceled: (id, value) => dispatch(cancelQuestion(id, value)),
-        onQuestionDeleted: (id) => dispatch(asyncDeleteQuestion(id))
+        onQuestionDeleted: (id) => dispatch(asyncDeleteQuestion(id)),
+        onShowAnswers: (question) => dispatch(showAnswers(question)),
+        onHideAnswers: (question) => dispatch(hideAnswers(question)),
+        onAnswerCreated: (answer) => dispatch(asyncCreateAnswer(answer)),
+        onAnswerEdited: (answer) => dispatch(editAnswer(answer)),
+        onAnswerSaved: (answer) => dispatch(asyncSaveAnswer(answer)),
+        onAnswerCanceled: (answer) => dispatch(cancelAnswer(answer)),
+        onAnswerDeleted: (answer) => dispatch(asyncDeleteAnswer(answer))
     }
 };
 

@@ -1,10 +1,16 @@
+/*
+* userActions.js
+* */
+
 import {
     CREATE_USER,
     FETCH_USER,
-    // EDIT_USER,
+    EDIT_USER,
     DELETE_USER,
     LIST_USERS,
-    SAVE_USER
+    SAVE_USER,
+    RESET_USER,
+    SET_USER_ACCOUNT_ID
 } from "./actionsTypes";
 
 import axios from "../../axios-survey";
@@ -17,10 +23,12 @@ const fetchUser = (user) => {
     };
 };
 
-export const asyncFetchUser = (user_id) => {
-    console.log("asyncFetchUser, user id", user_id);
+export const asyncFetchUser = (user) => {
+    console.log("asyncFetchUser, account id", user.accountFK);
     return dispatch => {
-        axios.get(`/users/${user_id}`) //
+        const fetch = `/account/${user.accountFK}`;
+        console.log("asyncFetchUser, fetch", fetch);
+        axios.get(`/users/account/${user.accountFK}`)
         .then(response => {
             const user = response.data[0];
             console.log(`asyncFetchUser, response.data:`, user);
@@ -29,27 +37,37 @@ export const asyncFetchUser = (user_id) => {
     }
 };
 
-const createUser = (user) => {
-    // console.log("createUser, user", user);
-    return {type: CREATE_USER, user: user}
+
+export const resetUser = () => {
+    return {type: RESET_USER};
 };
 
-export const asyncCreateUser = (user) => {
+
+export const setUserAccountFK = (account_id) => {
+    return {type: SET_USER_ACCOUNT_ID, accountId: account_id}
+};
+
+const createUser = (user_id) => {
+    // console.log("createUser, user", user);
+    return {type: CREATE_USER, id: user_id}
+};
+
+export const asyncCreateUser = () => {
     return dispatch => {
         axios.get('/users/maxId')
         .then(maxResponse => {
             // const nextId = maxResponse.data[0].maxId + 1;
             // console.log("asyncCreateUsesr, nextId", nextId);
-            user.id = maxResponse.data[0].maxId + 1;
-            console.log("asyncCreateUser, user", user);
-            axios.post(`/users`, user)
-            .then(response => {
-                const user = response.data[0];
-                // console.log("asyncCreateUser, response response", response);
-                // console.log("asyncCreateUser, response date", response.data);
-                // console.log("asyncCreateUser, response user", user);
-                dispatch(createUser(user));
-            });
+            const user_id = maxResponse.data[0].maxId + 1;
+            // console.log("asyncCreateUser, user", user);
+            // axios.post(`/users`, user)
+            // .then(response => {
+            //     const user = response.data[0];
+            //     // console.log("asyncCreateUser, response response", response);
+            //     // console.log("asyncCreateUser, response date", response.data);
+            //     // console.log("asyncCreateUser, response user", user);
+                dispatch(createUser(user_id));
+            // });
         })
     }
 };

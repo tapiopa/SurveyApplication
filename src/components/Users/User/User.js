@@ -16,44 +16,50 @@ import {
     asyncSaveUser,
     asyncListUsers,
     asyncCreateUser,
-    asyncDeleteUser
+    asyncDeleteUser,
+    resetUser
 } from "../../../store/actions/userActions";
 
 import DatePicker from "react-datepicker/es";
 
 class User extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+    state = {
+        id: null,
+        firstname: "",
+        lastname: "",
+        accountFK: null,
+        email: "",
+        birthdate: "",
+        phone: "",
+        streetAddress: "",
+        postalCode: "",
+        rewards: "",
+        modifiedDate: "",
+        editing: false,
+        newUser: false,
+        unEditedState: {
             id: null,
             firstname: "",
             lastname: "",
+            accountFK: null,
             email: "",
-            birthdate: "",
+            birthdate: null,
             phone: "",
             streetAddress: "",
             postalCode: "",
             rewards: "",
-            modifiedDate: "",
-            editing: false,
-            newUser: false,
-            unEditedState: {
-                id: null,
-                firstname: "",
-                lastname: "",
-                email: "",
-                birthdate: null,
-                phone: "",
-                streetAddress: "",
-                postalCode: "",
-                rewards: "",
-                modifiedDate: null
-            }
-        };
+            modifiedDate: null
+        }
+    };
+
+    constructor(props) {
+        super(props);
+
         this.saveUser = this.saveUser.bind(this);
-        this.listUsers= this.listUsers.bind(this);
+        // this.listUsers= this.listUsers.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
-        this.addNewUser = this.addNewUser.bind(this);
+        // this.addNewUser = this.addNewUser.bind(this);
+        this.goBack = this.goBack.bind(this);
         this.cancelEditing = this.cancelEditing.bind(this);
         this.resetFields = this.resetFields.bind(this);
         User.formatMoment = User.formatMoment.bind(this);
@@ -69,7 +75,7 @@ class User extends Component {
         this.handleFirstnameChange = this.handleFirstnameChange.bind(this);
     }
 
-    getMomentFromDateString = (dateString) => {
+    getMomentFromDateString = (dateString, withTime) => {
         if (dateString) {
             const year = dateString.slice(0, 4);
             const month = dateString.slice(5, 7);
@@ -83,8 +89,12 @@ class User extends Component {
         return null;
     };
 
-    getFormattedMoment = (dateString) => {
-        return this.getMomentFromDateString(dateString) ? this.getMomentFromDateString(dateString).format("DD.M.YYYY") : null;
+    getFormattedMoment = (dateString, withTime) => {
+        if (dateString && withTime) {
+            return this.getMomentFromDateString(dateString).format("D.M.YYYY h.mm.ss");
+        } else if (dateString) {
+            return this.getMomentFromDateString(dateString).format("D.M.YYYY");
+        }
     };
 
     static formatMoment(moment, withTime) {
@@ -100,6 +110,7 @@ class User extends Component {
             id: null,
             firstname: "",
             lastname: "",
+            accountFK: null,
             email: "",
             birthdate: "",
             phone: "",
@@ -115,6 +126,7 @@ class User extends Component {
             id: this.state.unEditedState.id,
             firstname: this.state.unEditedState.firstname,
             lastname: this.state.unEditedState.lastname,
+            accountFK: this.state.unEditedState.accountFK,
             email: this.state.unEditedState.email,
             birthdate: this.state.unEditedState.birthdate,
             phone: this.state.unEditedState.phone,
@@ -131,10 +143,10 @@ class User extends Component {
         // // document.getElementById("password").value = " ";
     };
 
-    addNewUser = () => {
-        this.resetFields();
-        this.setState({editing: true, newUser: true});
-    };
+    // addNewUser = () => {
+    //     this.resetFields();
+    //     this.setState({editing: true, newUser: true});
+    // };
 
     deleteUser = () => {
         // user_id = 2;
@@ -142,16 +154,16 @@ class User extends Component {
         this.props.onDeleteUser(this.state.id);
         this.resetFields();
     };
-    listUsers = () => {
-        this.props.onListUsers();
-    };
+    // listUsers = () => {
+    //     this.props.onListUsers();
+    // };
 
     saveUser = () => {
         const saveUser = {
             id: this.state.id,
             firstname: this.state.firstname,
             lastname: this.state.lastname,
-            accountFK: this.props.user.user_id,
+            accountFK: this.props.user.accountFK,
             email: this.state.email,
             birthdate: this.state.birthdate.format("YYYY-MM-DD"),
             phone: this.state.phone,
@@ -168,6 +180,11 @@ class User extends Component {
         }
         this.setState({editing: false});
     };
+
+    goBack() {
+        this.props.onResetUser();
+        this.props.history.goBack();
+    }
 
     handleFirstnameChange(el) {
         // console.log("first");
@@ -226,9 +243,13 @@ class User extends Component {
     };
 
     componentDidMount() {
-        console.log("componentDidMount, props user", this.props.user);
-        if (this.props.user.user_id) {
-            this.props.onFetchUser(this.props.user.user_id);
+        console.log("componentDidMount, props", this.props);
+        if (this.props.user && this.props.user.accountFK) {
+            console.log("componentDidMount, props USER", this.props.user);
+            this.props.onFetchUser(this.props.user);
+        } else if (this.props.app.account_id) {
+            console.log("componentDidMount, props !!!APP", this.props.app);
+            this.props.onFetchUser(this.props.user);
         }
     }
 
@@ -254,6 +275,7 @@ class User extends Component {
                 id: nextProps.user.id,
                 firstname: nextProps.user.firstname,
                 lastname: nextProps.user.lastname,
+                accountFK: nextProps.accountFK,
                 email: nextProps.user.email,
                 birthdate: this.getMomentFromDateString(nextProps.user.birthdate),
                 phone: nextProps.user.phone,
@@ -267,6 +289,7 @@ class User extends Component {
                     id: nextProps.user.id,
                     firstname: nextProps.user.firstname,
                     lastname: nextProps.user.lastname,
+                    accountFK: nextProps.user.accountFK,
                     email: nextProps.user.email,
                     birthdate: this.getMomentFromDateString(nextProps.user.birthdate),
                     phone: nextProps.user.phone,
@@ -287,6 +310,7 @@ class User extends Component {
                 <PageHeader>Personal Data</PageHeader>
                 <button className="btn btn-success" onClick={this.logState}>Log</button>
                 <hr/>
+                <label>ID</label><p>state: {this.state.id}, props: {this.props.user.id}.</p>
                 <form className={classes.Form}>
                     <FormGroup>
                         <ControlLabel className={classes.Label} htmlFor="firstname">First Name</ControlLabel>
@@ -355,19 +379,18 @@ class User extends Component {
                         <ControlLabel className={classes.Label} htmlFor="lastEdited">Account Last Edited</ControlLabel>
                         <FormControl className={classes.Input} readOnly={true}
                                      type="text" name="lastEdited" id="lastEdited"
-                                     value={User.formatMoment(this.state.modifiedDate)}/>
+                                     value={User.formatMoment(this.state.modifiedDate, true)}/>
                     </FormGroup>
-
-
                 <ButtonToolbar className={classes.buttonToolbar}>
-                    <Button disabled={this.state.editing} bsStyle="success" onClick={this.addNewUser}>
-                        Add User</Button>
-                    <Button disabled={this.state.editing} bsStyle="danger" onClick={this.deleteUser}>
-                        Delete User</Button>
+                    {/*<Button disabled={this.state.editing} bsStyle="success" onClick={this.addNewUser}>*/}
+                        {/*Add User</Button>*/}
+                    {/*<Button disabled={this.state.editing} bsStyle="danger" onClick={this.deleteUser}>*/}
+                        {/*Delete User</Button>*/}
                     <Button disabled={!this.state.editing} bsStyle="success" onClick={this.saveUser}>
                         Save User</Button>
                     <Button disabled={!this.state.editing} onClick={this.cancelEditing}>
                         Cancel</Button>
+                    <Button disabled={this.state.editing} bsStyle="primary" onClick={this.goBack}>Go Back</Button>
                 </ButtonToolbar>
                     {/*<Button disabled={!this.state.editing} bsStyle="primary" onClick={this.listUsers}>*/}
                         {/*List Users</Button>*/}
@@ -380,6 +403,7 @@ class User extends Component {
 const mapStateToProps = (state) => {
     console.log("User, mapStateToProps, state", state);
     return {
+        app: state.app,
         user: state.user
     }
 };
@@ -390,7 +414,8 @@ const mapDispatchToProp = (dispatch) => {
         onListUsers: () => dispatch(asyncListUsers()),
         onSaveUser: (user) => dispatch(asyncSaveUser(user)),
         onCreateUser: (user) => dispatch(asyncCreateUser(user)),
-        onDeleteUser: (id) => dispatch(asyncDeleteUser(id))
+        onDeleteUser: (id) => dispatch(asyncDeleteUser(id)),
+        onResetUser: () => dispatch(resetUser())
     }
 };
 

@@ -3,10 +3,10 @@
 *
 */
 import React, {Component} from 'react';
-import {NavLink, Route} from 'react-router-dom';
+import {NavLink, Route, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-import {asyncFetchFirstname} from "../store/actions/appActions";
+import {asyncFetchFirstname, setUserAccountFK, setAccountId} from "../store/actions/";
 
 import classes from './App.css';
 
@@ -14,10 +14,16 @@ import Account from "../components/Accounts/Account/Account";
 import User from "../components/Users/User/User";
 import HomePage from "../components/HomePage/HomePage";
 import SurveyBuilder from "../components/Surveys/SurveyBuilder/SurveyBuilder";
+import SurveysManager from "../components/Surveys/SurveysManager/SurveysManager";
+import AccountsManager from "../components/Accounts/AccountsManager/AccountsManager";
+import UsersManager from "../components/Users/UsersManager/UsersManager";
 
 class App extends Component {
     componentDidMount() {
-        this.props.onFetchFirstname(this.props.account.id);
+        this.props.onFetchFirstname(this.props.app.account_id);
+        this.props.onSetAccountId(this.props.app.account_id);
+        this.props.onSetUserAccountFK(this.props.app.account_id);
+        console.log("App, componentDidMount, props", this.props);
     }
 
     render() {
@@ -26,6 +32,13 @@ class App extends Component {
                 <header className={classes.header}>
                     <p>{this.props.app.firstname}</p>
                 </header>
+                <Route path="/account" component={Account}/>
+                <Route path="/user" component={User}/>
+                <Route path="/home" component={HomePage}/>
+                <Route path="/surveybuilder" component={SurveyBuilder}/>
+                <Route path="/surveysmanager" component={SurveysManager}/>
+                <Route path="/accountsmanager" component={AccountsManager}/>
+                <Route path="/usersmanager" component={UsersManager}/>
                 <nav className={classes.nav}>
                     <ul className={classes.list}>
                         <li className={classes.link}><NavLink to="/home">Home</NavLink></li>
@@ -36,13 +49,16 @@ class App extends Component {
                         <br/>
                         <li className={classes.link}><NavLink to="/surveybuilder">Survey Builder</NavLink></li>
                         <br/>
+                        <li className={classes.link}><NavLink to="/surveysmanager">Surveys Manager</NavLink></li>
+                        <br/>
+                        <li className={classes.link}><NavLink to="/accountsmanager">Accounts Manager</NavLink></li>
+                        <br/>
+                        <li className={classes.link}><NavLink to="/usersmanager">Users Manager</NavLink></li>
+                        <br/>
                     </ul>
                 </nav>
 
-                <Route path="/account" component={Account}/>
-                <Route path="/user" component={User}/>
-                <Route path="/home" component={HomePage}/>
-                <Route path="/surveybuilder" component={SurveyBuilder}/>
+
             </div>
         );
     }
@@ -57,8 +73,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onFetchFirstname: (account_id) => dispatch(asyncFetchFirstname(account_id))
+        onFetchFirstname: (account_id) => dispatch(asyncFetchFirstname(account_id)),
+        onSetAccountId: (account_id) => dispatch(setAccountId(account_id)),
+        onSetUserAccountFK: (accountId) => dispatch(setUserAccountFK(accountId))
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
