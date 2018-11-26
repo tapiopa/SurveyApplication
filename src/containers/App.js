@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import {NavLink, Route, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-import {asyncFetchFirstname, setUserAccountFK, setAccountId} from "../store/actions/";
+import {asyncFetchFirstName, setUserAccountFK, setAccountId} from "../store/actions/";
 
 import classes from './App.css';
 
@@ -73,7 +73,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onFetchFirstname: (account_id) => dispatch(asyncFetchFirstname(account_id)),
+        onFetchFirstname: (account_id) => dispatch(asyncFetchFirstName(account_id)),
         onSetAccountId: (account_id) => dispatch(setAccountId(account_id)),
         onSetUserAccountFK: (accountId) => dispatch(setUserAccountFK(accountId))
     }

@@ -2,6 +2,11 @@
 * SurveyBuilder.css
 *
 */
+.surveyBuilder {
+    width: 70%;
+    float: right;
+}
+
 .form {
     float: left;
     width: 70%;

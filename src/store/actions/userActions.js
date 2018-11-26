@@ -26,20 +26,33 @@ const fetchUser = (user) => {
 export const asyncFetchUser = (user) => {
     console.log("asyncFetchUser, account id", user.accountFK);
     return dispatch => {
-        const fetch = `/account/${user.accountFK}`;
-        console.log("asyncFetchUser, fetch", fetch);
-        axios.get(`/users/account/${user.accountFK}`)
-        .then(response => {
-            const user = response.data[0];
-            console.log(`asyncFetchUser, response.data:`, user);
-            dispatch(fetchUser(user));
-        });
+        if (user.accountFK) {
+            const fetch = `/account/${user.accountFK}`;
+            console.log("asyncFetchUser, fetch", fetch);
+            axios.get(`/users/account/${user.accountFK}`)
+            .then(response => {
+                const user = response.data[0];
+                console.log(`asyncFetchUser, response.data:`, user);
+                dispatch(fetchUser(user));
+            });
+        } else if (user.id) {
+            axios.get(`/users/${user.id}`)
+            .then(response => {
+                if (response.status === 200) {
+                    if (response.data.errno) {
+                        console.log("ERROR", response.data.sqlMessage);
+                    } else {
+                        dispatch(fetchUser(response.data[0]));
+                    }
+                }
+            })
+        }
     }
 };
 
 
-export const resetUser = () => {
-    return {type: RESET_USER};
+export const resetUser = (routing, newUser) => {
+    return {type: RESET_USER, routing, newUser};
 };
 
 
@@ -72,24 +85,10 @@ export const asyncCreateUser = () => {
     }
 };
 
-const deleteUser = () => {
-    console.log("deleteUser");
-    return {type: DELETE_USER}
-};
 
-export const asyncDeleteUser = (user_id) => {
-    console.log("asyncDeleteUser, user id", user_id);
-    return dispatch => {
-        axios.delete(`/users/${user_id}`)
-        .then(response => {
-            dispatch(deleteUser());
-        })
-    }
-};
-
-const saveUser = () => {
+const saveUser = (user) => {
     console.log("saveuser");
-    return {type: SAVE_USER}
+    return {type: SAVE_USER, user}
 };
 
 export const asyncSaveUser = (user) => {
@@ -97,24 +96,48 @@ export const asyncSaveUser = (user) => {
     return dispatch => {
         axios.put(`/users/${user.id}`, user)
         .then(response => {
-            dispatch(saveUser());
+            console.log("asyncSaveUser, put response", response);
+            if (response.status === 200) {
+                if (response.errno) {
+                    console.log("ERROR",response);
+                } else {
+                    dispatch(saveUser(user));
+                }
+            }
+
         })
     }
 };
 
-const listUsers = (users) => {
-    console.log("listUsers");
-    return {type: LIST_USERS, users: users}
-};
-
-export const asyncListUsers = () => {
-    console.log("asyncListUsers");
+export const asyncSaveNewUser = (user) => {
     return dispatch => {
-        axios.get("/users")
+        axios.post("/users", user)
         .then(response => {
-            const users =  response.data;
-            console.log("asyncListUsers, users", users);
-            dispatch(listUsers(users));
+            console.log("asyncSaveUser, put response", response);
+            if (response.status === 200) {
+                if (response.errno) {
+                    console.log("ERROR",response);
+                } else {
+                    dispatch(saveUser(user));
+                }
+            }
         })
     }
 };
+
+// const listUsers = (users) => {
+//     console.log("listUsers");
+//     return {type: LIST_USERS, users: users}
+// };
+//
+// export const asyncListUsers = () => {
+//     console.log("asyncListUsers");
+//     return dispatch => {
+//         axios.get("/users")
+//         .then(response => {
+//             const users =  response.data;
+//             console.log("asyncListUsers, users", users);
+//             dispatch(listUsers(users));
+//         })
+//     }
+// };

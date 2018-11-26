@@ -6,15 +6,16 @@ import {
     FETCH_ACCOUNT,
     CREATE_ACCOUNT,
     EDIT_ACCOUNT,
-    // DELETE_ACCOUNT,
+    DELETE_ACCOUNT,
     // LIST_ACCOUNTS,
     SAVE_ACCOUNT,
     RESET_ACCOUNT,
-    SET_ACCOUNT_ID
+    SET_ACCOUNT_ID, CANCEL_EDIT_ACCOUNT, FETCH_ACCOUNT_FAILED, CREATE_ACCOUNT_FAILED, SAVE_ACCOUNT_FAILED
 } from "../actions/actionsTypes";
 
 // import {updateObject} from "../utility";
 import moment from 'moment';
+import {updateObject} from "../utility";
 
 const initialState = {
     id: null,
@@ -23,7 +24,8 @@ const initialState = {
     isExpired: null,
     joinedDate: "",
     modifiedDate: "",
-    password: ""
+    password: "",
+    newAccount: true
 };
 
 const accountReducers = (state = initialState, action) => {
@@ -39,7 +41,9 @@ const accountReducers = (state = initialState, action) => {
                     joinedDate: acnt.joinedDate,
                     expireDate: acnt.expireDate,
                     isExpired: acnt.isExpired,
-                    modifiedDate: acnt.modifiedDate
+                    modifiedDate: acnt.modifiedDate,
+                    newAccount: false,
+                    editing: false
                 };
 
                 //const newState = updateObject(state, user_account);
@@ -48,6 +52,9 @@ const accountReducers = (state = initialState, action) => {
                 // return updateObject(state, {account: action.account});
             }
             return state;
+        }
+        case FETCH_ACCOUNT_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
         }
         case CREATE_ACCOUNT: {
             const account = {
@@ -59,31 +66,50 @@ const accountReducers = (state = initialState, action) => {
                 modifiedDate: moment(),
                 password: "",
                 newAccount: true,
-                routing: true
+                routing: true,
+                editing: true
             };
             // const acnt = action.account;
             console.log("uaccountrReducers, create account, account", account);
-
-            // const account = {
-            //     id: action.id
-            //     account: acnt.account,
-            //     password: acnt.password,
-            //     joinedDate: acnt.joinedDate,
-            //     expireDate: acnt.expireDate,
-            //     isExpired: acnt.isExpired,
-            //     modifiedDate: acnt.modifiedDate
-            // };
             // console.log("accountrReducers, create account, useraccount", account);
             return {...state, ...account};
         }
+        case CREATE_ACCOUNT_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
+        }
         case EDIT_ACCOUNT: {
-            return {...state, ...action.account};
+            let account = action.account;
+            account = {
+                ...account,
+                newAccount: false,
+                editing: true
+            };
+            return {...state, ...account};
+        }
+
+        case CANCEL_EDIT_ACCOUNT: {
+            let account = action.account;
+            account = {
+                ...account,
+                newAccount: false,
+                editing: false
+            };
+            return {...state, ...account};
         }
 
         case SAVE_ACCOUNT: {
-            return {...state, ...action.account};
+            let account = action.account;
+            account = {
+                ...account,
+                saveSuccess: true,
+                editing: false,
+                newAccount: false
+            };
+            return {...state, ...account};
         }
-
+        case SAVE_ACCOUNT_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
+        }
         case RESET_ACCOUNT: {
             const account = {
                 id: action.id,
@@ -92,7 +118,10 @@ const accountReducers = (state = initialState, action) => {
                 isExpired: null,
                 joinedDate: moment(),
                 modifiedDate: moment(),
-                password: ""
+                password: "",
+                routing: action.routing,
+                newUser: action.newUser,
+                editing: false
             };
             return {...state, ...account};
         }

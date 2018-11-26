@@ -4,8 +4,9 @@
 import {
     LIST_ACCOUNTS,
     EDIT_ACCOUNT,
-    DELETE_ACCOUNT
+    DELETE_ACCOUNT, LIST_ACCOUNTS_FAILED, DELETE_ACCOUNT_FAILED
 } from "../actions/actionsTypes";
+import {updateObject} from "../utility";
 
 const initialState = {
     accountsManager: null,
@@ -22,6 +23,9 @@ const accountsManagerReducers = (state = initialState, action) => {
                 accounts: accounts
             }
         }
+        case LIST_ACCOUNTS_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
+        }
         case EDIT_ACCOUNT: {
             return {selectedAccount: action.accountId}
         }
@@ -36,6 +40,9 @@ const accountsManagerReducers = (state = initialState, action) => {
             });
             accounts.splice(deleteIndex, 1);
             return {accounts};
+        }
+        case DELETE_ACCOUNT_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
         }
         default: {
             return state;

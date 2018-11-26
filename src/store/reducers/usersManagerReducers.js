@@ -1,6 +1,8 @@
 import {
-    LIST_USERS
+    DELETE_USER, DELETE_USER_FAILED,
+    LIST_USERS, LIST_USERS_FAILED
 } from "../actions/actionsTypes";
+import {updateObject} from "../utility";
 
 const initialState = {
     usersManager: null
@@ -16,8 +18,26 @@ const usersManagerReducers = (state = initialState, action) => {
                     users: users
             }
         }
+        case LIST_USERS_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
+        }
+        case DELETE_USER: {
+            console.log("usersManagerReducers, state users", state.users);
+            const users = state.users.slice(0);
+            let deleteIndex = null;
+            users.forEach((user, index) => {
+                if (user.id === action.id) {
+                    deleteIndex =  index;
+                }
+            });
+            users.splice(deleteIndex, 1);
+            return {users};
+        }
         default: {
             return state;
+        }
+        case DELETE_USER_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
         }
     }
 };

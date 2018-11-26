@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {asyncListSurveys} from "../../../store/actions";
+import axios from '../../../axios-survey';
+
+import {asyncListSurveys, setSurveyId, asyncDeleteSurvey, asyncCreateNewSurvey} from "../../../store/actions";
 
 import {
     Table,
@@ -13,15 +15,41 @@ import {
 } from 'react-bootstrap';
 
 import classes from "./SurveysManager.css";
+import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 
 class SurveysManager extends Component {
+
+    constructor(props) {
+        super(props);
+        this.editSurvey = this.editSurvey.bind(this);
+        this.addNewSurvey =this.addNewSurvey.bind(this);
+        this.deleteSurvey = this.deleteSurvey.bind(this);
+    }
+
+
     componentDidMount() {
         this.props.onListSurveys();
     }
 
+    editSurvey(survey) {
+        this.props.onSetSurveyId(survey.id);
+        this.props.history.push("/surveybuilder");
+    }
+
+    addNewSurvey() {
+        console.log("addNewSurvey");
+        this.props.onCreateNewSurvey();
+        this.props.history.push("/surveybuilder");
+    }
+
+    deleteSurvey(survey) {
+        console.log("deleteSurvey");
+        this.props.onDeleteSurvey(survey);
+    }
+
     render() {
         return (
-            <div className={classes.container}>
+            <div className={classes.surveysManager}>
                 <h1>Surveys Manager</h1>
                 <h2>Surveys:</h2>
                 <Table className={classes.table}>
@@ -40,8 +68,8 @@ class SurveysManager extends Component {
                                 <td>{survey.title}</td>
                                 <td>
                                     <ButtonGroup>
-                                        <Button bsStyle="success">Edit</Button>
-                                        <Button bsStyle="danger">Delete</Button>
+                                        <Button onClick={() => this.editSurvey(survey)} bsStyle="success">Edit</Button>
+                                        <Button onClick={() => this.deleteSurvey(survey)} bsStyle="danger">Delete</Button>
                                     </ButtonGroup>
                                 </td>
                             </tr>
@@ -49,7 +77,10 @@ class SurveysManager extends Component {
                     })}
                     <tr>
                         <td></td>
-                        <td><Button bsStyle="primary">Add New Survey</Button></td>
+                        <td>
+                            <Button onClick={this.addNewSurvey} bsStyle="primary">Add New Survey</Button>
+                        </td>
+
                         <td></td>
                     </tr>
                     </tbody>
@@ -67,8 +98,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onListSurveys: () => dispatch(asyncListSurveys())
+        onListSurveys: () => dispatch(asyncListSurveys()),
+        onCreateNewSurvey: () => dispatch(asyncCreateNewSurvey()),
+        onSetSurveyId: (survey_id) => dispatch(setSurveyId(survey_id)),
+        onDeleteSurvey: (survey) => dispatch(asyncDeleteSurvey(survey))
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurveysManager);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(SurveysManager, axios));

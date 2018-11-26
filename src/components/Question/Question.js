@@ -17,7 +17,7 @@ const question = (props) => {
             <td>{props.question.question}</td>
             <td>
                 <ButtonGroup>
-                    <Button bsStyle="success" onClick={() => props.edit(props.question.id, props.question.question)}>Edit</Button>
+                    <Button bsStyle="success" onClick={() => props.edit(props.question)}>Edit</Button>
                     <Button bsStyle="danger" onClick={() => props.delete(props.question.id)}>Delete</Button>
                     <Button bsStyle="primary" onClick={() => props.answers(props.question)}>Answers</Button>
                 </ButtonGroup>

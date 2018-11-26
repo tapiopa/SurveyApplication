@@ -2,6 +2,12 @@
 * Account.css
 *
 */
+
+.account {
+    width: 70%;
+    float: right;
+}
+
 .form {
     float: left;
     width: 70%;
@@ -11,7 +17,7 @@
 .label {
     width: 10rem;
     float: left;
-    text-align: right;
+    text-align: left;
     margin-right: .5rem;
     /*border: 1px solid blue;*/
 }

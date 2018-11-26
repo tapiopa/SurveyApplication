@@ -18,7 +18,7 @@ import {
 } from 'react-bootstrap';
 
 import classes from "./SurveyBuilder.css";
-// import {ADD_QUESTION, EDIT_QUESTION, DELETE_QUESTION, SAVE_QUESTION, CANCEL_QUESTION}
+// import {ADD_QUESTION, EDIT_QUESTION, DELETE_QUESTION, SAVE_QUESTION, CANCEL_EDIT_QUESTION}
 // from "../../././store/actions/actionsTypes";
 import {
     asyncCreateQuestion,
@@ -44,26 +44,27 @@ import {
 import Question from "../../Question/Question";
 import NewQuestion from "./NewQuestion";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import Badge from "react-bootstrap/es/Badge";
 
 class SurveyBuilder extends Component {
-
+    state = {
+        id: null,
+        title: "",
+        questions: null,
+        answer: null,
+        editingSurvey: false,
+        editingQuestion: false,
+        editingAnswer: false,
+        newSurvey: false,
+        newQuestion: false,
+        newAnswer: false,
+        inputValue: "",
+        inputId: -1
+    };
 
     constructor(props) {
         super(props);
-        this.state = {
-            surveyId: null,
-            surveyTitle: "",
-            question: null,
-            answer: null,
-            editingSurvey: false,
-            editingQuestion: false,
-            editingAnswer: false,
-            newSurvey: false,
-            newQuestion: false,
-            newAnswer: false,
-            inputValue: "",
-            inputId: -1
-        };
+
         this.updateInputValue = this.updateInputValue.bind(this);
         this.addNewQuestion = this.addNewQuestion.bind(this);
         this.saveQuestion = this.saveQuestion.bind(this);
@@ -78,14 +79,17 @@ class SurveyBuilder extends Component {
         this.addNewAnswer = this.addNewAnswer.bind(this);
         // this.submit = this.submit.bind(this);
         this.saveSurveyIdAndTitle = this.saveSurveyIdAndTitle.bind(this);
-        this.updateSurveyId = this.updateSurveyId.bind(this);
+        // this.updateSurveyId = this.updateSurveyId.bind(this);
         this.updateSurveyTitle = this.updateSurveyTitle.bind(this);
         this.editSurvey = this.editSurvey.bind(this);
+        this.updateState = this.updateState.bind(this);
+        this.goBack = this.goBack.bind(this);
+        // this.handleSurveyTitleChange = this.handleSurveyTitleChange.bind(this);
     }
 
     logState = () => {
         for (const key of Object.keys(this.state)) {
-            console.log(key, this.props[key]);
+            console.log(key, this.state[key]);
         }
     };
 
@@ -96,36 +100,124 @@ class SurveyBuilder extends Component {
     };
 
     componentDidMount() {
-        // this.fetchSurveyData(this.props.survey.survey_id);
-        this.props.onFetchSurvey(1);
-        this.props.surveyBuilder && this.setState({surveyId: this.props.surveyBuilder.survey.id})
+        console.log("componentDidMount, props", this.props);
+        const newSurveyBuilder = this.props.surveyBuilder && this.props.surveyBuilder.survey && this.props.surveyBuilder.survey.newSurvey;
+        const newSurvey = this.props.survey && this.props.survey.id && this.props.survey.newSurvey;
+        const oldSurveyBuilderWithId = this.props.surveyBuilder && this.props.surveyBuilder.survey && this.props.surveyBuilder.survey.id && !this.props.surveyBuilder.survey.newSurvey;
+        const oldSurveyWithId  = this.props.survey && this.props.survey.id && !this.props.survey.newSurvey;
+        if (newSurveyBuilder) {
+            console.log("componentDidMount, new SurveyBuilder", this.props.surveyBuilder.survey);
+            this.updateState(this.props.surveyBuilder.survey);
+        } else if (newSurvey) {
+            console.log("componentDidMount, new Survey", this.props.survey);
+            this.updateState(this.props.survey);
+        } else if (oldSurveyBuilderWithId) {
+            console.log("componentDidMount with SurveyBuilder, Fetch Survey, id", this.props.surveyBuilder.survey.id);
+            this.props.onFetchSurvey(this.props.surveyBuilder.survey.id);
+        } else if (oldSurveyWithId) {
+            console.log("componentDidMount with Survey, Fetch Survey, id", this.props.survey.id);
+            this.props.onFetchSurvey(this.props.survey.id);
+        } else {
+            console.log("componentDidMount, NO Survey, props", this.props);
+
+        }
+
+        // this.props.surveyBuilder && this.setState({surveyId: this.  props.surveyBuilder.survey.id})
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        console.log("componentWillReceiveProps, nextProps", nextProps);
+        console.log("componentWillReceiveProps, nextContext", nextContext);
+        const newSurveyBuilder = nextProps.surveyBuilder &&nextProps.surveyBuilder.survey && nextProps.surveyBuilder.survey.newSurvey;
+        const newSurvey = nextProps.survey && nextProps.survey.id;
+        const oldSurveyBuilderWithId = nextProps.surveyBuilder && nextProps.surveyBuilder.survey && nextProps.surveyBuilder.survey.id;
+        const oldSurveyWithId  = nextProps.survey && nextProps.survey.id;
+        if (newSurveyBuilder) {
+            console.log("componentWillReceiveProps, new SurveyBuilder", nextProps.surveyBuilder.survey);
+            this.updateState(nextProps.surveyBuilder.survey);
+        } else if (newSurvey) {
+            console.log("componentWillReceiveProps, new Survey",nextProps.survey);
+            this.updateState(nextProps.survey);
+        } else if (oldSurveyBuilderWithId) {
+            console.log("componentWillReceiveProps with SurveyBuilder, Fetch Survey, id", nextProps.surveyBuilder.survey.id);
+            this.props.onFetchSurvey(nextProps.surveyBuilder.survey.id);
+        } else if (oldSurveyWithId) {
+            console.log("componentWillReceiveProps with Survey, Fetch Survey, id", nextProps.survey.id);
+            this.props.onFetchSurvey(nextProps.survey.id);
+        } else {
+            console.log("componentWillReceiveProps, NO Survey, props", nextProps);
+        }
+        if (nextProps.survey && nextProps.survey.saveSuccess) {
+            this.setState({
+                saveSuccess: nextProps.saveSuccess,
+                editSurvey: nextProps.editingSurvey
+            })
+        }
+    }
+
+    updateState (someProps) {
+        console.log("updateState, some props", someProps);
+        this.setState({
+            id: someProps.id,
+            title: someProps.title,
+            questions: someProps.questions,
+            newSurvey: someProps.newSurvey
+        });
+        console.log("updateState, AFTER state", this.state);
+    }
+
+    goBack() {
+        console.log("goBack");
+        this.props.history.goBack();
     }
 
     editSurvey() {
+        console.log("editSurvey");
         this.setState({
-            surveyId: this.props.survey.id,
-            surveyTitle: this.props.survey.title,
+            id: this.props.survey.id,
+            title: this.props.survey.title,
             editingSurvey: true
         });
         const survey = {
             id: this.props.survey.id,
-            title: this.props.survey.title
+            title: this.props.survey.title,
+            questions: this.props.survey.questions,
+            newSurvey: this.state.newSurvey
         };
         console.log("editSurvey, state", this.state);
         console.log("editSurvey, survey", survey);
         this.props.onEditSurvey(survey);
     };
 
+
     saveSurveyIdAndTitle() {
-        const surveyId = this.state.surveyId;
-        const surveyTitle = this.state.surveyTitle;
+        const surveyId = this.state.id;
+        const surveyTitle = this.state.title;
         const saveSurvey = {
             id: surveyId,
             title: surveyTitle
         };
         console.log("saveSurveyIdAndTitle, survey", saveSurvey);
-        this.props.onSaveSurvey(saveSurvey);
+        this.props.onSaveSurvey(saveSurvey, this.state.newSurvey);
         this.setState({editingSurvey: false})
+    };
+
+    updateInputValue = (evt) => {
+        console.log("updateInputValue, evt target value: ", evt);
+        this.setState({
+            inputValue: evt.target.value,
+            inputId: +evt.target.id
+        });
+        // console.log("updateInputValue, inputValue: ", this.state.inputValue);
+        // console.log("!!!!!!!!!!!!updateInputValue, inputId: ", this.state.inputId);
+    };
+
+    updateSurveyTitle = (evt) => {
+        console.log("updateInputValue, evt target value: ", evt);
+        const title = document.getElementById("title").value;
+        console.log("updateInputValue, title: ", title);
+        this.setState({title: title});
+        console.log("updateSurveyTitle, state survey title", this.state.title);
     };
 
     saveAnswer(answer) {
@@ -174,7 +266,7 @@ class SurveyBuilder extends Component {
         });
         const question = {
             id: null,
-            question: "Test",
+            question: "",
             surveyFK: this.props.survey.id
         };
         console.log("addNewQuestion, question", this.state);
@@ -183,23 +275,11 @@ class SurveyBuilder extends Component {
         //this.props.onQuestionAdded(question);
     }
 
-    updateInputValue = (evt) => {
-        // console.log("updateInputValue, value: ", evt.target.value);
-        this.setState({
-            inputValue: evt.target.value,
-            inputId: +evt.target.id
-        });
-        // console.log("updateInputValue, inputValue: ", this.state.inputValue);
-        // console.log("!!!!!!!!!!!!updateInputValue, inputId: ", this.state.inputId);
-    };
 
-    updateSurveyTitle = (evt) => {
-        this.setState({surveyTitle: evt.target.value});
-    };
 
-    updateSurveyId = (evt) => {
-        this.setState({surveyId: evt.target.value});
-    };
+    // updateSurveyId = (evt) => {
+    //     this.setState({surveyId: evt.target.value});
+    // };
 
     // const getQuestion = (id) => {
     //     let foundQuestion = null;
@@ -213,16 +293,25 @@ class SurveyBuilder extends Component {
     //     return foundQuestion;
     // };
 
-    saveQuestion() {
+    saveQuestion(editedQuestion) {
         console.log("saveQuestion, state", this.state);
+        console.log("saveQuestion, editedQuestion", editedQuestion);
         // this.props.onQuestionSaved(this.state.inputId, this.state.inputValue);
         console.log("saveQuestion, survey", this.props.survey);
-        const question = {
-            id: this.state.inputId,
-            question: this.state.inputValue,
-            surveyFK: this.props.survey.id
-        };
-        console.log("saveQuestion, question", question);
+        let savedQuestion = null;
+        if (editedQuestion) {
+            editedQuestion.question = this.state.inputValue;
+            savedQuestion = editedQuestion;
+        } else {
+           savedQuestion = {
+                id: this.state.inputId,
+                question: this.state.inputValue,
+                surveyFK: this.props.survey.id
+            };
+        }
+
+        const newQuestion = this.state.newQuestion;
+        console.log("saveQuestion, question", savedQuestion);
         //const foundQuestion = ,
         // const newQuestion = {
         //     id: this.state.inputId,
@@ -233,7 +322,7 @@ class SurveyBuilder extends Component {
         // .then(response => {
         //     console.log("axios, response", response)
         // });
-        this.props.onQuestionSaved(question);
+        this.props.onQuestionSaved(savedQuestion, newQuestion);
         this.setState({inputId: -1, inputValue: ""})
 
 
@@ -247,12 +336,16 @@ class SurveyBuilder extends Component {
         this.setState({inputId: -1, inputValue: ""})
     };
 
-    editQuestion(id, value) {
+    editQuestion(question) {
         //alert("Edit question")
         //alert(`edit value: ${value}`);
-        this.setState({inputValue: value});
+        this.setState({
+            inputId: question.id,
+            inputValue: question.question,
+            newQuestion: false
+        });
         //console.log("???????????editQuestion, state", this.state);
-        this.props.onQuestionEdited(id, value);
+        this.props.onQuestionEdited(question);
     };
 
 
@@ -287,65 +380,90 @@ class SurveyBuilder extends Component {
         //     }
         //     // question.showAnswers = !question.showAnswers;
         // };
-        function SurveyData(props) {
-            if (props.editing) {
-                return (
-                    <Aux>
-                        <FormGroup className={classes.group}>
-                            <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
-                            <FormControl className={classes.input}
-                                         type="text" name="id" id="id"
-                                         onChange={props.updateId}
-                                         value={this.state.surveyId}/>
-                        </FormGroup>
-                        <FormGroup className={classes.group}>
-                            <ControlLabel className={classes.label} htmlFor="name">Survey Name</ControlLabel>
-                            <FormControl className={classes.input}
-                                         type="text" name="name" id="name"
-                                         onChange={props.updateTitle}
-                                         value={this.state.surveyTitle}
-                            />
-                        </FormGroup>
-                        <Button onClick={props.save} bsStyle="success">Save</Button>
-                    </Aux>
-                );
-            } else {
-                return (
-                <Aux>
+        // function SurveyData(props) {
+        //     if (props.editing) {
+        //         return (
+        //             <Aux>
+        //                 <FormGroup className={classes.group}>
+        //                     <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
+        //                     <FormControl className={classes.input}
+        //                                  type="text" name="id" id="id" disabled
+        //                                  //onChange={props.updateId}
+        //                                  value={props.id}/>
+        //                 </FormGroup>
+        //                 <FormGroup className={classes.group}>
+        //                     <ControlLabel className={classes.label} htmlFor="title">Survey Name</ControlLabel>
+        //                     <FormControl className={classes.input}
+        //                                  type="text" name="title" id="title"
+        //                                  disabled={!this.state.editingSurvey}
+        //                                  onChange={props.updateTitle}
+        //                                  value={props.title}
+        //                     />
+        //                 </FormGroup>
+        //                 <Button onClick={props.edit} disabled={this.state.editingSurvey} bsStyle="primary">Edit</Button>
+        //                 <Button onClick={props.save} disabled={!this.state.editingSurvey} bsStyle="success">Save</Button>
+        //             </Aux>
+        //         );
+        //     } else {
+        //         return (
+        //         <Aux>
+        //             <FormGroup className={classes.group}>
+        //                 <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
+        //                 <FormControl className={classes.input}
+        //                              type="text" name="id" id="id" disabled
+        //                              // onChange={props.updateId}
+        //                              value={props.id}/>
+        //             </FormGroup>
+        //             <FormGroup className={classes.group}>
+        //                 <ControlLabel className={classes.label} htmlFor="name">Survey Title</ControlLabel>
+        //                 <FormControl className={classes.input} disabled
+        //                              type="text" name="name" id="name"
+        //                              disabled={!this.state.editingSurvey}
+        //                              // onChange={props.updateTitle}
+        //                              value={props.title}
+        //                 />
+        //             </FormGroup>
+        //             <Button onClick={props.edit} bsStyle="primary">Edit</Button>
+        //             <Button onClick={props.save} disabled bsStyle="success">Save</Button>
+        //         </Aux>
+        //         )
+        //     }
+        // }
+
+        return (
+            <div className={classes.surveyBuilder}>
+                <PageHeader>Survey Builder</PageHeader>
+                <form className={classes.form}>
                     <FormGroup className={classes.group}>
                         <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
                         <FormControl className={classes.input}
-                                     type="text" name="id" id="id"
-                                     // onChange={props.updateId}
-                                     value={props.id}/>
+                                     type="text" name="id" id="id" disabled={true}
+                            //onChange={props.updateId}
+                                     value={this.state.id}/>
                     </FormGroup>
                     <FormGroup className={classes.group}>
-                        <ControlLabel className={classes.label} htmlFor="name">Survey Title</ControlLabel>
+                        <ControlLabel className={classes.label} htmlFor="title">Survey Name</ControlLabel>
                         <FormControl className={classes.input}
-                                     type="text" name="name" id="name"
-                                     // onChange={props.updateTitle}
-                                     value={props.title}
+                                     disabled={!this.state.editingSurvey}
+                                     type="text" name="title" id="title"
+                                     onChange={() => this.updateSurveyTitle(this.state.title)}
+                                     value={this.state.title}
                         />
                     </FormGroup>
-                    <Button onClick={props.edit} bsStyle="success">Edit</Button>
-                </Aux>
-                )
-            }
-        }
-
-        return (
-            <div>
-                <PageHeader>Survey Builder</PageHeader>
-                <form className={classes.form}>
-
-                    <SurveyData
-                        id={this.props.survey && this.props.survey.id ? this.props.survey.id : ""}
-                        title={this.props.survey && this.props.survey.title ? this.props.survey.title : ""}
-                        updateId={this.updateSurveyId}
-                        updateTitle={this.updateSurveyTitle}
-                        edit={this.editSurvey}
-                        save={this.saveSurveyIdAndTitle}
-                    />
+                    <Button onClick={this.editSurvey}
+                            disabled={this.state.editingSurvey}
+                            bsStyle="primary">Edit</Button>
+                    <Button onClick={this.saveSurveyIdAndTitle}
+                            disabled={!this.state.editingSurvey}
+                            bsStyle="success">Save</Button>
+                    {/*<SurveyData*/}
+                        {/*id={this.props.survey && this.props.survey.id ? this.props.survey.id : ""}*/}
+                        {/*title={this.props.survey && this.props.survey.title ? this.props.survey.title : ""}*/}
+                        {/*updateTitle={this.updateSurveyTitle}*/}
+                        {/*edit={this.editSurvey}*/}
+                        {/*save={this.saveSurveyIdAndTitle}*/}
+                        {/*editing={this.state.editingSurvey}*/}
+                    {/*/>*/}
                 </form>
                 <br/>
                 <br/>
@@ -368,6 +486,7 @@ class SurveyBuilder extends Component {
                                         <NewQuestion
                                             key={question.id}
                                             id={question.id}
+                                            question={question}
                                             inputValue={this.state.inputValue}
                                             onChange={this.updateInputValue}
                                             // changed={changedNewQuestion}
@@ -470,7 +589,9 @@ class SurveyBuilder extends Component {
 
                 <Button onClick={this.addNewQuestion} bsStyle="success">Add a Question</Button>
 
-
+                {!this.state.newSurvey ? null :
+                    <Button bsStyle="info" onClick={this.goBack}>Go Back</Button>
+                }
                 <ButtonToolbar>
                     <Button bsStyle="success" bsSize="small" onClick={this.logState}>Log State</Button>
                     <Button bsStyle="success" bsSize="small" onClick={this.logProps}>Log Props</Button>

@@ -20,7 +20,8 @@ import {
     asyncFetchAccount,
     asyncCreateAccount,
     asyncListAccounts,
-    asyncDeleteAccount,
+    editAccount,
+    cancelEditAccount,
     asyncSaveAccount,
     asyncSaveNewAccount,
     setAccountId,
@@ -33,6 +34,7 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 class Account extends Component {
+
     state = {
         id: "",
         account: "",
@@ -45,14 +47,16 @@ class Account extends Component {
         isExpired: null,
         //startDate: null,
         editing: false,
-        unEditedId: "",
-        unEditedAccount: "",
-        unEditedPassword: "",
-        unEditedExpireDate: null,
-        unEditedJoinedDate: null,
-        unEditedModifiedDate: null,
         newAccount: false,
-        routing: false
+        routing: false,
+        unEditedState: {
+            id: "",
+            account: "",
+            password: "",
+            expireDate: null,
+            joinedDate: null,
+            modifiedDate: null
+        }
     };
 
     constructor(props) {
@@ -69,9 +73,11 @@ class Account extends Component {
         // this.saveAccount = this.saveAccount.bind(this);
         // this.resetFields = this.resetFields.bind(this);
         this.getFormattedMoment = this.getFormattedMoment.bind(this);
-        this.formatMoment = this.formatMoment.bind(this);
+        // this.formatMoment = this.formatMoment.bind(this);
+        this.editAccount = this.editAccount.bind(this);
         this.cancelEditing = this.cancelEditing.bind(this);
         this.goBack = this.goBack.bind(this);
+        this.updateState = this.updateState.bind(this);
     }
 
     componentDidMount() {
@@ -82,23 +88,28 @@ class Account extends Component {
         //         console.log("not account id");
         //     }
         // }
-
+        console.log("componentDidMount, props new account", this.props.account.newAccount);
         //if (this.props.account && !this.props.account.routing && !this.state.newAccount) {
-        if (!this.props.account.routing) {
-            if (!this.props.account.id && this.props.app.account_id) {
-                console.log("componentDidMount, setting account id, APP  account_id", this.props.app.account_id);
-                this.props.onFetchAccount(this.props.app.account_id);
-            } else if (this.props.account.id) {
-                console.log("Account, componentDidMount, ACCOUNT id: ", this.props.account.id);
-                this.props.onFetchAccount(this.props.account.id);
-            }
+        if (!this.props.account.newAccount) {
+            console.log("componentDidMount, not new account");
+                if (!this.props.account.id && this.props.app.account_id) {
+                    console.log("componentDidMount, setting account id, APP  account_id", this.props.app.account_id);
+                    this.props.onFetchAccount(this.props.app.account_id);
+                } else if (this.props.account.id) {
+                    console.log("Account, componentDidMount, ACCOUNT id: ", this.props.account.id);
+                    this.props.onFetchAccount(this.props.account.id);
+                }
+
+        } else {
+            console.log("componentDidMount, new account");
+            this.updateState(this.props);
         }
-        //}
     }
 
     componentDidUpdate() {
-        // console.log("componentDidUpdate, state", this.state);
-        console.log("Account, componentDidMount, props newAccount", this.props.account.newAccount, "state new account", this.state.newAccount);
+        console.log("componentDidUpdate, state", this.state);
+        // console.log("Account, componentDidUpdate, props newAccount", this.props.account.newAccount, "state new account", this.state.newAccount);
+
         // if (this.props.account && this.props.account.newAccount) {
         //     this.setState({newAccount: true});
         // }
@@ -112,40 +123,51 @@ class Account extends Component {
         // document.getElementById("confirmPassword").value = this.state.confirmPassword;
     }
 
+
+
     componentWillReceiveProps(nextProps) {
         console.log("Account, componentWillReceiveProps, nextProps", nextProps);
-        if (nextProps.account.id) {
-            // const company = Object.assign({}, this.state.company);
-            // company.id = 0;
-            // company.messages = [];
-            this.setState({
-                id: nextProps.account.id,
-                unEditedId: nextProps.account.id,
-                account: nextProps.account.account,
-                unEditedAccount: nextProps.account.account,
-                password: "",
-                unEditedPassword: nextProps.account.password,
-                confirmPassword: "",
-                joinedDate: nextProps.account.newAccount ? moment() : this.getDateMoment(nextProps.account.joinedDate),
-                unEditedJoinedDate: nextProps.account.newAccount ? moment() : this.getDateMoment(nextProps.account.joinedDate),
-                expireDate: this.getDateMoment(nextProps.account.expireDate),
-                unEditedExpireDate: this.getDateMoment(nextProps.account.expireDate),
-                modifiedDate: nextProps.account.newAccount ? moment() : this.getDateMoment(nextProps.account.modifiedDate),
-                unEditedModifiedDate: nextProps.account.newAccount ? moment() : this.getDateMoment(nextProps.account.modifiedDate),
-                isExpired: nextProps.account.isExpired,
-                routing: nextProps
-                // newAccount: false
-            });
+        if (nextProps.account) {
+            if (nextProps.account.id) {
+                this.updateState(nextProps);
+            }
             if (nextProps.account.newAccount) {
                 this.setState({newAccount: true});
             }
             if (nextProps.account.saveSuccess) {
-                this.setState({
-                    saveSuccess: false,
-                    editing: false
-                })
+                this.setState({editing: false})
+            }
+            if (nextProps.account.editing) {
+                this.setState({editing: nextProps.account.editing});
             }
         }
+        console.log("Account, componentWillReceiveProps, state", this.state);
+    }
+
+    updateState(someProps) {
+        console.log("updateState");
+        this.setState({
+            id: someProps.account.id,
+            account: someProps.account.account,
+            password: "",
+            confirmPassword: "",
+            joinedDate: someProps.account.newAccount ? moment() : this.getDateMoment(someProps.account.joinedDate),
+            expireDate: this.getDateMoment(someProps.account.expireDate),
+            modifiedDate: someProps.account.newAccount ? moment() : this.getDateMoment(someProps.account.modifiedDate),
+            unEditedState: {
+                id: someProps.account.id,
+                account: someProps.account.account,
+                password: someProps.account.password,
+                joinedDate: someProps.account.newAccount ? moment() : this.getDateMoment(someProps.account.joinedDate),
+                expireDate: this.getDateMoment(someProps.account.expireDate),
+                modifiedDate: someProps.account.newAccount ? moment() : this.getDateMoment(someProps.account.modifiedDate),
+            },
+            isExpired: someProps.account.isExpired,
+            routing: someProps.account.routing,
+            editing: someProps.account.editing
+            // newAccount: false
+        });
+        console.log("Account, updateState, state", this.state);
     }
 
     goBack() {
@@ -153,43 +175,27 @@ class Account extends Component {
         this.props.history.goBack();
     }
 
-    cancelEditing = () => {
-        // this.setState({
-        //     account: "",
-        //     password: ""
-        // });
-        // document.getElementById("username").value = "";
-        // document.getElementById("password").value = "";
-        // console.log("cancelEditing, BEFORE unEditedAccount", this.state.unEditedAccount,
-        //     "unEditedPassword", this.state.unEditedPassword);
-          this.setState({
-              id: this.state.unEditedId,
-              account: this.state.unEditedAccount,
-              password: "", //this.state.unEditedPassword,
-              confirmPassword: "",
-              expireDate: this.state.unEditedExpireDate,
-              joinedDate: this.state.unEditedJoinedDate,
-              modifiedDate: this.state.unEditedModifiedDate,
-              editing: false
-          });
+    editAccount = (account) => {
+        this.props.onEditAccount(account);
+    };
+
+    cancelEditing = (account) => {
+        //   this.setState({
+        //       id: this.state.unEditedState.id,
+        //       account: this.state.unEditedState.account,
+        //       password: "", //this.state.unEditedPassword,
+        //       confirmPassword: "",
+        //       expireDate: this.state.unEditedState.expireDate,
+        //       joinedDate: this.state.unEditedState.joinedDate,
+        //       modifiedDate: this.state.unEditedState.modifiedDate,
+        //       editing: false
+        //   });
         // console.log("cancelEditing, AFTER account", this.state.account,
         //     "password", this.state.password);
         // document.getElementById("username").value = this.state.account;
         // // document.getElementById("password").value = " ";
+        this.props.onCancelEditAccount(account);
     };
-
-    // addNewAccount = () => {
-    //     this.resetFields();
-    //     this.setState({editing: true, newAccount: true});
-    // };
-
-    // deleteAccount = (account_id) => {
-    //     console.log("deleteAccount, account id", account_id);
-    //     this.props.onDeleteAccount(13);
-    // };
-    // listAccounts = () => {
-    //     this.props.onListAccounts();
-    // };
 
     saveAccount = (account) => {
         const saveAccount = {
@@ -208,19 +214,6 @@ class Account extends Component {
             this.props.onSaveAccount(saveAccount);
         }
     };
-
-    // saveNewAccount = (account) => {
-    //     const saveAccount = {
-    //         id: this.props.state.id,
-    //         account: this.state.account,
-    //         password: this.state.password,
-    //         isExpired: this.state.isExpired,
-    //         joinedDate: this.state.joinedDate ? this.state.joinedDate.format("YYYY-MM-DD") : null,
-    //         expireDate: this.state.expireDate ? this.state.expireDate.format("YYYY-MM-DD") : null,
-    //         modifiedDate: this.state.modifiedDate ? this.state.modifiedDate.format("YYYY-MM-DD hh:mm:ss") : null
-    //     };
-    //
-    // }
 
     setExpires(expireDate) {
         this.setState({expireDate: this.getDateMoment(expireDate)});
@@ -305,83 +298,68 @@ class Account extends Component {
        return this.getDateMoment(date) ? this.getDateMoment(date).format("DD.M.YYYY") : null;
     };
 
-    formatMoment(moment, withTime) {
-        if (withTime) {
-            return moment ? moment.format("DD.M.YYYY h:mm") : null;
-        } else if (moment) {
-            return moment.format("DD.M.YYYY");
-        }
-    }
-
-    // resetFields() {
-    //     this.setState({
-    //         id: "",
-    //         account: "",
-    //         password: "",
-    //         confirmPassword: "",
-    //         joinedDate: moment(),
-    //         expireDate: moment(),
-    //         modifiedDate: moment(),
-    //         isExpired: null,
-    //         newAccount: false,
-    //         routing: false
-    //     })
-    // };
-
-
 
 
     render() {
 
+        const formatMoment = (moment, withTime) => {
+            if (withTime) {
+                return moment ? moment.format("DD.M.YYYY h:mm") : null;
+            } else if (moment) {
+                return moment.format("DD.M.YYYY");
+            }
+        };
         // console.log("account, render, props", this.props);
         // console.log("account, render, state", this.state);
 
         return (
-            <div>
+            <div className={classes.account}>
                 <PageHeader>Account</PageHeader>
                 <label>ID</label><p>state: {this.state.id} and props: {this.props.account.id}</p>
                 <form className={classes.form}>
                     <FormGroup>
                         <ControlLabel className={classes.label} htmlFor="username">Username</ControlLabel>
                         <FormControl className={classes.input} type="text" name="username" id="username"
-                                     defaultValue={this.state.account}
+                                     defaultValue={this.state.account} disabled={!this.state.editing}
                                      onChange={this.handleUsernameChange}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel className={classes.label} htmlFor="password">Password</ControlLabel>
                         <FormControl className={classes.input} type="password" name="password" id="password"
-                                     defaultValue={this.state.password}
+                                     defaultValue={this.state.password} disabled={!this.state.editing}
                                      onChange={this.handlePasswordChange}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel className={classes.label} htmlFor="confirmPassword">Confirm
                             Password</ControlLabel>
                         <FormControl className={classes.input} type="password"
-                                     name="confirmPassword" id="confirmPassword" defaultValue=""
+                                     name="confirmPassword" id="confirmPassword"
+                                     defaultValue="" disabled={!this.state.editing}
                                      onChange={this.handleConfirmPasswordChange}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel className={classes.label} htmlFor="joined">Joined Date</ControlLabel>
                         <FormControl className={classes.input} disabled="disabled" name="joined" id="joined"
-                                     defaultValue={this.formatMoment(this.state.joinedDate)}/>
+                                     defaultValue={formatMoment(this.state.joinedDate)}/>
                     </FormGroup>
                     <FormGroup className={classes.formGroup}>
                         <ControlLabel className={classes.label} htmlFor="expires">Account Expires</ControlLabel>
                         <DatePicker  //https://github.com/Hacker0x01/react-datepicker/blob/master/docs/datepicker.md
                                         //https://reactdatepicker.com
+                            disabled={!this.state.editing}
                             id="expires" className={classes.datePicker}
                             dropdownMode="select" showYearDropdown showMonthDropdown
                             selected={this.state.expireDate}
-                            value={this.formatMoment(this.state.expireDate)}
+                            value={formatMoment(this.state.expireDate)}
                             openToDate={this.state.expireDate}
                             dateFormat="D.M.YYYY" minDate={moment()}
                             onChange={this.handleExpireDateChange}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel className={classes.label} htmlFor="lastEdited">Account Last Edited</ControlLabel>
-                        <FormControl className={classes.input} disabled="disabled" type="text" name="lastEdited"
-                                     id="lastEdited"
-                                     defaultValue={this.formatMoment(this.state.modifiedDate, true)}/>
+                        <FormControl className={classes.input} disabled="disabled"
+                                     type="text" name="lastEdited" id="lastEdited"
+                                     defaultValue={formatMoment(this.state.modifiedDate, true)}/>
                     </FormGroup>
 
                     <ButtonToolbar className={classes.buttonToolbar}>
@@ -391,11 +369,13 @@ class Account extends Component {
                                 {/*onClick={this.deleteAccount}>Delete Account</Button>*/}
                         {/*<Button disabled={true} bsStyle="primary"*/}
                                 {/*onClick={this.listAccounts}>List Accounts</Button>*/}
+                        <Button disabled={this.state.editing} bsStyle="primary"
+                                onClick={this.editAccount}>Edit</Button>
                         <Button disabled={!this.state.editing} bsStyle="success"
                                 onClick={this.saveAccount}>Save Account</Button>
                         <Button disabled={!this.state.editing}
                                 onClick={this.cancelEditing}>Cancel</Button>
-                        <Button disabled={this.state.editing} bsStyle="primary"
+                        <Button disabled={this.state.editing} bsStyle="info"
                                 onClick={this.goBack}>Go Back</Button>
                     </ButtonToolbar>
                 </form>
@@ -420,7 +400,8 @@ const mapDispatchToProps = (dispatch) => {
         onFetchAccount: (account_id) => dispatch(asyncFetchAccount(account_id)),
         onCreateAccount: (account) => dispatch(asyncCreateAccount(account)),
         onListAccounts: () => dispatch(asyncListAccounts()),
-        onDeleteAccount: (id) => dispatch(asyncDeleteAccount(id)),
+        onEditAccount: (account) => dispatch(editAccount(account)),
+        onCancelEditAccount: (account) => dispatch(cancelEditAccount(account)),
         onSaveAccount: (account) => dispatch(asyncSaveAccount(account)),
         onSaveNewAccount: (account) => dispatch(asyncSaveNewAccount(account)),
         onSetAccountId: (account_id) => dispatch(setAccountId(account_id)),

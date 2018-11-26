@@ -13,6 +13,8 @@ import {
     resetAccount
 } from "../../../store/actions";
 
+import axios from "../../../axios-survey";
+
 import {
     Table,
     // FormControl, FormGroup, ControlLabel, PageHeader,
@@ -23,6 +25,7 @@ import {
 } from 'react-bootstrap';
 
 import classes from "./AccountsManager.css";
+import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 // import {NavLink} from "react-router-dom";
 
 class AccountsManager extends Component {
@@ -44,11 +47,11 @@ class AccountsManager extends Component {
 
     createAccount() {
         console.log("Accounts manager, create account BEFORE creat");
-        this.props.onResetAccount();
+        // this.props.onResetAccount();
         this.props.onCreateAccount();
         console.log("Accounts manager, create account AFTER create");
         this.props.history.push("/account");
-        console.log("Accounts manager, create account AFTER PUSH");
+        console.log("Accounts manager, create account AFTER PUSH account page");
     }
 
     editAccount(account) {
@@ -64,7 +67,7 @@ class AccountsManager extends Component {
 
     render() {
         return (
-            <div className={classes.container}>
+            <div className={classes.accountManager}>
                 <h1>Accounts Manager</h1>
                 <h2>Accounts:</h2>
                 <Table className={classes.table}>
@@ -119,4 +122,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountsManager);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(AccountsManager, axios));

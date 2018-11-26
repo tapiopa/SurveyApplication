@@ -8,10 +8,12 @@ import {
     DELETE_USER,
     LIST_USERS,
     RESET_USER,
-    SET_USER_ACCOUNT_ID
+    SAVE_USER,
+    SET_USER_ACCOUNT_ID, FETCH_USER_FAILED, CREATE_USER_FAILED, SAVE_USER_FAILED, LIST_SURVEYS, LIST_USERS_FAILED
 } from "../actions/actionsTypes";
 
 import moment from 'moment';
+import {updateObject} from "../utility";
 
 const initialState = {
     id: null,
@@ -64,6 +66,9 @@ const userReducers = (state = initialState, action) => {
             }
             return state;
         }
+        case FETCH_USER_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
+        }
         case CREATE_USER: {
             if (action.id) {
                 // const user = action.user;
@@ -80,11 +85,14 @@ const userReducers = (state = initialState, action) => {
                     rewards: 0,
                     birthdate: null,
                     modifiedDate: moment().format("YYYY-MM-DD hh:mm:ss"),
-                    routing: true
+                    newUser: true
                 };
                 return {...state, ...user_data}
             }
             return state;
+        }
+        case CREATE_USER_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
         }
         case EDIT_USER: {
             if (action.user) {
@@ -108,9 +116,20 @@ const userReducers = (state = initialState, action) => {
             }
             return state;
         }
-        case DELETE_USER: {
-            return state;
+        case SAVE_USER: {
+            const user = action.user;
+            // user.editing = false;
+            user.saveSuccess = true;
+            return {...state, ...user};
         }
+        case SAVE_USER_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
+        }
+        // case DELETE_USER: {
+        //
+        //     return state;
+        // }
+
         case RESET_USER: {
             const user = {
                 id: null,
@@ -129,6 +148,9 @@ const userReducers = (state = initialState, action) => {
         }
         case LIST_USERS: {
             return state;
+        }
+        case LIST_USERS_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
         }
         case SET_USER_ACCOUNT_ID: {
             const user = {accountFK: action.accountId};

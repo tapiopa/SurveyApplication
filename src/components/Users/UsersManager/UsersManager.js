@@ -1,7 +1,12 @@
+/*
+* UsersManager.js
+*/
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {asyncListUsers, asyncCreateUser, asyncFetchUser} from "../../../store/actions";
+import axios from '../../../axios-survey';
+
+import {asyncListUsers, asyncCreateUser, asyncFetchUser, resetUser, asyncDeleteUser} from "../../../store/actions";
 
 import {
     Table,
@@ -13,6 +18,7 @@ import {
 } from 'react-bootstrap';
 
 import classes from "./UsersManager.css";
+import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 
 class UsersManager extends Component {
     constructor(props) {
@@ -30,23 +36,26 @@ class UsersManager extends Component {
 
     createUser() {
         console.log("Users Manager, createUser");
+        this.props.onResetUser(true, true);
         this.props.onCreateUser();
         this.props.history.push("/user");
     }
 
     editUser(user) {
         console.log("Users Manager, editUser, user accountFK", user);
+        this.props.onResetUser(true, false);
         this.props.onFetchUser(user);
         this.props.history.push("/user");
     }
 
     deleteUser(user_id) {
         console.log("Users Manager, deleteUser, user id", user_id);
+        this.props.onDeleteUser(user_id);
     }
 
     render() {
         return (
-            <div className={classes.container}>
+            <div className={classes.usersManager}>
                 <h1>Users Manager</h1>
                 <h2>Users:</h2>
                 <Table className={classes.table}>
@@ -96,8 +105,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onListUsers: () => dispatch(asyncListUsers()),
         onCreateUser: () => dispatch(asyncCreateUser()),
-        onFetchUser: (user) => dispatch(asyncFetchUser(user))
+        onFetchUser: (user) => dispatch(asyncFetchUser(user)),
+        onResetUser: (routing, newUser) => dispatch(resetUser(routing, newUser)),
+        onDeleteUser: (user_id) => dispatch(asyncDeleteUser(user_id))
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersManager);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(UsersManager, axios));

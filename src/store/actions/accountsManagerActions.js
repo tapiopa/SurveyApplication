@@ -3,10 +3,9 @@
 * */
 import {
     LIST_ACCOUNTS,
-    //CREATE_ACCOUNT,
-    // EDIT_ACCOUNT,
-    // SAVE_ACCOUNT,
-    DELETE_ACCOUNT
+    LIST_ACCOUNTS_FAILED,
+    DELETE_ACCOUNT,
+    DELETE_ACCOUNT_FAILED
 } from "./actionsTypes";
 import axios from "../../axios-survey";
 
@@ -19,13 +18,26 @@ const listSurveys = (accounts) => {
     return {type: LIST_ACCOUNTS, surveys: accounts}
 };
 
+export const listAccountsFailed = (error) => {
+    return {type: LIST_ACCOUNTS_FAILED, error}
+};
+
 export const asyncListAccounts = () => {
     return dispatch => {
         axios.get("/accounts")
         .then(response => {
             console.log("!!!asyncListAccounts, response", response);
-            const accounts = response.data;
-            dispatch(listSurveys(accounts));
+            if (response.status === 200) {
+                if (response.errno) {
+                    console.log("ERROR", response.data.sqlMessage);
+                } else {
+                    const accounts = response.data;
+                    dispatch(listSurveys(accounts));
+                }
+            }
+        })
+        .catch(error => {
+            dispatch(listAccountsFailed(error))
         });
     }
 };
@@ -33,6 +45,10 @@ export const asyncListAccounts = () => {
 const deleteAccount = (account_id) => {
     console.log("deleteAccount");
     return {type: DELETE_ACCOUNT, accountId: account_id};
+};
+
+export const deleteAccountFailed = (error) => {
+    return {type: DELETE_ACCOUNT_FAILED, error}
 };
 
 export const asyncDeleteAccount = (account_id) => {
@@ -50,5 +66,8 @@ export const asyncDeleteAccount = (account_id) => {
                 }
             }
         })
+        .catch(error => {
+            dispatch(deleteAccountFailed(error))
+        });
     }
 };
