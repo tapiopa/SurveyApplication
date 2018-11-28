@@ -91,37 +91,41 @@ class Account extends Component {
         // }
         console.log("!!!!!!!componentDidMount, props new account", this.props.account.newAccount);
         //if (this.props.account && !this.props.account.routing && !this.state.newAccount) {
-        if (!this.props.account.newAccount) {
-            console.log("componentDidMount, not new account");
-                if (!this.props.account.id && this.props.app.account_id) {
-                    console.log("componentDidMount, setting account id, APP  account_id", this.props.app.account_id);
-                    this.props.onFetchAccount(this.props.app.account_id);
-                } else if (this.props.account.id) {
-                    console.log("Account, componentDidMount, ACCOUNT id: ", this.props.account.id);
-                    this.props.onFetchAccount(this.props.account.id);
-                }
-
-        } else {
-            console.log("componentDidMount, new account");
-            this.updateState(this.props);
-        }
+        // if (!this.props.account.newAccount) {
+        //     console.log("componentDidMount, not new account");
+        //         if (!this.props.account.id && this.props.app.account_id) {
+        //             console.log("componentDidMount, setting account id, APP  account_id", this.props.app.account_id);
+        //             this.props.onFetchAccount(this.props.app.account_id);
+        //         } else if (this.props.account.id) {
+        //             console.log("Account, componentDidMount, ACCOUNT id: ", this.props.account.id);
+        //             this.props.onFetchAccount(this.props.account.id);
+        //         }
+        //
+        // } else
+        //     if (this.props.account.newAccount) {
+                console.log("componentDidMount, new account, props", this.props);
+                this.updateState(this.props);
+            // }
     }
 
     componentDidUpdate() {
         console.log("componentDidUpdate, state", this.state);
+        if (this.props.account && this.props.account.id && this.props.account.id !== this.state.id) {
+            this.updateState(this.props);
+        }
     }
 
 
 
     componentWillReceiveProps(nextProps) {
         console.log("Account, componentWillReceiveProps, nextProps", nextProps);
-        if (!this.props.account.newAccount && !this.props.account) {
-            console.log("componentDidMount, not new account");
+        if (!this.props.account.newAccount && this.props.account.fetchSuccess) {
+            console.log("componentWillReceiveProps, not new account");
             if (!this.props.account.id && this.props.app.account_id) {
-                console.log("componentDidMount, setting account id, APP  account_id", this.props.app.account_id);
+                console.log("componentWillReceiveProps, setting account id, APP  account_id", this.props.app.account_id);
                 this.props.onFetchAccount(this.props.app.account_id);
             } else if (this.props.account.id) {
-                console.log("Account, componentDidMount, ACCOUNT id: ", this.props.account.id);
+                console.log("Account, componentWillReceiveProps, ACCOUNT id: ", this.props.account.id);
                 this.props.onFetchAccount(this.props.account.id);
             }
 
