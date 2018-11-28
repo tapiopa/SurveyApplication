@@ -27,13 +27,33 @@ import {
     SAVE_ANSWER_FAILED,
     DELETE_ANSWER_FAILED,
     DELETE_QUESTION_FAILED,
-    SAVE_QUESTION_FAILED, SET_SURVEY_ID, CREATE_SURVEY_FAILED, DELETE_SURVEY_FAILED
+    SAVE_QUESTION_FAILED,
+    SET_SURVEY_ID,
+    CREATE_SURVEY_FAILED,
+    DELETE_SURVEY_FAILED,
+    SET_SURVEY_TITLE,
+    SET_QUESTION_STRING, SET_ANSWER_STRING
 } from "./actionsTypes";
 
 import axios from "../../axios-survey";
 
 export const editSurvey = (survey) => {
     return {type: EDIT_SURVEY_DATA, survey: survey};
+};
+
+export const setSurveyTitle = (survey, title) => {
+    console.log("setSurveyTitle, survey", survey, "title", title);
+    return {type: SET_SURVEY_TITLE, survey, title};
+};
+
+export const setQuestionString = (question_id, question_string) => {
+    console.log("setQuestionString, question id", question_id, "string", question_string);
+    return {type: SET_QUESTION_STRING, id: question_id, question: question_string};
+};
+
+export const setAnswerString = (answer_id, answer_string) => {
+    console.log("setAnswerString, answer id", answer_id, "string", answer_string);
+    return {type: SET_ANSWER_STRING, id: answer_id, answer: answer_string};
 };
 
 const saveSurvey = (survey) => {
@@ -47,15 +67,17 @@ const saveSurveyFailed = (error) => {
 };
 
 export const asyncSaveSurvey = (survey, newSurvey) => {
+    console.log("asyncSaveSurvey, survey", survey);
     return dispatch => {
-        console.log("asyncSaveSurvey, survey", survey);
+        console.log("asyncSaveSurvey, new survey?", newSurvey);
         if (newSurvey) {
+            console.log("asyncSaveSurvey, NEW survey");
             axios.post(`/surveys`, survey) ///${survey.id}
             .then(response => {
-                console.log("asyncSaveSurvey, response", response);
+                console.log("asyncSaveSurvey, POST response", response);
                 if (response.status === 200) {
                     if (response.data.errno) {
-                        console.log("asyncSaveSurvey, sql error", response.data.sqlMessage);
+                        console.log("asyncSaveSurvey, POST sql error", response.data.sqlMessage);
                         dispatch(saveSurveyFailed(response.data.sqlMessage));
                     } else {
                         dispatch(saveSurvey(survey));
@@ -63,15 +85,17 @@ export const asyncSaveSurvey = (survey, newSurvey) => {
                 }
             })
             .catch(error => {
+                console.log("asyncSaveSurvey, POST catch error", error);
                 dispatch(saveSurveyFailed(error));
             });
         } else {
+            console.log("asyncSaveSurvey, OLD survey");
             axios.put(`/surveys/${survey.id}`, survey) ///${survey.id}
             .then(response => {
-                console.log("asyncSaveSurvey, response", response);
+                console.log("asyncSaveSurvey, PUT response", response);
                 if (response.status === 200) {
                     if (response.data.errno) {
-                        console.log("asyncSaveSurvey, sql error", response.data.sqlMessage);
+                        console.log("asyncSaveSurvey, PUT sql error", response.data.sqlMessage);
                         dispatch(saveSurveyFailed(response.data.sqlMessage));
                     } else {
                         dispatch(saveSurvey(survey));
@@ -79,6 +103,7 @@ export const asyncSaveSurvey = (survey, newSurvey) => {
                 }
             })
             .catch(error => {
+                console.log("asyncSaveSurvey, PUT catch error", error);
                 dispatch(saveSurveyFailed(error));
             });
         }

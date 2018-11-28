@@ -76,7 +76,7 @@ class UsersManager extends Component {
                                 <td>{user.lastname}</td>
                                 <td>
                                     <ButtonGroup>
-                                        <Button onClick={() => this.editUser(user)} bsStyle="success">Edit</Button>
+                                        <Button onClick={() => this.editUser(user)} bsStyle="primary">Edit</Button>
                                         <Button onClick={() =>this.deleteUser(user.id)} bsStyle="danger">Delete</Button>
                                     </ButtonGroup>
                                 </td>

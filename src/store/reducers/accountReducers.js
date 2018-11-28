@@ -25,7 +25,6 @@ const initialState = {
     joinedDate: "",
     modifiedDate: "",
     password: "",
-    newAccount: true
 };
 
 const accountReducers = (state = initialState, action) => {
@@ -43,7 +42,8 @@ const accountReducers = (state = initialState, action) => {
                     isExpired: acnt.isExpired,
                     modifiedDate: acnt.modifiedDate,
                     newAccount: false,
-                    editing: false
+                    editing: false,
+                    fetchSuccess: true
                 };
 
                 //const newState = updateObject(state, user_account);
@@ -88,7 +88,7 @@ const accountReducers = (state = initialState, action) => {
         }
 
         case CANCEL_EDIT_ACCOUNT: {
-            let account = action.account;
+            let account = {...action.account};
             account = {
                 ...account,
                 newAccount: false,
@@ -121,7 +121,8 @@ const accountReducers = (state = initialState, action) => {
                 password: "",
                 routing: action.routing,
                 newUser: action.newUser,
-                editing: false
+                editing: false,
+                componentShouldUpdate: true
             };
             return {...state, ...account};
         }

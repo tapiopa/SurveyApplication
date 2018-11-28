@@ -37,7 +37,7 @@ class Account extends Component {
 
     state = {
         id: "",
-        account: "",
+        accountName: "",
         password: "",
         confirmPassword: "",
         passwordsMatch: true,
@@ -51,7 +51,7 @@ class Account extends Component {
         routing: false,
         unEditedState: {
             id: "",
-            account: "",
+            accountName: "",
             password: "",
             expireDate: null,
             joinedDate: null,
@@ -73,11 +73,12 @@ class Account extends Component {
         // this.saveAccount = this.saveAccount.bind(this);
         // this.resetFields = this.resetFields.bind(this);
         this.getFormattedMoment = this.getFormattedMoment.bind(this);
-        // this.formatMoment = this.formatMoment.bind(this);
+        this.formatMoment = this.formatMoment.bind(this);
         this.editAccount = this.editAccount.bind(this);
         this.cancelEditing = this.cancelEditing.bind(this);
         this.goBack = this.goBack.bind(this);
         this.updateState = this.updateState.bind(this);
+        this.formatMomentForDatabaseSaving = this.formatMomentForDatabaseSaving.bind(this);
     }
 
     componentDidMount() {
@@ -88,7 +89,7 @@ class Account extends Component {
         //         console.log("not account id");
         //     }
         // }
-        console.log("componentDidMount, props new account", this.props.account.newAccount);
+        console.log("!!!!!!!componentDidMount, props new account", this.props.account.newAccount);
         //if (this.props.account && !this.props.account.routing && !this.state.newAccount) {
         if (!this.props.account.newAccount) {
             console.log("componentDidMount, not new account");
@@ -108,25 +109,23 @@ class Account extends Component {
 
     componentDidUpdate() {
         console.log("componentDidUpdate, state", this.state);
-        // console.log("Account, componentDidUpdate, props newAccount", this.props.account.newAccount, "state new account", this.state.newAccount);
-
-        // if (this.props.account && this.props.account.newAccount) {
-        //     this.setState({newAccount: true});
-        // }
-        // if (this.props.account && this.props.account.newAccount && !this.state.newAccount) {
-        //     console.log("!!!Account, componentDidMount, NEW ACCOUNT id: ", this.props.account.id);
-        //     this.props.onFetchAccount(this.props.account.id);
-        //     this.setState({newAccount: true});
-        // }
-        // document.getElementById("username").value = this.state.account;
-        // document.getElementById("password").value = this.state.password;
-        // document.getElementById("confirmPassword").value = this.state.confirmPassword;
     }
 
 
 
     componentWillReceiveProps(nextProps) {
         console.log("Account, componentWillReceiveProps, nextProps", nextProps);
+        if (!this.props.account.newAccount && !this.props.account) {
+            console.log("componentDidMount, not new account");
+            if (!this.props.account.id && this.props.app.account_id) {
+                console.log("componentDidMount, setting account id, APP  account_id", this.props.app.account_id);
+                this.props.onFetchAccount(this.props.app.account_id);
+            } else if (this.props.account.id) {
+                console.log("Account, componentDidMount, ACCOUNT id: ", this.props.account.id);
+                this.props.onFetchAccount(this.props.account.id);
+            }
+
+        }
         if (nextProps.account) {
             if (nextProps.account.id) {
                 this.updateState(nextProps);
@@ -144,27 +143,38 @@ class Account extends Component {
         console.log("Account, componentWillReceiveProps, state", this.state);
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        console.log("shouldComponentUpdate this.props", this.props, "next props", nextProps);
+        if (nextProps.account !== this.props.account || nextProps.account.componentShouldUpdate) {
+            console.log("shouldComponentUpdate, YESS");
+            return true;
+        }
+        console.log("shouldComponentUpdate, no difference in account");
+    }
+
     updateState(someProps) {
-        console.log("updateState");
+        console.log("Account, updateState, props", someProps);
+        console.log("updateState, account id", someProps.account.id);
         this.setState({
             id: someProps.account.id,
-            account: someProps.account.account,
+            accountName: someProps.account.account,
             password: "",
             confirmPassword: "",
-            joinedDate: someProps.account.newAccount ? moment() : this.getDateMoment(someProps.account.joinedDate),
-            expireDate: this.getDateMoment(someProps.account.expireDate),
-            modifiedDate: someProps.account.newAccount ? moment() : this.getDateMoment(someProps.account.modifiedDate),
+            joinedDate: someProps.account.newAccount ? moment() : someProps.account.joinedDate,//this.getDateMoment(someProps.account.joinedDate),
+            expireDate: someProps.account.expireDate,//this.getDateMoment(someProps.account.expireDate),
+            modifiedDate: someProps.account.newAccount ? moment() : someProps.account.modifiedDate,//this.getDateMoment(someProps.account.modifiedDate),
             unEditedState: {
                 id: someProps.account.id,
-                account: someProps.account.account,
+                accountName: someProps.account.account,
                 password: someProps.account.password,
-                joinedDate: someProps.account.newAccount ? moment() : this.getDateMoment(someProps.account.joinedDate),
-                expireDate: this.getDateMoment(someProps.account.expireDate),
-                modifiedDate: someProps.account.newAccount ? moment() : this.getDateMoment(someProps.account.modifiedDate),
+                joinedDate: someProps.account.newAccount ? moment() : someProps.account.joinedDate,//this.getDateMoment(someProps.account.joinedDate),
+                expireDate: someProps.account.expireDate,//this.getDateMoment(someProps.account.expireDate),
+                modifiedDate: someProps.account.newAccount ? moment() : someProps.account.modifiedDate//this.getDateMoment(someProps.account.modifiedDate),
             },
             isExpired: someProps.account.isExpired,
             routing: someProps.account.routing,
-            editing: someProps.account.editing
+            editing: someProps.account.editing,
+            newAccount: someProps.account.newAccount
             // newAccount: false
         });
         console.log("Account, updateState, state", this.state);
@@ -180,6 +190,8 @@ class Account extends Component {
     };
 
     cancelEditing = (account) => {
+        const unEditedAccount = this.state.unEditedState;
+        unEditedAccount.account = this.state.unEditedState.accountName;
         //   this.setState({
         //       id: this.state.unEditedState.id,
         //       account: this.state.unEditedState.account,
@@ -194,18 +206,19 @@ class Account extends Component {
         //     "password", this.state.password);
         // document.getElementById("username").value = this.state.account;
         // // document.getElementById("password").value = " ";
-        this.props.onCancelEditAccount(account);
+
+        this.props.onCancelEditAccount(unEditedAccount);
     };
 
     saveAccount = (account) => {
         const saveAccount = {
             id: this.state.id,
-            account: this.state.account,
+            account: this.state.accountName,
             password: this.state.password,
             isExpired: this.state.isExpired,
-            joinedDate: this.state.joinedDate ? this.state.joinedDate.format("YYYY-MM-DD") : null,
-            expireDate: this.state.expireDate ? this.state.expireDate.format("YYYY-MM-DD") : null,
-            modifiedDate: this.state.modifiedDate ? this.state.modifiedDate.format("YYYY-MM-DD hh:mm:ss") : null
+            joinedDate: this.state.joinedDate ? this.formatMomentForDatabaseSaving(this.state.joinedDate) : null,
+            expireDate: this.state.expireDate ? this.formatMomentForDatabaseSaving(this.state.expireDate) : null,
+            modifiedDate: this.state.modifiedDate ? this.formatMomentForDatabaseSaving(this.state.modifiedDate) : null
         };
         console.log("saveAccount, account", saveAccount);
         if (this.state.newAccount) {
@@ -220,7 +233,7 @@ class Account extends Component {
     }
 
     handleUsernameChange(el) {
-        this.setState({ account: el.target.value, editing: true });
+        this.setState({ accountName: el.target.value, editing: true });
         if ((this.state.confirmPassword && this.state.password &&
                 this.state.confirmPassword === this.state.password)
             || (!this.state.password && !this.state.confirmPassword)) {
@@ -278,19 +291,23 @@ class Account extends Component {
 
     getDateMoment = (dateString) => {
         if (dateString) {
-            // console.log("getMomentFromDateString, dateString", dateString);
-            //dateString = "2020-12-20";
-            //dateString = this.getDateString(dateString);
-            const year = dateString.slice(0, 4);
-            const month = dateString.slice(5, 7);
-            const day = dateString.slice(8, 10);
-            const hour = dateString.slice(11, 13);
-            const min = dateString.slice(14, 16);
-            const sec = dateString.slice(17, 19);
-            const newDate = year + "-" + month + "-" + day + ' ' + hour + ':' + min + ':' + sec;
-            return moment(newDate);
+            // console.log("getDateMoment, name of constructor of date string", dateString.constructor.name);
+            if (dateString.constructor.name == "String") {
+                // console.log("getMomentFromDateString, dateString", dateString);
+                //dateString = "2020-12-20";
+                //dateString = this.getDateString(dateString);
+                const year = dateString.slice(0, 4);
+                const month = dateString.slice(5, 7);
+                const day = dateString.slice(8, 10);
+                const hour = dateString.slice(11, 13);
+                const min = dateString.slice(14, 16);
+                const sec = dateString.slice(17, 19);
+                const newDate = year + "-" + month + "-" + day + ' ' + hour + ':' + min + ':' + sec;
+                return moment(newDate);
+            }
+            // return moment();
+            return dateString;
         }
-        // return moment();
         return null;
     };
 
@@ -298,17 +315,38 @@ class Account extends Component {
        return this.getDateMoment(date) ? this.getDateMoment(date).format("DD.M.YYYY") : null;
     };
 
+    formatMoment (dateString, withTime) {
+        // console.log("formatMoment, dateString", dateString);
+        let dateMoment = dateString;
+        if (dateString && dateString.constructor.name == "String") {
+            // console.log("formatMoment, going for getDateMoment with", dateString)
+            dateMoment = this.getDateMoment(dateString);
+        }
+        // console.log("formatMoment, dateMoment", dateMoment);
+        if (withTime) {
+            // console.log("formatMoment with Time", dateMoment);
+            return dateMoment ? dateMoment.format("DD.M.YYYY h:mm:ss") : null;
+        } else if (dateMoment) {
+            // console.log("formatMoment just date", dateMoment);
+            return dateMoment.format("DD.M.YYYY");
+        }
+    };
+
+    formatMomentForDatabaseSaving  (dateMoment) {
+        if (dateMoment && dateMoment.constructor.name == "String") {
+            // console.log("formatMoment, going for getDateMoment with", dateString)
+            dateMoment = this.getDateMoment(dateMoment);
+        }
+        if (dateMoment && dateMoment.constructor.name == "Moment") {
+            return dateMoment.format("YYYY-MM-DD hh:mm:ss");
+        }
+        return null;
+    }
 
 
     render() {
 
-        const formatMoment = (moment, withTime) => {
-            if (withTime) {
-                return moment ? moment.format("DD.M.YYYY h:mm") : null;
-            } else if (moment) {
-                return moment.format("DD.M.YYYY");
-            }
-        };
+
         // console.log("account, render, props", this.props);
         // console.log("account, render, state", this.state);
 
@@ -320,7 +358,7 @@ class Account extends Component {
                     <FormGroup>
                         <ControlLabel className={classes.label} htmlFor="username">Username</ControlLabel>
                         <FormControl className={classes.input} type="text" name="username" id="username"
-                                     defaultValue={this.state.account} disabled={!this.state.editing}
+                                     defaultValue={this.state.accountName} disabled={!this.state.editing}
                                      onChange={this.handleUsernameChange}/>
                     </FormGroup>
                     <FormGroup>
@@ -340,7 +378,7 @@ class Account extends Component {
                     <FormGroup>
                         <ControlLabel className={classes.label} htmlFor="joined">Joined Date</ControlLabel>
                         <FormControl className={classes.input} disabled="disabled" name="joined" id="joined"
-                                     defaultValue={formatMoment(this.state.joinedDate)}/>
+                                     defaultValue={this.formatMoment(this.state.joinedDate)}/>
                     </FormGroup>
                     <FormGroup className={classes.formGroup}>
                         <ControlLabel className={classes.label} htmlFor="expires">Account Expires</ControlLabel>
@@ -349,9 +387,9 @@ class Account extends Component {
                             disabled={!this.state.editing}
                             id="expires" className={classes.datePicker}
                             dropdownMode="select" showYearDropdown showMonthDropdown
-                            selected={this.state.expireDate}
-                            value={formatMoment(this.state.expireDate)}
-                            openToDate={this.state.expireDate}
+                            selected={this.getDateMoment(this.state.expireDate)}
+                            value={this.formatMoment(this.state.expireDate)}
+                            openToDate={this.getDateMoment(this.state.expireDate)}
                             dateFormat="D.M.YYYY" minDate={moment()}
                             onChange={this.handleExpireDateChange}/>
                     </FormGroup>
@@ -359,7 +397,7 @@ class Account extends Component {
                         <ControlLabel className={classes.label} htmlFor="lastEdited">Account Last Edited</ControlLabel>
                         <FormControl className={classes.input} disabled="disabled"
                                      type="text" name="lastEdited" id="lastEdited"
-                                     defaultValue={formatMoment(this.state.modifiedDate, true)}/>
+                                     defaultValue={this.formatMoment(this.state.modifiedDate, true)}/>
                     </FormGroup>
 
                     <ButtonToolbar className={classes.buttonToolbar}>
