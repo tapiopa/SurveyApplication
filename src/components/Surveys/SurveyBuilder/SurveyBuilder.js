@@ -45,7 +45,6 @@ import {
 import Question from "../../Question/Question";
 import NewQuestion from "./NewQuestion";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
-import Badge from "react-bootstrap/es/Badge";
 
 class SurveyBuilder extends Component {
     state = {

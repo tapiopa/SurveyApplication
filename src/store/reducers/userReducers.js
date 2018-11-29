@@ -5,11 +5,17 @@ import {
     FETCH_USER,
     CREATE_USER,
     EDIT_USER,
-    DELETE_USER,
+    // DELETE_USER,
     LIST_USERS,
     RESET_USER,
     SAVE_USER,
-    SET_USER_ACCOUNT_ID, FETCH_USER_FAILED, CREATE_USER_FAILED, SAVE_USER_FAILED, LIST_SURVEYS, LIST_USERS_FAILED
+    SET_DEFAULT_USER_ACCOUNT_ID,
+    FETCH_USER_FAILED,
+    CREATE_USER_FAILED,
+    SAVE_USER_FAILED,
+    // LIST_SURVEYS,
+    LIST_USERS_FAILED,
+    SET_DEFAULT_USER_ACCOUNT_ID_FAILED
 } from "../actions/actionsTypes";
 
 import moment from 'moment';
@@ -152,9 +158,14 @@ const userReducers = (state = initialState, action) => {
         case LIST_USERS_FAILED: {
             return updateObject(state, {error: true, errorMessage: action.error});
         }
-        case SET_USER_ACCOUNT_ID: {
-            const user = {accountFK: action.accountId};
+        case SET_DEFAULT_USER_ACCOUNT_ID: {
+            console.log("reducer set default user acount id, user", state.user, "account id", action.accountId);
+            const user = {...state.user};
+            user.accountFK = action.accountId;
             return {...state, ...user};
+        }
+        case SET_DEFAULT_USER_ACCOUNT_ID_FAILED: {
+            return updateObject(state, {error: true, errorMessage: action.error});
         }
         default:
             return state;

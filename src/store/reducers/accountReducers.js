@@ -6,7 +6,7 @@ import {
     FETCH_ACCOUNT,
     CREATE_ACCOUNT,
     EDIT_ACCOUNT,
-    DELETE_ACCOUNT,
+    // DELETE_ACCOUNT,
     // LIST_ACCOUNTS,
     SAVE_ACCOUNT,
     RESET_ACCOUNT,
@@ -103,7 +103,8 @@ const accountReducers = (state = initialState, action) => {
                 ...account,
                 saveSuccess: true,
                 editing: false,
-                newAccount: false
+                newAccount: false,
+                componentShouldUpdate: true
             };
             return {...state, ...account};
         }
@@ -131,6 +132,7 @@ const accountReducers = (state = initialState, action) => {
             const account = {id: action.accountId};
             return {...state, ...account};
         }
+
         default:
             return state;
     }

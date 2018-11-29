@@ -156,13 +156,15 @@ class User extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContent) {
-        console.log("componentWillReceiveProps, nextProps", nextProps.user);
+        console.log("componentWillReceiveProps, nextProps USER", nextProps.user);
         console.log("componentWillReceiveProps, nextContent", nextContent);
+        console.log("componentWillReceiveProps, state", this.state);
+        this.updateState(nextProps);
         if (nextProps.user.modifiedDate) {
             // const company = Object.assign({}, this.state.company);
             // company.id = 0;
             // company.messages = [];
-            this.updateState(nextProps);
+            // this.updateState(nextProps);
             if (nextProps.user.newUser) {
                 this.setState({newUser: true});
                 console.log("componentWillReceiveProps, state, NEW USER", this.state);
@@ -170,11 +172,12 @@ class User extends Component {
         }
         if (nextProps.user.saveSuccess) {
             this.setState({
-                // saveSuccess: false,
+                saveSuccess: false,
                 editing: false,
                 newUser: false
             })
         }
+        console.log("componentWillReceiveProps, state AFTER UPDATE", this.state);
     }
 
     getMomentFromDateString = (dateString, withTime) => {
@@ -267,7 +270,8 @@ class User extends Component {
             streetAddress: this.state.streetAddress,
             postalCode: this.state.postalCode,
             rewards: !this.state.rewards ? 0 : this.state.rewards,
-            modifiedDate: moment().format("YYYY-MM-DD HH:mm:ss")
+            modifiedDate: moment().format("YYYY-MM-DD HH:mm:ss"),
+            type: this.state.type ? this.state.type : "client"
         };
         console.log("saveUser, user", saveUser);
         console.log("THIS IS NEW USER ???", this.state.newUser);
@@ -351,7 +355,7 @@ class User extends Component {
             } else if (moment) {
                 return moment.format("DD.M.YYYY");
             }
-        }
+        };
 
         return (
             <div className={classes.userComponent}>
@@ -381,6 +385,13 @@ class User extends Component {
                                      onChange={this.handleEmailChange}
                                      defaultValue={this.state.email}/>
                     </FormGroup>
+                    <FormGroup>{/**************************/}
+                        <ControlLabel className={classes.Label} htmlFor="email">Email</ControlLabel>
+                        <FormControl className={classes.Input}
+                                     type="text" name="email" id="email"
+                                     onChange={this.handleEmailChange}
+                                     defaultValue={this.state.email}/>
+                    </FormGroup>{/*************************/}
                     <FormGroup className={classes.formGroup}>
                         <ControlLabel className={classes.Label} htmlFor="dateofbirth">Date of Birth</ControlLabel>
                         <DatePicker  //https://github.com/Hacker0x01/react-datepicker/blob/master/docs/datepicker.md

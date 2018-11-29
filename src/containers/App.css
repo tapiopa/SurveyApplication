@@ -18,7 +18,11 @@
 }
 
 .header {
+  width: 70%;
   float: right;
+  text-align: right;
+  margin-left: 30%;
+  /*border: 1px solid red;*/
 }
 
 .list {

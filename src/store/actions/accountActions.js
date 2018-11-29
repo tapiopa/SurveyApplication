@@ -73,15 +73,6 @@ export const asyncCreateAccount = () => {
                     dispatch(createAccount(response.data[0].maxId + 1));
                 }
             }
-
-            // axios.post(`/accounts`, account)
-            // .then(response => {
-            //     const receivedAccount = response.data;
-            //     console.log("asyncCreateAccount, received response", response);
-            //     console.log("asyncCreateAccount, received data", response.data);
-            //     console.log("asyncCreateAccount, received account", receivedAccount);
-            //     dispatch(createAccount(receivedAccount));
-            // })
         })
         .catch(error => {
             console.log("asyncCreateAccount error: ", error);
@@ -91,12 +82,47 @@ export const asyncCreateAccount = () => {
     }
 };
 
+export const asyncCreateNewAccount = (account) => {
+    // console.log("asyncCreateAccount, account", account);
+    return dispatch => {
+        axios.get("/accounts/maxId")
+        .then(maxResponse => {
+            console.log("asyncCreateAccount, maxId", maxResponse.data[0].maxId);
+            if (maxResponse.status === 200){
+                if (maxResponse.data.errno) {
+                    console.log("ERROR", maxResponse.data.sqlMessage)
+                } else {
+                    // dispatch(createAccount(response.data[0].maxId + 1));
+                    account.id = maxResponse.data[0].maxId + 1;
+                    console.log("asyncCreateNewAccount, account", account);
+                    axios.post(`/accounts/`, account)
+                    .then(response => {
+                        console.log("asyncSaveNewAccount, response", response);
+                        if (response.status === 200){
+                            if (response.data.errno) {
+                                console.log("ERROR", response.data.sqlMessage)
+                            } else {
+                                account.saveSuccess = true;
+                                dispatch(saveAccount(account));
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.log("asyncSaveNewAccount error: ", error);
+                        dispatch(saveAccountFailed(error));
+                    });
 
+                }
+            }
+        })
+        .catch(error => {
+            console.log("asyncCreateAccount error: ", error);
+            dispatch(createAccountFailed(error));
+        });
 
-// export const saveNewAccount = (account) => {
-//     console.log("saveNewAccount", account);
-//     return {type: SAVE_ACCOUNT, account}
-// };
+    }
+};
+
 
 
 
@@ -138,7 +164,10 @@ export const saveAccountFailed = (error) => {
     return {type: SAVE_ACCOUNT_FAILED, error}
 };
 
-export const asyncSaveNewAccount = (account) => {
+export const asyncSaveNewAccount = (account, account_id) => {
+    if (account_id) {
+        account.id = account_id;
+    }
     console.log("asyncSaveNewAccouint, account", account);
     return dispatch => {
         axios.post(`/accounts/`, account)

@@ -4,7 +4,7 @@
 
 import {
     CREATE_QUESTION,
-    ADD_QUESTION,
+    // ADD_QUESTION,
     SAVE_QUESTION,
     EDIT_QUESTION,
     DELETE_QUESTION,
@@ -49,15 +49,15 @@ const initialState = {
 //     return maxId;
 // };
 
-const updateQuestionsState = (state, questions) => {
-    console.log("updateQuestionsState, state", state);
-    // let survey = state.surveyBuilder.survey;
-    // survey.questions = questions;
-    // console.log("updateQuestionsState, survey", survey);
-    // return updateObject(state, {...survey});
-    // return updateObject(state, {survey:{...survey, questions: questions}});
-    return updateObject(state, {questions: questions});
-};
+// const updateQuestionsState = (state, questions) => {
+//     console.log("updateQuestionsState, state", state);
+//     // let survey = state.surveyBuilder.survey;
+//     // survey.questions = questions;
+//     // console.log("updateQuestionsState, survey", survey);
+//     // return updateObject(state, {...survey});
+//     // return updateObject(state, {survey:{...survey, questions: questions}});
+//     return updateObject(state, {questions: questions});
+// };
 
 const surveyBuilderReducers = (state = initialState, action) => {
     switch (action.type) {

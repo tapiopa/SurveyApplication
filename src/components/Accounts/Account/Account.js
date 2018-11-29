@@ -151,6 +151,7 @@ class Account extends Component {
         console.log("shouldComponentUpdate this.props", this.props, "next props", nextProps);
         if (nextProps.account !== this.props.account || nextProps.account.componentShouldUpdate) {
             console.log("shouldComponentUpdate, YESS");
+            nextProps.account.componentShouldUpdate = false;
             return true;
         }
         console.log("shouldComponentUpdate, no difference in account");
