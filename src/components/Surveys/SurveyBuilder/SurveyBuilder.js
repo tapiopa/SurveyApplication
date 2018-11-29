@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 
 import axios from '../../../axios-survey';
 
-import Aux from "../../../hoc/Aux/Aux";
+import Aux from "../../../hoc/Auxiliary/Auxiliary";
 
 import {
     Table, FormControl, FormGroup, ControlLabel, PageHeader, Button,
@@ -458,7 +458,7 @@ class SurveyBuilder extends Component {
         // function SurveyData(props) {
         //     if (props.editing) {
         //         return (
-        //             <Aux>
+        //             <Auxiliary>
         //                 <FormGroup className={classes.group}>
         //                     <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
         //                     <FormControl className={classes.input}
@@ -477,11 +477,11 @@ class SurveyBuilder extends Component {
         //                 </FormGroup>
         //                 <Button onClick={props.edit} disabled={this.state.editingSurvey} bsStyle="primary">Edit</Button>
         //                 <Button onClick={props.save} disabled={!this.state.editingSurvey} bsStyle="success">Save</Button>
-        //             </Aux>
+        //             </Auxiliary>
         //         );
         //     } else {
         //         return (
-        //         <Aux>
+        //         <Auxiliary>
         //             <FormGroup className={classes.group}>
         //                 <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
         //                 <FormControl className={classes.input}
@@ -500,7 +500,7 @@ class SurveyBuilder extends Component {
         //             </FormGroup>
         //             <Button onClick={props.edit} bsStyle="primary">Edit</Button>
         //             <Button onClick={props.save} disabled bsStyle="success">Save</Button>
-        //         </Aux>
+        //         </Auxiliary>
         //         )
         //     }
         // }

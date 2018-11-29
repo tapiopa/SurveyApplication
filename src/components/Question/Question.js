@@ -3,7 +3,7 @@
 * */
 
 import React from 'react';
-// import {Aux} from "../../hoc/Aux";
+// import {Auxiliary} from "../../hoc/Auxiliary";
 import {Button,
     //ButtonToolbar,
     ButtonGroup,

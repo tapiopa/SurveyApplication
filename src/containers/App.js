@@ -10,7 +10,7 @@ import axios from "../axios-survey";
 import {asyncFetchFirstName, setUserAccountFK, setAccountId, asyncLoginUser} from "../store/actions/";
 
 import classes from './App.css';
-// import Aux from "../hoc/Aux/Aux";
+// import Auxiliary from "../hoc/Auxiliary/Auxiliary";
 // import Registration from "../components/Registration/UserForm";
 import Account from "../components/Accounts/Account/Account";
 import User from "../components/Users/User/User";
