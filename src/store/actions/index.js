@@ -60,7 +60,10 @@ export {
     asyncDeleteUser
 } from "./usersManagerActions";
 
-export {asyncSurveyList} from "./surveyActions";
+export {
+    asyncSurveyList,
+    asyncGetSurveyAndQuestions
+} from "./surveyActions";
 
 export {
     asyncLoginUser,

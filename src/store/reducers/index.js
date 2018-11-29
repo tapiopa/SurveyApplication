@@ -17,7 +17,7 @@ const appReducer = combineReducers({
     surveysManager: surveysManagerReducers,
     usersManager: usersManagerReducers,
     accountsManager: accounsManagerReducers,
-    surveys: surveyReducers
+    survey: surveyReducers
 });
 
 export default appReducer;

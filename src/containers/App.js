@@ -22,6 +22,7 @@ import UsersManager from "../components/Users/UsersManager/UsersManager";
 import UserForm from "../components/Registration/UserForm";
 import withErrorHandler from "../hoc/withErrorHandler/withErrorHandler";
 import SurveysList from "../components/Surveys/SurveysList/SurveysList";
+import SurveyForm from "../components/Surveys/Survey/SurveyForm";
 
 class App extends Component {
     componentDidMount() {
@@ -29,9 +30,9 @@ class App extends Component {
         //         // this.props.onSetAccountId(this.props.app.account_id);
         //         // this.props.onSetUserAccountFK(this.props.app.account_id);
         console.log("App, componentDidMount, props", this.props);
-        if (!this.props.app.loggedIn) {
-            this.props.history.push("/registration");
-        }
+        // if (!this.props.app.loggedIn) {
+        //     this.props.history.push("/registration");
+        // }
         // this.props.onLoginUser(26);
     }
 
@@ -45,8 +46,6 @@ class App extends Component {
                     </header>
                     <Switch>
                         <Route path="/home" component={HomePage}/>
-
-
                         <Route path="/account" component={Account}/>
                         <Route path="/user" component={User}/>
                         {/*<Route path="/home" component={HomePage}/>*/}
@@ -56,9 +55,10 @@ class App extends Component {
                         <Route path="/usersmanager" component={UsersManager}/>
                         <Route path="/registration" component={UserForm}/>
                         <Route path="/surveys" component={SurveysList}/>
+                        <Route path="/survey" exact component={SurveyForm}/>
                         <Redirect to="/home"/>
                     </Switch>
-                    {!this.props.app.loggedIn ? null :
+                    {/*{!this.props.app.loggedIn ? null :*/}
                         <nav className={classes.nav}>
                             <ul className={classes.list}>
                                 <li className={classes.link}><NavLink to="/home">Home</NavLink></li>
@@ -81,9 +81,11 @@ class App extends Component {
                                 {/*<br/>*/}
                                 <li className={classes.link}><NavLink to="/surveys">Surveys</NavLink></li>
                                 <br/>
+                                <li className={classes.link}><NavLink exact to="/survey">Survey</NavLink></li>
+                                <br/>
                             </ul>
                         </nav>
-                    }
+                    {/*}*/}
 
                     {/*<Redirect to={Registration}/>*/}
                 </div>
