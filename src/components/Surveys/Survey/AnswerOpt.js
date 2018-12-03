@@ -14,8 +14,9 @@ class AnswerOpt extends React.Component {
   };
 
   render() {
-    const answerOption = this.props.AnswerOption.filter( ans => ans.questionFK === this.props.questionId );
-    const Options = answerOption.map( ans => {
+      // console.log("AnswerOpt, props", this.props);
+    const answerOption = this.props.AnswerOption;//.filter( ans => ans.questionFK === this.props.questionId );
+    const Options = answerOption && answerOption.map( ans => {
         return <FormControlLabel
                 key={ans.id}
                 value={ans.answer_option}
@@ -23,7 +24,7 @@ class AnswerOpt extends React.Component {
                 label={ans.answer_option}
                 labelPlacement="top"
             />
-    })
+    });
 
     return (
       <FormControl style={styles.RadioAnswer} component="fieldset">

@@ -61,18 +61,40 @@ class SurveyForm extends Component {
   // };
 
   render() {
-      console.log("SurveyForm, render, props.survey", this.props.survey);
-      if (this.props.survey && this.props.survey.survey) {
+      // console.log("SurveyForm, render, props.survey", this.props.survey);
+      if (this.props.survey && this.props.survey.survey && this.props.survey.survey.fetched /*&& this.props.survey.survey.questions[0].answers*/) {
         const {Answer} = this.state;
-        const questions = this.props.survey.survey.questions.map( (q, idx) => {
-            console.log("SurveyForm, render question", q)
-            return <div key={idx}> <FormQuestions  {...q}/>
-                        <AnswerOpt
-                            questionId={q.id}
-                            AnswerOption= {q.answers} //{this.state.AnswerOpt}
-                            Answer={Answer}
-                        />
-                    </div>
+        let questions = this.props.survey.survey.questions.slice(0);
+        // const questions = this.props.survey.survey.questions.map( (q, idx) => {
+            questions = questions.foreach( (q, idx) => {
+                console.log("SurveyForm, render, question", q);
+                console.log("SurveyForm, render, question.id", q.id);
+                console.log("SurveyForm, render, question.answers", q.answers);
+                console.log("SurveyForm, render, questions[idx]", this.props.survey.survey.questions[idx]);
+                console.log("SurveyForm, render, questions[idx].answers", this.props.survey.survey.questions[idx].answers);
+                if (q.answers) {
+                    const answers = q.answers.slice[0];
+                    console.log("SurveyForm, render, answers", answers);
+                }
+                // console.log("SurveyForm, render, ", q);
+                // const question = {...q};
+                // console.log("SurveyForm, render, question", question);
+                // console.log("SurveyForm, render, question answers", question.answers);
+                // const answers = question.answers;
+                // console.log("SurveyForm, render, answers", answers);
+                // const answers = [q.answers];
+                // console.log("SurveyForm, render question just answers", answers);
+                // console.log("SurveyForm, render question answers", question.answers);
+                if (q.answers === undefined) {
+                    return <div>Loading...</div>
+                }
+                return <div key={idx}> <FormQuestions  {...q}/>
+                            <AnswerOpt
+                                questionId={q.id}
+                                AnswerOption={q.answers} //{this.state.AnswerOpt}
+                                Answer={Answer}
+                            />
+                        </div>
             });
 
 

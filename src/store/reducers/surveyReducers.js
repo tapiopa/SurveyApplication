@@ -9,7 +9,8 @@ import {updateObject} from "../utility";
 
 const initialState = {
     surveys: null,
-    survey: null
+    survey: null,
+    fetched: false
 };
 
 const surveyReducers= (state = initialState, action) => {
@@ -25,7 +26,8 @@ const surveyReducers= (state = initialState, action) => {
                 id: action.survey_id,
                 title: "",
                 questions: null,
-                fetchData: true
+                fetchData: true,
+                fetched: false
             };
             return {...state, survey}
         }
@@ -36,12 +38,13 @@ const surveyReducers= (state = initialState, action) => {
                 question.editing = false;
                 question.showAnswers = false;
             });
-            console.log("reducer get survey and questions, questions", questions);
-            console.log("reducer, get survey and questions, action survey before update", action.survey);
+            // console.log("reducer get survey and questions, questions", questions);
+            // console.log("reducer, get survey and questions, action survey before update", action.survey);
             const survey = {...action.survey};
-            console.log("reducer, get survey and questions,  survey", survey);
+            // console.log("reducer, get survey and questions,  survey", survey);
             survey.questions = questions;
-            console.log("reducer, get survey and questions,  survey with questions", survey);
+            // console.log("reducer, get survey and questions,  survey with questions", survey);
+            survey.fetched = true;
             const newState = {...state, survey};
             console.log("reducer, get survey and questions, newState", newState);
             return newState;

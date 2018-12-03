@@ -35,7 +35,7 @@ export const asyncSurveyList = () => {
                     console.log("asyncSurveyList, ERROR", response.data.sqlMessage);
                     dispatch(surveyListFailed(response.data.sqlMessage));
                 } else {
-                    console.log("!!!asyncSurveyList, response data", response.data);
+                    // console.log("!!!asyncSurveyList, response data", response.data);
                     const surveys = response.data;
                     dispatch(surveyList(surveys));
                 }
