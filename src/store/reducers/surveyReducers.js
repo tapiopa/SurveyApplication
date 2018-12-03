@@ -34,9 +34,17 @@ const surveyReducers= (state = initialState, action) => {
         case GET_SURVEY_AND_QUESTIONS: {
             console.log("reducer, get survey and questions, survey", action.survey);
             const questions = action.survey.questions.slice(0);
-            questions.forEach(question => {
+            questions.forEach((question, index) => {
                 question.editing = false;
                 question.showAnswers = false;
+                const q = action.survey.questions[index];
+                let answers = null;
+                if (q.answers) {
+                    answers = q.answers.slice(0);
+                } else {
+                   console.log("surveyReducers, question with no answers", q.question);
+                }
+                question.answers = answers;
             });
             // console.log("reducer get survey and questions, questions", questions);
             // console.log("reducer, get survey and questions, action survey before update", action.survey);

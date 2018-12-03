@@ -10,12 +10,16 @@ class AnswerOpt extends React.Component {
   };
 
   handleChange = event => {
+      console.log("AnswerOpt, handleChange, event.target.value", event.target.value);
+      console.log("AnswerOpt, handleChange, this.state.value BEFORE", this.state.value);
     this.setState({ value: event.target.value });
+      console.log("AnswerOpt, handleChange, this.state.value", this.state.value);
   };
 
   render() {
       // console.log("AnswerOpt, props", this.props);
     const answerOption = this.props.AnswerOption;//.filter( ans => ans.questionFK === this.props.questionId );
+      // console.log("AnswerOpt, question", this.props.question);
     const Options = answerOption && answerOption.map( ans => {
         return <FormControlLabel
                 key={ans.id}

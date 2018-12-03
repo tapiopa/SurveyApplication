@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import FormQuestions  from './FormQuestions';
 import Button from '@material-ui/core/Button';
-// import * as apiCalls from './apiHelper';
 
 import AnswerOpt from './AnswerOpt';
 
@@ -42,7 +41,29 @@ class SurveyForm extends Component {
       // this.loadAnswerOpt();
   }
 
-  // loadQuestion = async () => {
+  componentWillUpdate(nextProps, nextState, nextContext) {
+        if (
+            // this.props.survey !== nextProps.survey ||
+        //     this.props.survey.survey && nextProps.survey.survey && this.props.survey.survey !== nextProps.survey.survey ||
+        //     this.props.survey.survey && this.props.survey.survey.questions && nextProps.survey.survey && nextProps.survey.survey.questions &&
+        //     this.props.survey.survey.questions !== nextProps.survey.survey.questions ||
+            this.props.survey.survey && this.props.survey.survey.questions && this.props.survey.survey.questions[0] &&
+            nextProps.survey.survey && nextProps.survey.survey.questions && nextProps.survey.survey.questions[0] &&
+            this.props.survey.survey.questions[0].answers !== nextProps.survey.survey.questions[0].answers &&
+            this.props.survey.survey.questions[0].answers !== "undefined" &&
+            nextProps.survey.survey.questions[0].answers !== "undefined"
+        ) {
+            return true;
+        }
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.survey.survey && nextProps.survey.survey.questions) {
+            this.setState({questions: nextProps.survey.survey.questions});
+        }
+  }
+
+    // loadQuestion = async () => {
   //  let questions = await apiCalls.getQuestion();
   //  this.setState({questions});
   // };
@@ -62,58 +83,52 @@ class SurveyForm extends Component {
 
   render() {
       // console.log("SurveyForm, render, props.survey", this.props.survey);
-      if (this.props.survey && this.props.survey.survey && this.props.survey.survey.fetched /*&& this.props.survey.survey.questions[0].answers*/) {
+      // this.props.survey && this.props.survey.survey &&
+        // console.log("SurveyForm, render, props.survey answers", this.props.survey.survey.questions[1].answers);
+      if (
+          this.props.survey && this.props.survey.survey /*&& /*this.props.survey.survey.fetched &&*/
+          // this.props.survey.survey.questions && this.props.survey.survey.questions[0] /*&& this.props.survey.survey.questions[0].answers*/)
+      ) {
         const {Answer} = this.state;
+        // console.log("SurveyForm, render. state questions 0 answers", this.state.questions[0].answers);
+        // console.log("SurveyForm, Answer", Answer);
         let questions = this.props.survey.survey.questions.slice(0);
+        // console.log("SurveyFrorm, questions", questions);
+        //   console.log("SurveyFrorm, questions 0 answer 0", questions[0]);
         // const questions = this.props.survey.survey.questions.map( (q, idx) => {
-            questions = questions.foreach( (q, idx) => {
-                console.log("SurveyForm, render, question", q);
-                console.log("SurveyForm, render, question.id", q.id);
-                console.log("SurveyForm, render, question.answers", q.answers);
-                console.log("SurveyForm, render, questions[idx]", this.props.survey.survey.questions[idx]);
-                console.log("SurveyForm, render, questions[idx].answers", this.props.survey.survey.questions[idx].answers);
-                if (q.answers) {
-                    const answers = q.answers.slice[0];
-                    console.log("SurveyForm, render, answers", answers);
-                }
-                // console.log("SurveyForm, render, ", q);
-                // const question = {...q};
-                // console.log("SurveyForm, render, question", question);
-                // console.log("SurveyForm, render, question answers", question.answers);
-                // const answers = question.answers;
-                // console.log("SurveyForm, render, answers", answers);
-                // const answers = [q.answers];
-                // console.log("SurveyForm, render question just answers", answers);
-                // console.log("SurveyForm, render question answers", question.answers);
+            questions = questions.map( (q, idx) => {
                 if (q.answers === undefined) {
                     return <div>Loading...</div>
                 }
-                return <div key={idx}> <FormQuestions  {...q}/>
-                            <AnswerOpt
-                                questionId={q.id}
-                                AnswerOption={q.answers} //{this.state.AnswerOpt}
-                                Answer={Answer}
-                            />
-                        </div>
+                return (
+                    <div key={idx}>
+                        <FormQuestions  {...q}/>
+                        <AnswerOpt
+                            questionId={q.id}
+                            AnswerOption={q.answers} //{this.state.AnswerOpt}
+                            Answer={Answer}
+                            question={q}
+                        />
+                    </div>
+                );
             });
-
 
         return (
             <div>
-            <h1>Survey 1st questions</h1>
-            <form onSubmit={this.handleSubmit}>
-                {questions}
-                <Button variant="contained"
-                      color="primary"
-                      style={styles.button}>
-                Submit
-              </Button>
-            </form>
+                <h1>Survey 1st questions</h1>
+                <form onSubmit={this.handleSubmit}>
+                    {questions}
+                    <Button variant="contained"
+                          color="primary"
+                          style={styles.button}>
+                    Submit
+                    </Button>
+                </form>
             </div>
         );
 
       } else {
-          return (<h1>Hurraa!</h1>)
+          return (<div>Loading...</div>)
       }
     }
 }

@@ -39,7 +39,9 @@ export class UserForm extends Component {
     streetAddress: '',
     postalCode: '', 
     username:'',
-    password:''
+    password:'',
+    passwordConfirm:'',
+    type:''
   };
   
   // Proceed to next step
@@ -65,8 +67,8 @@ export class UserForm extends Component {
     
   render() {
       const { step } = this.state;
-      const { firstName, lastName, email, birthdate, phone, streetAddress, postalCode, username, password } = this.state;
-      const values = { firstName, lastName, email, birthdate, phone, streetAddress, postalCode, username, password };
+      const { firstName, lastName, email, birthdate, phone, streetAddress, postalCode, username, password, passwordConfirm, type } = this.state;
+      const values = { firstName, lastName, email, birthdate, phone, streetAddress, postalCode, username, password, passwordConfirm,type };
     switch(step) {
       case 1:
         return (
