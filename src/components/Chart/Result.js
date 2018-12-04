@@ -2,13 +2,16 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import Question from './Question';
 import classes from './Result.css';
+import CompanyOnly from '../Login/CompanyOnly';
+import AuthHandler from '../Login/AuthHandler';
 
 class Result extends Component {
+  AuthHandler = new AuthHandler();
   constructor() {
     super();
     this.state = {
       surveys: [],
-      owner: 1
+      owner: this.AuthHandler.getData().owner
       /*       Here owner is hard coded!! but we need to define owner id based on user login session
       can be done with jwt payload or redux */
     };
@@ -46,5 +49,5 @@ class Result extends Component {
   }
 }
 
-// export default CompanyOnly(Result);
-export default Result;
+export default CompanyOnly(Result);
+// export default Result;

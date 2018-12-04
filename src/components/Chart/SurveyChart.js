@@ -22,10 +22,10 @@ class SurveyChart extends Component {
   }
 
   makeChart() {
+    // First doing some css btn change and hiding/showing contents
     if (this.state.isClicked) {
       document.getElementById('chart' + this.state.questionId).style.display =
         'none';
-
       document.getElementById('number' + this.state.questionId).style.display =
         'none';
       document.getElementById('Cbtn' + this.state.questionId).className =
@@ -43,19 +43,21 @@ class SurveyChart extends Component {
       this.setState({ buttonText: 'Hide Chart' });
     }
 
+    /**Here getting data(number) to show number of people who answered question based on question id*/
     var urlNumbers =
       'http://localhost:3000/answers/question/count/' + this.state.questionId;
     Axios.get(urlNumbers).then(res => {
       this.setState({ number: res.data[0].number });
     });
 
+    /**Here getting question information based on question id */
     var urlQuestion =
       'http://localhost:3000/questions/' + this.state.questionId;
     Axios.get(urlQuestion).then(res => {
       this.setState({ question: res.data[0].question });
     });
 
-    //Here some ways of converting object to array
+    //Here some ways of converting object to array i could have used
     //Methods1
     //   for (const key of Object.keys(this.state)) {
     //     console.log(key, this.state[key]);
@@ -69,6 +71,11 @@ class SurveyChart extends Component {
     //Methods3
     //   var arr = Object.values(res.data);
 
+    /**Because following two requests required to handle objects for the sorting so in here
+     * easiest or familiar loop basic, for loop is used
+     */
+
+    /**Here getting answer options based on question id */
     var urlOptions =
       'http://localhost:3000/answer_options/question/' + this.state.questionId;
     Axios.get(urlOptions).then(res => {
@@ -78,9 +85,13 @@ class SurveyChart extends Component {
         optionArray.push(res.data[i].answer);
       }
       if (optionArray.length == 0) {
+        /**In here if there were no any answer option, it means question is subjective which is not having multiple choice
+         * and in that case, chart 'WordTree' is almost only available type to use
+         */
         this.setState({ isThereChoice: false });
         this.setState({ type: ['WordTree'] });
       } else {
+        /**In here, when question having multiple choices */
         this.setState({ isThereChoice: true });
         this.setState({ optionArray: optionArray });
         this.setState({
@@ -88,6 +99,14 @@ class SurveyChart extends Component {
         });
       }
     });
+
+    /**until so far question, answer options have been defined in the state array so
+     * following request would get people(?), client's answer so it will compare with answer options
+     * then showing chart features
+     */
+
+    /**Here getting clients answers for the question based on question id */
+
     var urlAnswers =
       'http://localhost:3000/answers/question/' + this.state.questionId;
     Axios.get(urlAnswers).then(res => {
@@ -99,6 +118,9 @@ class SurveyChart extends Component {
       this.setState({ answerArray: answerArray });
       var values = [];
       if (this.state.isThereChoice === true) {
+        /**In here if question is having multiple choices then it would compare answer options and
+         * clients answer so whenever it matches it would count then give it to values
+         */
         for (var i = 0; i < this.state.optionArray.length; i++) {
           var count = 0;
           for (var j = 0; j < this.state.answerArray.length; j++) {
@@ -110,6 +132,7 @@ class SurveyChart extends Component {
         }
         this.setState({ values: values });
 
+        /**From here based on question/chart type, google react chart option is decided column title and values */
         var data = [['Answer Option', 'Number of Answers']];
 
         for (var k = 0; k < this.state.optionArray.length; k++) {
@@ -122,13 +145,21 @@ class SurveyChart extends Component {
           data.push([answerArray[i]]);
         }
       }
+      // setTimeout(
+      //   function() {
+      //     this.setState({
+      //       data: data
+      //     });
+      //   }.bind(this),
+      //   2000
+      // );
       this.setState({ data: data });
     });
   }
 
   render() {
     return (
-      <div>
+      <div className="text-left">
         <button
           className="btn btn-success"
           id={'Cbtn' + this.state.questionId}

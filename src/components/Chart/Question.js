@@ -76,7 +76,7 @@ class Question extends Component {
                 {this.state.questions.map(question => (
                   <table key={question.id}>
                     <tr>
-                      <th>{question.question}</th>
+                      <th className="text-left">{question.question}</th>
                     </tr>
                     <tr>
                       <td>
