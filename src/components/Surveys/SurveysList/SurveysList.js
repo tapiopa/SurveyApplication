@@ -52,8 +52,8 @@ class ListSurveys extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {console.log("SurveysList, surveys", this.props.surveys)}
-                    {this.props.surveys.surveys && this.props.surveys.surveys.map(survey => {
+                    {/*{console.log("SurveysList, surveys", this.props.surveys)}*/}
+                    {this.props.survey.surveys && this.props.survey.surveys.map(survey => {
                         return (
                             <tr key={survey.id}>
                                 <td>{survey.id}</td>
@@ -82,7 +82,7 @@ class ListSurveys extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        surveys: state.surveys
+        survey: state.survey
     }
 };
 
