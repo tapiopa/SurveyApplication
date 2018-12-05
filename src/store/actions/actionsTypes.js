@@ -71,6 +71,10 @@ export const DELETE_ANSWER_FAILED = 'DELETE_ANSWER_FAILED';
 export const SAVE_ANSWER_FAILED = 'SAVE_ANSWER_FAILED';
 // export const CANCEL_ANSWER_FAILED = 'CANCEL_ANSWER_FAILED';
 
+/**************** USER ANSWER ACTIONS **************************/
+export const REGISTER_ANSWER = 'REGISTER_ANSWER';
+export const REGISTER_ANSWER_FAILED = 'REGISTER_ANSWER_FAILED';
+
 /**************** USER ACTIONS **************************/
 export const FETCH_USER = 'FETCH_USER';
 export const CREATE_USER = 'CREATE_USER';

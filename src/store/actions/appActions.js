@@ -9,7 +9,7 @@ import axios from "../../axios-survey";
 
 const loginUser = (account_id, user_id, user_name) => {
     return {type: LOGIN_USER, account_id, user_id, user_name}
-}
+};
 
 const loginUserFailed = (error) => {
     return {type: LOGIN_USER_FAILED, error};

@@ -62,7 +62,8 @@ export {
 
 export {
     asyncSurveyList,
-    asyncGetSurveyAndQuestions
+    asyncGetSurveyAndQuestions,
+    asynRegisterAnswer
 } from "./surveyActions";
 
 export {

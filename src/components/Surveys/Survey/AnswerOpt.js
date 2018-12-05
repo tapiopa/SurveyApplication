@@ -9,12 +9,24 @@ class AnswerOpt extends React.Component {
     value: '',
   };
 
-  handleChange = event => {
-      console.log("AnswerOpt, handleChange, event.target.value", event.target.value);
-      console.log("AnswerOpt, handleChange, this.state.value BEFORE", this.state.value);
-    this.setState({ value: event.target.value });
-      console.log("AnswerOpt, handleChange, this.state.value", this.state.value);
-  };
+  // handleChange = event => {
+  //     console.log("AnswerOpt, handleChange, event.target.value", event.target.value);
+  //     console.log("AnswerOpt, handleChange, this.state.value BEFORE", this.state.value);
+  //   this.setState({ value: event.target.value });
+  //     console.log("AnswerOpt, handleChange, this.state.value", this.state.value);
+  // };
+
+    handleChange = event => {
+        console.log("AnswerOpt, handleChange, this.state", this.state);
+        let Answer = Object.assign({}, this.state.Answer);
+
+        Answer.AnswerOpt = event.target.value;
+        Answer.questionId = this.props.questionId;
+
+        this.setState({Answer});
+        console.log("AnswerOpt, handleChange, this.state AFTER", this.state);
+        this.props.onSave(Answer);
+    };
 
   render() {
       // console.log("AnswerOpt, props", this.props);

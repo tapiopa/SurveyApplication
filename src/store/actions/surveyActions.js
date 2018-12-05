@@ -7,12 +7,14 @@ import {
 
 import axios from "../../axios-survey";
 import {SURVEY_LIST, SURVEY_LIST_FAILED} from "./actionsTypes";
-import {fetchSurveyFailed} from "./surveyBuilderActions";
-import {FETCH_SURVEY} from "./actionsTypes";
-import {FETCH_SURVEY_FAILED} from "./actionsTypes";
+// import {fetchSurveyFailed} from "./surveyBuilderActions";
+// import {FETCH_SURVEY} from "./actionsTypes";
+// import {FETCH_SURVEY_FAILED} from "./actionsTypes";
 import {GET_SURVEY_AND_QUESTIONS} from "./actionsTypes";
 import {GET_SURVEY_AND_QUESTIONS_FAILED} from "./actionsTypes";
 import {SET_SURVEY_ID} from "./actionsTypes";
+import {REGISTER_ANSWER_FAILED} from "./actionsTypes";
+import {REGISTER_ANSWER} from "./actionsTypes";
 
 
 
@@ -21,6 +23,65 @@ import {SET_SURVEY_ID} from "./actionsTypes";
 //         setTimeout(() => resolve('☕'), 2000); // it takes 2 seconds to make coffee
 //     });
 // }
+
+// export async function registerAnswer(answer, question){
+//     return fetch("/answers", {
+//         method: 'post',
+//         headers: new Headers({
+//             'Content-Type': 'application/json',
+//         }),
+//         body: JSON.stringify({
+//             user_answer: answer,
+//             question: question
+//         })
+//     }).then(res => {
+//         if(!res.ok) {
+//             if(res.status >=400 && res.status < 500) {
+//                 return res.json().then(data => {
+//                     let err = {errorMessage: data.message};
+//                     throw err;
+//                 })
+//             } else {
+//                 let err = {errorMessage: 'Please try again later, server is not resonding'};
+//                 throw err;
+//             }
+//         }
+//         return res.json();
+//     })
+// }
+
+const registerAnswer = (answer) => {
+    return {type: REGISTER_ANSWER, answer};
+};
+
+const registerAnswerFailed = (error) => {
+    return {type: REGISTER_ANSWER_FAILED, error};
+};
+
+export const asynRegisterAnswer = (answer, question, user_id) => {
+    const userAnswer = {
+        user_answer: answer,
+        userFK: user_id,
+        question: question
+    };
+    return dispatch => {
+
+        axios.post("/answers", userAnswer)
+        .then(response => {
+            console.log("surveyActions, asyncRegisterAnswer, userAnswer", userAnswer, "response", response);
+            if (response.status === 200) {
+                if (response.data.errno) {
+                    dispatch(registerAnswerFailed(response.data.sqlMessage));
+                } else {
+                    dispatch(registerAnswer(userAnswer));
+                }
+            }
+        })
+        .catch(error => {
+            dispatch(registerAnswerFailed(error));
+        });
+    }
+};
 
 const surveyList = (surveys) => {
     console.log("action, surveyList", surveys);

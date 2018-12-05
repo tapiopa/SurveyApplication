@@ -2,7 +2,7 @@
 * surveyReducers.js
 * */
 import {
-    GET_SURVEY_AND_QUESTIONS, GET_SURVEY_AND_QUESTIONS_FAILED, SET_SURVEY_ID,
+    GET_SURVEY_AND_QUESTIONS, GET_SURVEY_AND_QUESTIONS_FAILED, REGISTER_ANSWER, REGISTER_ANSWER_FAILED, SET_SURVEY_ID,
     SURVEY_LIST, SURVEY_LIST_FAILED
 } from "../actions/actionsTypes";
 import {updateObject} from "../utility";
@@ -19,6 +19,12 @@ const surveyReducers= (state = initialState, action) => {
             return {surveys: action.surveys};
         }
         case SURVEY_LIST_FAILED: {
+            return {...state, error: true, errorMessage: action.error}
+        }
+        case REGISTER_ANSWER: {
+            return {...state, answerSavedSuccessfully: true};
+        }
+        case REGISTER_ANSWER_FAILED: {
             return {...state, error: true, errorMessage: action.error}
         }
         case SET_SURVEY_ID: {
@@ -65,6 +71,5 @@ const surveyReducers= (state = initialState, action) => {
         }
     }
 };
-
 
 export default surveyReducers;

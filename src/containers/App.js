@@ -33,7 +33,7 @@ class App extends Component {
         // if (!this.props.app.loggedIn) {
         //     this.props.history.push("/registration");
         // }
-        // this.props.onLoginUser(26);
+        this.props.onLoginUser(26);
     }
 
     render() {

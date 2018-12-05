@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 
 import AnswerOpt from './AnswerOpt';
 
-import {asyncGetSurveyAndQuestions} from "../../../store/actions";
+import {asyncGetSurveyAndQuestions, asynRegisterAnswer} from "../../../store/actions";
 import {connect} from "react-redux";
 import axios from "../../../axios-survey";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
@@ -64,25 +64,37 @@ class SurveyForm extends Component {
   }
 
     // loadQuestion = async () => {
-  //  let questions = await apiCalls.getQuestion();
-  //  this.setState({questions});
-  // };
-  //
-  // loadAnswerOpt = async () => {
-  //   let AnswerOpt = await apiCalls.getAnswerOpt();
-  //   this.setState({AnswerOpt});
-  // };
+    //     let questions = await apiCalls.getQuestion();
+    //     this.setState({questions});
+    // };
+    //
+    // loadAnswerOpt = async () => {
+    //     let AnswerOpt = await apiCalls.getAnswerOpt();
+    //     this.setState({AnswerOpt});
+    // };
 
-  // Submit = () => {
-  //     console.log(this.state.Answer);
-  // };
-  //
-  // handleSubmit = () => {
-  //     console.log(this.state.Answer);
-  // };
+    handleSubmit = (e) => {
+        console.log("!!!!SurveyForm, handleSubmit, HERE, e", e);
+        e.preventDefault();
+        const {Answer} = this.state;
+        console.log("SurveyForm, handleSubmit, Answer", Answer);
+        Answer.forEach( (val) => this.props.onRegisterAnswer(val.AnswerOpt, val.questionId, this.props.app.user_id));
+        //apiCalls.registerAnswer(val.AnswerOpt, val.questionId));
+    };
+
+    onSave = val => {
+
+        let newAnswer = this.state.Answer.filter( ans => ans.questionId !== val.questionId);
+
+        this.setState(prevState => ({
+            Answer: [...newAnswer, val]
+        }));
+        console.log("SurveyForm, onSave, state", this.state);
+    };
 
   render() {
       // console.log("SurveyForm, render, props.survey", this.props.survey);
+      console.log("SurveyForm, render, props", this.props);
       // this.props.survey && this.props.survey.survey &&
         // console.log("SurveyForm, render, props.survey answers", this.props.survey.survey.questions[1].answers);
       if (
@@ -107,6 +119,7 @@ class SurveyForm extends Component {
                             questionId={q.id}
                             AnswerOption={q.answers} //{this.state.AnswerOpt}
                             Answer={Answer}
+                            onSave={this.onSave}
                             question={q}
                         />
                     </div>
@@ -118,10 +131,12 @@ class SurveyForm extends Component {
                 <h1>Survey 1st questions</h1>
                 <form onSubmit={this.handleSubmit}>
                     {questions}
-                    <Button variant="contained"
-                          color="primary"
-                          style={styles.button}>
-                    Submit
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        style={styles.button}>
+                        Submit
                     </Button>
                 </form>
             </div>
@@ -143,13 +158,15 @@ const styles = {
 
 const maptStateToProps = (state) => {
     return {
-        survey: state.survey
+        survey: state.survey,
+        app: state.app
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onGetSurveyAndQuestions: (survey_id) => dispatch(asyncGetSurveyAndQuestions(survey_id))
+        onGetSurveyAndQuestions: (survey_id) => dispatch(asyncGetSurveyAndQuestions(survey_id)),
+        onRegisterAnswer: (answer, question, user_id) => dispatch(asynRegisterAnswer(answer, question, user_id))
     }
 };
 
