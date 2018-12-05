@@ -42,16 +42,29 @@ class App extends Component {
     // if (!this.props.app.loggedIn) {
     //     this.props.history.push("/registration");
     // }
+    this._btnCheck();
     if (this.AuthHandler.loggedIn()) {
       this.props.onLoginUser(this.AuthHandler.getData().id);
     }
   }
 
+  _btnCheck() {
+    if (this.AuthHandler.loggedIn()) {
+      document.getElementById('logout-btn').style.display = 'block';
+      document.getElementById('login-btn').style.display = 'none';
+    } else {
+      document.getElementById('logout-btn').style.display = 'none';
+      document.getElementById('login-btn').style.display = 'block';
+    }
+  }
+
   componentDidUpdate() {
+    this._btnCheck();
     if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
       alert('token has expired');
       this._handleLogout();
     }
+    
   }
 
   _handleLogout = () => {
@@ -118,6 +131,10 @@ class App extends Component {
               <NavLink exact to="/survey">
                 Survey
               </NavLink>
+            </li>
+            <br />
+            <li className={classes.link}>
+              <NavLink to="/result">Result</NavLink>
             </li>
             <br />
             <div id="login-btn">
