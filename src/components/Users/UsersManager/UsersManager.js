@@ -19,6 +19,8 @@ import {
 
 import classes from "./UsersManager.css";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import AdminOnly from "../../Login/AdminOnly";
+
 
 class UsersManager extends Component {
     constructor(props) {
@@ -111,4 +113,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(UsersManager, axios));
+export default AdminOnly(connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(UsersManager, axios)));

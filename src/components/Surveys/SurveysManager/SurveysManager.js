@@ -16,7 +16,7 @@ import {
 
 import classes from "./SurveysManager.css";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
-
+import AdminOnly from "../../Login/AdminOnly";
 class SurveysManager extends Component {
 
     constructor(props) {
@@ -105,4 +105,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(SurveysManager, axios));
+export default AdminOnly(connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(SurveysManager, axios)));

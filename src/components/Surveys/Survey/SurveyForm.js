@@ -8,7 +8,7 @@ import {asyncGetSurveyAndQuestions, asynRegisterAnswer} from "../../../store/act
 import {connect} from "react-redux";
 import axios from "../../../axios-survey";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
-
+import Protected from "../../Login/Protected";
 
 class SurveyForm extends Component {
 
@@ -170,4 +170,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(maptStateToProps, mapDispatchToProps)(withErrorHandler(SurveyForm, axios));
+export default Protected(connect(maptStateToProps, mapDispatchToProps)(withErrorHandler(SurveyForm, axios)));

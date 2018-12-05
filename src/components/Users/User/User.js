@@ -25,6 +25,7 @@ import {
 
 import DatePicker from "react-datepicker/es";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import Protected from "../../Login/Protected";
 
 class User extends Component {
 
@@ -483,4 +484,4 @@ const mapDispatchToProp = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProp)(withErrorHandler(User, axios));
+export default Protected(connect(mapStateToProps, mapDispatchToProp)(withErrorHandler(User, axios)));

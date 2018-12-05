@@ -45,6 +45,8 @@ import {
 import Question from "../../Question/Question";
 import NewQuestion from "./NewQuestion";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import CompanyOnly from "../../Login/CompanyOnly";
+
 
 class SurveyBuilder extends Component {
     state = {
@@ -714,4 +716,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(SurveyBuilder, axios));
+export default CompanyOnly(connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(SurveyBuilder, axios)));

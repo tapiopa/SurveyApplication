@@ -15,7 +15,7 @@ import {PageHeader} from 'react-bootstrap';
 // import Registration from "../Registration/UserForm";
 import Aux from "../../hoc/Auxiliary/Auxiliary";
 import classes from "./HomePage.css";
-
+import Protected from "../Login/Protected";
 // import Account from "../Accounts/Account/Account";
 // import User from "../Users/User/User";
 
@@ -55,4 +55,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default connect(mapStateToProps)(HomePage);
+export default Protected(connect(mapStateToProps)(HomePage));
