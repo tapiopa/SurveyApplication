@@ -84,7 +84,7 @@ class SurveyChart extends Component {
       for (var i = 0; i < res.data.length; i++) {
         optionArray.push(res.data[i].answer);
       }
-      if (optionArray.length == 0) {
+      if (optionArray.length === 0) {
         /**In here if there were no any answer option, it means question is subjective which is not having multiple choice
          * and in that case, chart 'WordTree' is almost only available type to use
          */

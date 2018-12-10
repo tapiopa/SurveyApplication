@@ -1,61 +1,63 @@
 import decode from 'jwt-decode';
 import axios from 'axios';
-
-// import React, {Component} from "react";
-// import {connect} from "react-redux";
-// import {asyncLoginUser} from "../../store/actions";
-
-
 export default class AuthHandler {
-    login = (account, password) => {
-        // Get a token from api server using the fetch api
-        //Intead of axios, fetch has been used for experiencing difference betweem axios
-        return this.fetch(`http://localhost:3000/login`, {
-            method: 'POST',
-            body: JSON.stringify({
-                account,
-                password
-            })
-        }).then(res => {
-            this.setToken(res.token); // Save the token in localStorage
-            return Promise.resolve(res);
-        });
-    };
-    loggedIn = () => {
-        // console.log("AuthHandler, loggedIn");
-        // Checks if there is a saved token and it's still valid
-        const token = this.getToken(); // Getting token from localstorage
-        // console.log("AuthHandler, loggedIn, token", token);
-        if (token && token !== "undefined") {
-            return !!token && !this.isTokenExpired(token); // checking token expired or not and is there token or not
-        }
-        else {
-            // console.log("AuthHandler, loggedIn,  no token");
-            return false;
-        }
-    };
+  login = (account, password) => {
+    // Get a token from api server using the fetch api
+    //Intead of axios, fetch has been used for experiencing difference betweem axios
+    return this.fetch(`http://localhost:3000/login`, {
+      method: 'POST',
+      body: JSON.stringify({
+        account,
+        password
+      })
+    }).then(res => {
+      this.setToken(res.token); // Save the token in localStorage
+      return Promise.resolve(res);
+    });
+  };
+  loggedIn = () => {
+    // Checks if there is a saved token and it's still valid
+    const token = this.getToken(); // Getting token from localstorage
 
-    isTokenExpired = token => {
-        // console.log("AuthHandler, isTokenExpired, token", token);
-        try {
-            // console.log("AuthHandler, isTokenExpired");
-            if (token && token !== "undefined") {
-                // console.log("!!!AuthHandler, isTokenExpired¡¡¡");
-                const decoded = decode(token);
-                // Checking if token is expired.
-                // console.log("AuthHandler, isTokenExpired, decoded", decoded);
-                return decoded.exp < Date.now() / 1000;
-            }
-        } catch (err) {
-            console.log('expired check failed! Line 32: AuthHandler.js');
-            return true;
-        }
-    };
+    /**New thing i am learning here if token is not defined then giving null
+     * and !null return true and !!null return false so with this comparison i can check
+     * token validation with short expression unlike else specific checking token is null or "undefined"
+     */
+    return !!token && !this.isTokenExpired(token); // checking token expired or not and is there token or not
+  };
+
+  tokenCheck = () =>{
+    const id_token = localStorage.getItem('id_token');
+    if(id_token === "undefined" || id_token === null){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  isTokenExpired = token => {
+    try {
+      const decoded = decode(token);
+      // Checking if token is expired.
+      if (decoded.exp < Date.now() / 1000) {
+        return true;
+      } else return false;
+    } catch (err) {
+      console.log('expired check failed! Line 32: AuthHandler.js');
+      return false;
+    }
+  };
 
     setToken = idToken => {
         // Saves user token to localStorage
         localStorage.setItem('id_token', idToken);
     };
+  logout = () => {
+    // Clear user token and profile data from localStorage
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('sec');
+  };
 
     getToken = () => {
         // Retrieves the user token from localStorage

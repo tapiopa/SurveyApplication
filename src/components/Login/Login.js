@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import classes from './Login.css';
+import AuthHandler from './AuthHandler';
+import UserForm from '../Registration/UserForm';
 import { NavLink, Route } from 'react-router-dom';
-import AuthHanlder from './AuthHandler';
-import Protected from './Protected';
+
 
 import {connect} from "react-redux";
 import {asyncUserLogin} from "../../store/actions";
 
 class Login extends Component {
-  AuthHanlder = new AuthHanlder();
-  constructor() {
-    super();
+  AuthHandler = new AuthHandler();
+  constructor(props) {
+    super(props);
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
@@ -29,14 +30,16 @@ class Login extends Component {
     event.preventDefault();
     console.log("Login, handleSubmit, account", this.state.account, "password", this.state.password);
     this.props.onUserLogin(this.state.account, this.state.password);
-    this.AuthHanlder.login(this.state.account, this.state.password)
+    this.AuthHandler.login(this.state.account, this.state.password)
       .then(res => {
         if (res.status === false) {
           alert('Account does not exist');
           this.props.history.push('/login');
         } else {
-          localStorage.setItem('sec', this.AuthHanlder.whenExpired());
-          this.props.history.push('/home');
+          console.log("From login component " + JSON.stringify(this.props));
+          window.location.reload();
+          localStorage.setItem('sec', this.AuthHandler.whenExpired());
+          this.props.history.replace('/home');
         }
       })
       .catch(err => {
@@ -45,8 +48,8 @@ class Login extends Component {
   };
 
   componentWillMount() {
-    if (this.AuthHanlder.loggedIn()) {
-      this.props.history.push('/home');
+    if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
+      this.props.history.replace('/home');
     }
   }
 
@@ -101,9 +104,9 @@ class Login extends Component {
                     Login
                   </button>
                 </div>
-                <div className="col-xs-2 col-md-4">
-                  <label className="btn btn-success">Sign-Up</label>
-                  {/* Here we can put some registration link */}
+                <div className="col-xs-2 col-md-4"><NavLink to="/registration">
+                  <label className="btn btn-success">Sign-Up</label></NavLink>
+                  <Route path="/registration" component={UserForm} />
                 </div>
               </div>
             </form>
