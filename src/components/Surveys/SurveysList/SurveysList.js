@@ -25,6 +25,7 @@ import { NavLink, Link, Route } from 'react-router-dom';
 class ListSurveys extends Component {
     constructor(props) {
         super(props);
+        this.takeTheSurvey = this.takeTheSurvey.bind(this);
     }
     
     componentDidMount() {
