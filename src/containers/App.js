@@ -31,6 +31,8 @@ import SurveysList from '../components/Surveys/SurveysList/SurveysList';
 import Result from '../components/Chart/Result';
 import Login from '../components/Login/Login';
 import AuthHandler from '../components/Login/AuthHandler';
+import SurveyForm from '../components/Surveys/Survey/SurveyForm'
+
 
 class App extends Component {
   AuthHandler = new AuthHandler();
@@ -138,6 +140,7 @@ class App extends Component {
           <Route path="/usersmanager" component={UsersManager} />
           <Route path="/registration" component={UserForm} />
           <Route path="/surveys" component={SurveysList} />
+          <Route path="/survey" component={SurveyForm} />
           <Route path="/result" component={Result} />
           <Route path="/login" component={Login}/>
           <Redirect to="/home" />

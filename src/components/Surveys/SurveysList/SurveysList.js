@@ -20,11 +20,12 @@ import {
 import classes from "./SurveysList.css";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import Protected from "../../Login/Protected";
-import Survey from '../Survey/SurveyForm';
+import SurveyForm from '../Survey/SurveyForm';
 import { NavLink, Link, Route } from 'react-router-dom';
 class ListSurveys extends Component {
     constructor(props) {
         super(props);
+        this.takeTheSurvey = this.takeTheSurvey.bind(this);
     }
     
     componentDidMount() {
@@ -34,7 +35,7 @@ class ListSurveys extends Component {
     takeTheSurvey(survey_id) {
         // alert(`You take survey #${id}`);
         this.props.onGetSurveyAndQuestions(survey_id);
-        this.props.history.push("/survey");
+        this.props.history.replace("/survey");
     }
 
     render() {
@@ -52,7 +53,7 @@ class ListSurveys extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {<Route path='/survey' component={Survey}/>}
+                    
                     {/*{console.log("SurveysList, surveys", this.props.surveys)}*/}
                     {this.props.survey.surveys && this.props.survey.surveys.map(survey => {
                         return (
@@ -61,12 +62,7 @@ class ListSurveys extends Component {
                                 <td>{survey.title}</td>
                                 <td>{survey.owner}</td>
                                 <td>
-                                    <Link to={{pathname: '/survey', state: { survey_id: survey.id} }}>
-                                        <Button bsStyle="primary">
-                                            Take the Survey
-                                        </Button>
-                                    </Link>
-                                        {/*<Button onClick={() =>this.deleteUser(user.id)} bsStyle="danger">Delete</Button>*/}
+                                    <Button onClick={() =>this.takeTheSurvey(survey.id)} bsStyle="primary">Take the Survey</Button>
                                 </td>
                             </tr>
                         )

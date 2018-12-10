@@ -29,12 +29,6 @@ class SurveyForm extends Component {
   //   this.setState({ [input]: e.target.value });
   // };
 
-    componentDidMount(){
-        const url = "http://localhost:3000/surveys/" + /* this.props.history.location.state.survey_id */1 ;
-        axios.get(url).then(res =>{
-            this.setState({title : res.data[0].title});
-        })
-    }
 
     getSurvey(survey_id) {
         this.props.onGetSurveyAndQuestions(survey_id);
@@ -43,7 +37,7 @@ class SurveyForm extends Component {
   componentWillMount(){
         // if (this.props.survey.fetchData) {
             // this.getSurvey(this.props.survey.id);
-            this.getSurvey(/* this.props.history.location.state.survey_id */1);
+            // this.getSurvey(this.props.survey.survey.id);
         // }
       // this.loadQuestion();
       // this.loadAnswerOpt();
@@ -136,7 +130,7 @@ class SurveyForm extends Component {
 
         return (
             <div className={classes.survey_form}>
-                <h1>{this.state.title}</h1>
+                <h1>{this.props.survey.survey.title}</h1>
                 <form onSubmit={this.handleSubmit}>
                     {questions}
                     <Button
