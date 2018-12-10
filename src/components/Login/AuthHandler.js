@@ -18,8 +18,23 @@ export default class AuthHandler {
   loggedIn = () => {
     // Checks if there is a saved token and it's still valid
     const token = this.getToken(); // Getting token from localstorage
+
+    /**New thing i am learning here if token is not defined then giving null
+     * and !null return true and !!null return false so with this comparison i can check
+     * token validation with short expression unlike else specific checking token is null or "undefined"
+     */
     return !!token && !this.isTokenExpired(token); // checking token expired or not and is there token or not
   };
+
+  tokenCheck = () =>{
+    const id_token = localStorage.getItem('id_token');
+    if(id_token === "undefined" || id_token === null){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
 
   isTokenExpired = token => {
     try {
@@ -57,6 +72,7 @@ export default class AuthHandler {
   logout = () => {
     // Clear user token and profile data from localStorage
     localStorage.removeItem('id_token');
+    localStorage.removeItem('sec');
   };
 
   getData = () => {

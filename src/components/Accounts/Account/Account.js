@@ -33,8 +33,10 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import Protected from '../../Login/Protected';
+import AuthHandler from '../../Login/AuthHandler';
 
 class Account extends Component {
+  AuthHandler = new AuthHandler();
   state = {
     id: '',
     accountName: '',
@@ -86,6 +88,7 @@ class Account extends Component {
   }
 
   componentDidMount() {
+    console.log('Passing props ' + this.props.accountProp + " and " + this.props.idProp );
     console.log('componentDidMount, props', this.props);
     // if (this.props.app.account_id) {
     //     console.log("account_id");
@@ -183,7 +186,7 @@ class Account extends Component {
     console.log('Account, updateState, props', someProps);
     console.log('updateState, account id', someProps.account.id);
     this.setState({
-      id: someProps.account.id,
+      id: /* someProps.account.id */this.AuthHandler.getData().id,
       accountName: someProps.account.account,
       password: '',
       confirmPassword: '',

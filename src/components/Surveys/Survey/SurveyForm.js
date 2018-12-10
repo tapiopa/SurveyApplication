@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import axios from "../../../axios-survey";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import Protected from "../../Login/Protected";
-
+import classes from './SurveyForm.css';
 class SurveyForm extends Component {
 
     state ={
@@ -21,12 +21,20 @@ class SurveyForm extends Component {
     constructor(props){
         super(props);
         this.getSurvey = this.getSurvey.bind(this);
+        this.state={title: ""}
     }
 
   // Handle fields change
   // handleChange = input => e => {
   //   this.setState({ [input]: e.target.value });
   // };
+
+    componentDidMount(){
+        const url = "http://localhost:3000/surveys/" + this.props.history.location.state.survey_id ;
+        axios.get(url).then(res =>{
+            this.setState({title : res.data[0].title});
+        })
+    }
 
     getSurvey(survey_id) {
         this.props.onGetSurveyAndQuestions(survey_id);
@@ -35,7 +43,7 @@ class SurveyForm extends Component {
   componentWillMount(){
         // if (this.props.survey.fetchData) {
             // this.getSurvey(this.props.survey.id);
-            this.getSurvey(1);
+            this.getSurvey(this.props.history.location.state.survey_id);
         // }
       // this.loadQuestion();
       // this.loadAnswerOpt();
@@ -113,7 +121,7 @@ class SurveyForm extends Component {
                     return <div>Loading...</div>
                 }
                 return (
-                    <div key={idx}>
+                    <div /* className={classes.survey_form} */ key={idx}>
                         <FormQuestions  {...q}/>
                         <AnswerOpt
                             questionId={q.id}
@@ -127,8 +135,8 @@ class SurveyForm extends Component {
             });
 
         return (
-            <div>
-                <h1>Survey 1st questions</h1>
+            <div className={classes.survey_form}>
+                <h1>{this.state.title}</h1>
                 <form onSubmit={this.handleSubmit}>
                     {questions}
                     <Button

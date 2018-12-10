@@ -18,8 +18,8 @@ export default function Protected(ProtectedComponent) {
     prior to granting them enterance into the component. */
     componentDidMount() {
       // if user is not logged in then redirect to somewhere, normally to login page
-      if (!AuthHandler.loggedIn()) {
-        this.props.history.replace('/login');
+      if (!AuthHandler.loggedIn() || !AuthHandler.tokenCheck()) {
+        this.props.history.push('/login');
       } else {
         try {
           this.setState({

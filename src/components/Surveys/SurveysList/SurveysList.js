@@ -19,21 +19,29 @@ import {
 
 import classes from "./SurveysList.css";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
-
+import Protected from "../../Login/Protected";
+import Survey from '../Survey/SurveyForm';
+import { NavLink, Link, Route } from 'react-router-dom';
 class ListSurveys extends Component {
     constructor(props) {
         super(props);
+        this.state = {surveyClicked : false};
         this.takeTheSurvey = this.takeTheSurvey.bind(this);
     }
 
 
     componentDidMount() {
         this.props.onListSurveys();
-
     }
 
-    takeTheSurvey(id) {
-        alert(`You take survey #${id}`);
+    takeTheSurvey() {
+        // alert(`You take survey #${id}`);
+        if(this.state.surveyClicked === false){
+            this.setState({surveyClicked: true});
+        }
+        else{
+            this.setState({surveyClicked: false});
+        }
     }
 
 
@@ -60,10 +68,18 @@ class ListSurveys extends Component {
                                 <td>{survey.title}</td>
                                 <td>{survey.owner}</td>
                                 <td>
+                                                                            {/* <Button onClick={this.takeTheSurvey} bsStyle="primary">
+                                        {this.state.surveyClicked ? <Survey id={survey.id} /> : "Take the Survey"}</Button> */}
                                     <ButtonGroup>
-                                        <Button onClick={() => this.takeTheSurvey(survey.id)} bsStyle="primary">Take the Survey</Button>
+                                    <Link to={{pathname: '/survey', state: { survey_id: survey.id} }}>
+                                    {/* <Link to={'test/' + survey.id}> */}
+                                        <Button bsStyle="primary">
+                                            Take the Survey
+                                        </Button>
+                                    </Link>
                                         {/*<Button onClick={() =>this.deleteUser(user.id)} bsStyle="danger">Delete</Button>*/}
                                     </ButtonGroup>
+                                    <Route path='/survey' exact component={Survey}/>
                                 </td>
                             </tr>
                         )
@@ -92,4 +108,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ListSurveys, axios));
+export default Protected(connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ListSurveys, axios)));
