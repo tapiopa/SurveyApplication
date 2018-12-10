@@ -316,6 +316,7 @@ class Account extends Component {
   }
 
   handleExpireDateChange(date) {
+    console.log("Account, handleExpireDateChange, date", date);
     this.setState({
       editing: true,
       expireDate: date

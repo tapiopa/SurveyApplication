@@ -67,7 +67,9 @@ export {
 } from "./surveyActions";
 
 export {
-    asyncLoginUser,
+    asyncLoginUser,//login with user id
+    asyncUserLogin, //login with username and password
+    logoutUser,
     asyncFetchFirstName,
     setAppUserAccountIdName
 } from "./appActions";

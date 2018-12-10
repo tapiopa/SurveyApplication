@@ -40,6 +40,7 @@ class HomePage extends Component {
                             <li className={classes.link}><NavLink to="/usersmanager">Manage Users</NavLink></li>
                             <li className={classes.link}><NavLink to="/surveys">Take a Survey</NavLink></li>
                         </ul>
+                        <p>This is the Home Page</p>
                     </Aux>
                 {/*}*/}
             </div>

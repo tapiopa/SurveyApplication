@@ -20,7 +20,8 @@ import {
     // asyncListUsers,
     asyncCreateUser,
     // asyncDeleteUser,
-    resetUser
+    resetUser,
+    // asyncSetUserAccountFK
 } from "../../../store/actions";
 
 import DatePicker from "react-datepicker/es";
@@ -34,6 +35,7 @@ class User extends Component {
         firstname: "",
         lastname: "",
         accountFK: null,
+        type: "",
         email: "",
         birthdate: "",
         phone: "",
@@ -48,6 +50,7 @@ class User extends Component {
             firstname: "",
             lastname: "",
             accountFK: null,
+            type: "",
             email: "",
             birthdate: null,
             phone: "",
@@ -80,6 +83,8 @@ class User extends Component {
         this.handleLastnameChange = this.handleLastnameChange.bind(this);
         this.handleFirstnameChange = this.handleFirstnameChange.bind(this);
         this.updateState = this.updateState.bind(this);
+        this.handleAccountFKChange = this.handleAccountFKChange.bind(this);
+        this.handleAccountTypeChange = this.handleAccountTypeChange.bind(this);
     }
 
     componentDidMount() {
@@ -129,7 +134,8 @@ class User extends Component {
             id: someProps.user.id,
             firstname: someProps.user.firstname,
             lastname: someProps.user.lastname,
-            accountFK: someProps.accountFK,
+            accountFK: someProps.user.accountFK,
+            type: someProps.user.type,
             email: someProps.user.email,
             birthdate: this.getMomentFromDateString(someProps.user.birthdate),
             phone: someProps.user.phone,
@@ -144,6 +150,7 @@ class User extends Component {
                 firstname: someProps.user.firstname,
                 lastname: someProps.user.lastname,
                 accountFK: someProps.user.accountFK,
+                type: someProps.user.type,
                 email: someProps.user.email,
                 birthdate: this.getMomentFromDateString(someProps.user.birthdate),
                 phone: someProps.user.phone,
@@ -204,7 +211,6 @@ class User extends Component {
     };
 
 
-
     // resetFields() {
     //     this.setState({
     //         id: null,
@@ -227,6 +233,7 @@ class User extends Component {
             firstname: this.state.unEditedState.firstname,
             lastname: this.state.unEditedState.lastname,
             accountFK: this.state.unEditedState.accountFK,
+            type: this.state.unEditedState.type,
             email: this.state.unEditedState.email,
             birthdate: this.state.unEditedState.birthdate,
             phone: this.state.unEditedState.phone,
@@ -264,15 +271,15 @@ class User extends Component {
             id: this.state.id,
             firstname: this.state.firstname,
             lastname: this.state.lastname,
-            accountFK: this.props.user.accountFK,
+            accountFK: this.state.accountFK,
+            type: this.state.type,
             email: this.state.email,
             birthdate: this.state.birthdate ? this.state.birthdate.format("YYYY-MM-DD") : null,
             phone: this.state.phone,
             streetAddress: this.state.streetAddress,
             postalCode: this.state.postalCode,
             rewards: !this.state.rewards ? 0 : this.state.rewards,
-            modifiedDate: moment().format("YYYY-MM-DD HH:mm:ss"),
-            type: this.state.type ? this.state.type : "client"
+            modifiedDate: moment().format("YYYY-MM-DD HH:mm:ss")
         };
         console.log("saveUser, user", saveUser);
         console.log("THIS IS NEW USER ???", this.state.newUser);
@@ -341,11 +348,32 @@ class User extends Component {
         }
     }
 
+    handleAccountFKChange(el) {
+        if (el && el.target && el.target.value) {
+            const accountFK = el.target.value;
+            console.log("User, handleAccountFKChange, accountFK", accountFK);
+            this.setState({accountFK: accountFK, editing: true})
+        }
+    }
+
+    handleAccountTypeChange(el) {
+        if (el && el.target && el.target.value) {
+            const accountType = el.target.value;
+            console.log("User, handleAccountTypeChange, account type", accountType);
+            if (accountType !== "notSelected") {
+                this.setState({type: accountType, editing: true});
+            } else if (accountType === "notSelected") {
+                this.setState({type: null});
+            }
+        }
+    }
+
 
     logState = () => {
-        for (const key of Object.keys(this.state)) {
-            console.log(key, this.state[key]);
-        }
+        // for (const key of Object.keys(this.state)) {
+        //     console.log(key, this.state[key]);
+        // }
+        console.log("User, state", this.state);
     };
 
 
@@ -363,7 +391,7 @@ class User extends Component {
                 <PageHeader>Personal Data</PageHeader>
 
                 <hr/>
-                <label>ID</label><p>state: {this.state.id}, props: {this.props.user.id}.</p>
+                {/*<label>ID</label><p>state: {this.state.id}, props: {this.props.user.id}.</p>*/}
                 <form className={classes.Form}>
                     <FormGroup>
                         <ControlLabel className={classes.Label} htmlFor="firstname">First Name</ControlLabel>
@@ -428,6 +456,24 @@ class User extends Component {
                                      type="text" name="postalCode" id="postalCode"
                                      onChange={this.handlePostalCodeChange}
                                      defaultValue={this.state.postalCode}/>
+                    </FormGroup>
+                    <FormGroup>
+                        <ControlLabel className={classes.Label} htmlFor="rewards">User Account</ControlLabel>
+                        <FormControl className={classes.Input}
+                                     type="number" name="rewards" id="rewards"
+                                     onChange={this.handleAccountFKChange}
+                                     value={this.state.accountFK}/>
+                    </FormGroup>
+                    <FormGroup>
+                        <ControlLabel className={classes.Label} htmlFor="rewards">User Account Type</ControlLabel>
+                        <FormControl componentClass="select"
+                                     name="accountType" id="accountType"
+                                     onChange={this.handleAccountTypeChange}>
+                            <option  value="notSelected">Select...</option>
+                            <option selected={this.state.type === "client"?"selected":false} value="client">Client</option>
+                            <option selected={this.state.type === "company"?"selected":false} value="company">Company</option>
+                            <option selected={this.state.type === "admin"?"selected":false} value="admin">Admin</option>
+                        </FormControl>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel className={classes.Label} htmlFor="rewards">Rewards</ControlLabel>

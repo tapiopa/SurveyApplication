@@ -19,7 +19,7 @@ export class FormUserDetails extends Component {
 
     setAccountFK (user, account) {
         console.log("setAccountFK, user", this.props.user, "account", this.props.account);
-        this.props.onSetUserAccountFK(user, account);
+        this.props.onSetUserAccountFK(user, account.id);
         this.props.onSetApp(account, user);
     }
 
@@ -28,7 +28,7 @@ export class FormUserDetails extends Component {
         if (nextProps.user && nextProps.user.saveSuccess &&
             nextProps.account && nextProps.account.saveSuccess &&
             !nextProps.user.accountFK) {
-            this.setAccountFK(nextProps.user, nextProps.account);
+            this.setAccountFK(nextProps.user, nextProps.account.id);
         }
     }
 
@@ -57,7 +57,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSetUserAccountFK: (user, account) => dispatch(asyncSetUserAccountFK(user, account)),
+        onSetUserAccountFK: (user, account_id) => dispatch(asyncSetUserAccountFK(user, account_id)),
         onSetApp: (account, user) => dispatch(setAppUserAccountIdName(account, user))
     }
 };

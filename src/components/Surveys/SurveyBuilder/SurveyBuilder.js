@@ -164,13 +164,21 @@ class SurveyBuilder extends Component {
         // console.log("shouldComponentUpdate, nextState", nextState);
         // console.log("shouldComponentUpdate, nextContext", nextContext);
         //Check if surveys are different
+        if (nextProps.survey !== this.props.survey) {
+            console.log("shouldComponentUpdate, surveys different");
+            return true;
+        }
         if (nextProps.survey && this.props.survey &&
             nextProps.survey.title !== this.props.survey.title) {
             console.log("shouldComponentUpdate, titles different");
             return true;
         }
-        if (nextProps.survey !== this.props.survey) {
-            console.log("shouldComponentUpdate, surveys different");
+        if (nextProps.survey && this.props.survey &&
+            nextProps.survey.editingSurvey !== this.props.editingSurvey) {
+            return true;
+        }
+        if (nextProps.survey && this.props.survey &&
+            nextProps.survey.saveSuccess !== this.props.saveSuccess) {
             return true;
         }
         //Check if questions are different
@@ -179,7 +187,7 @@ class SurveyBuilder extends Component {
             console.log("shouldComponentUpdate, questions different");
             return true;
         }
-        //Check if answers are differen
+        //Check if answers are different
         if (nextProps.survey && nextProps.survey.questions &&
             this.props.survey && this.props.survey.questions) {
             nextProps.survey.questions.forEach(questionA => {
@@ -193,7 +201,9 @@ class SurveyBuilder extends Component {
                 })
             })
         }
+
         console.log("shouldComponentUpdate, no change — no update");
+        return true;
     }
 
     updateState (someProps) {
@@ -237,7 +247,8 @@ class SurveyBuilder extends Component {
         const surveyTitle = this.state.title;
         const saveSurvey = {
             id: surveyId,
-            title: surveyTitle
+            title: surveyTitle,
+            owner: this.props.app.user_id
         };
         console.log("saveSurveyIdAndTitle, survey", saveSurvey, "state new", this.state.newSurvey, "props new", this.props.newSurvey);
         if (this.state.newSurvey) {

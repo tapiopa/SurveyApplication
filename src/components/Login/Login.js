@@ -3,6 +3,10 @@ import classes from './Login.css';
 import { NavLink, Route } from 'react-router-dom';
 import AuthHanlder from './AuthHandler';
 import Protected from './Protected';
+
+import {connect} from "react-redux";
+import {asyncUserLogin} from "../../store/actions";
+
 class Login extends Component {
   AuthHanlder = new AuthHanlder();
   constructor() {
@@ -23,6 +27,8 @@ class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    console.log("Login, handleSubmit, account", this.state.account, "password", this.state.password);
+    this.props.onUserLogin(this.state.account, this.state.password);
     this.AuthHanlder.login(this.state.account, this.state.password)
       .then(res => {
         if (res.status === false) {
@@ -108,4 +114,10 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispathToProps = (dispatch) => {
+  return {
+    onUserLogin: (username, password) => dispatch(asyncUserLogin(username, password))
+  }
+};
+
+export default connect(null, mapDispathToProps)(Login);

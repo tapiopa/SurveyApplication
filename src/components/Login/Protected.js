@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import AuthHanlder from './AuthHandler';
+import AuthHandler from './AuthHandler';
 
 /* A higher order component (HOC) is frequently written as a function that returns a class. */
 export default function Protected(ProtectedComponent) {
-  const AuthHandler = new AuthHanlder();
+  const authHandler = new AuthHandler();
 
   return class Protection extends Component {
     constructor() {
@@ -18,7 +18,7 @@ export default function Protected(ProtectedComponent) {
     prior to granting them enterance into the component. */
     componentDidMount() {
       // if user is not logged in then redirect to somewhere, normally to login page
-      if (!AuthHandler.loggedIn()) {
+      if (!authHandler.loggedIn()) {
         this.props.history.replace('/login');
       } else {
         try {
@@ -28,7 +28,7 @@ export default function Protected(ProtectedComponent) {
         } catch (err) {
           /* if there's an error it will print it out and log the user out for security reasons. */
           console.log(err);
-          AuthHandler.logout();
+          authHandler.logout();
           this.props.history.push('/login');
         }
       }

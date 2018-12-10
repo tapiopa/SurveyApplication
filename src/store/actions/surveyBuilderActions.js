@@ -90,7 +90,11 @@ export const asyncSaveSurvey = (survey, newSurvey) => {
             });
         } else {
             console.log("asyncSaveSurvey, OLD survey");
-            axios.put(`/surveys/${survey.id}`, survey) ///${survey.id}
+            const srvy = {
+                title: survey.title,
+                owner: survey.owner
+            };
+            axios.put(`/surveys/${survey.id}`, srvy) ///${survey.id}
             .then(response => {
                 console.log("asyncSaveSurvey, PUT response", response);
                 if (response.status === 200) {

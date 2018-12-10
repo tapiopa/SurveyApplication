@@ -35,7 +35,7 @@ class SurveyForm extends Component {
   componentWillMount(){
         // if (this.props.survey.fetchData) {
             // this.getSurvey(this.props.survey.id);
-            this.getSurvey(1);
+            // this.getSurvey(1);
         // }
       // this.loadQuestion();
       // this.loadAnswerOpt();

@@ -1,11 +1,16 @@
 import {
     FETCH_USER_FIRSTNAME,
     FETCH_USER_FIRSTNAME_FAILED, LOGIN_USER,
-    LOGIN_USER_FAILED,
-    SET_ACCOUNT_ID_NAME
+    LOGIN_USER_FAILED, LOGOUT_USER,
+    SET_ACCOUNT_ID_NAME, USER_LOGIN, USER_LOGIN_FAILED
 } from "./actionsTypes";
 
 import axios from "../../axios-survey";
+import decode from 'jwt-decode';
+
+export const logoutUser = () => {
+    return {type: LOGOUT_USER}
+};
 
 const loginUser = (account_id, user_id, user_name) => {
     return {type: LOGIN_USER, account_id, user_id, user_name}
@@ -23,12 +28,12 @@ export const asyncLoginUser = (user_id) => {
         .then(response => {
             if (response.status === 200) {
                 if (response.data.errno) {
-                    console.log("ERROR", response.data.sqlMessage);
+                    // console.log("ERROR", response.data.sqlMessage);
                     dispatch(loginUserFailed(response.data.sqlMessage));
                 } else {
-                    console.log("asyncLogInUser, response", response);
+                    // console.log("asyncLogInUser, response", response);
                     account_id = response.data[0].account_id;
-                    console.log("asyncLogInUser, account id", account_id);
+                    // console.log("asyncLogInUser, account id", account_id);
                     axios.get(`/users/firstname/${account_id}`)
                     .then(nameResponse => {
                         if (response.status === 200) {
@@ -36,9 +41,9 @@ export const asyncLoginUser = (user_id) => {
                                 console.log("ERROR", nameResponse.data.sqlMessage);
                                 dispatch(loginUserFailed(nameResponse.data.sqlMessage));
                             } else {
-                                console.log("asyncLogInUser, NAME response", nameResponse);
+                                // console.log("asyncLogInUser, NAME response", nameResponse);
                                 user_name = nameResponse.data[0].firstname;
-                                console.log("asyncLogInUser, user name", user_name);
+                                // console.log("asyncLogInUser, user name", user_name);
                                 dispatch(loginUser(account_id, user_id, user_name));
                             }
                         }
@@ -52,6 +57,57 @@ export const asyncLoginUser = (user_id) => {
         .catch(error => {
             dispatch(loginUserFailed(error));
         });
+    }
+};
+
+const userLogin = (logindata) => {
+    console.log("ƒappActions, userLogin, logindata", logindata);
+    return {type: USER_LOGIN, data: logindata};
+};
+
+const userLoginFailed = (error) => {
+    console.log("user login failed, error", error);
+    return {type: USER_LOGIN_FAILED, error};
+};
+
+
+export const asyncUserLogin = (account, password) => {
+    // console.log("asyncUserLogin, username", account, "password", password);
+    const login = {account: account, password: password};
+    return dispatch => {
+        axios.post("/login", login)
+        .then(response => {
+            // console.log("asyncUserLogin, response", response);
+            if (response && response.status === 200) {
+                if (response.data.errno) {
+                    dispatch(userLoginFailed(response.data.sqlMessage))
+                } else if (response.data.err && response.data.message) {
+                    dispatch(userLoginFailed(response.data.message));
+                } else {
+                    let token = response.data.token;
+                    // console.log("asyncUserLogin, token", token);
+                    const data = decode(response.data.token);
+                    // console.log("asyncUserLogin, data", data);
+                    axios.get(`/users/firstname/${data.owner}`)
+                    .then(nameResponse => {
+                        // console.log("asyncUserLogin, nameResponse", nameResponse);
+                        if (nameResponse.status === 200) {
+                            if (nameResponse.data.errno) {
+                                dispatch(fetchFirstNameFailed(nameResponse.data.sqlMessage));
+                            } else {
+                                // console.log("asyncFetchFirstName, response", response);
+                                data.firstname = nameResponse.data[0].firstname;
+                                dispatch(userLogin(data));
+                            }
+                        }
+
+                    })
+                    .catch(error => {
+                        fetchFirstNameFailed(error);
+                    });
+                }
+            }
+        })
     }
 };
 

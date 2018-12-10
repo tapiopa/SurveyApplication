@@ -66,10 +66,10 @@ const setUserAccountFKFailed = (error) => {
     return {type: SET_DEFAULT_USER_ACCOUNT_ID_FAILED, error};
 };
 
-export const asyncSetUserAccountFK = (user, account) => {
-    console.log("action asyncSetUserAccountFK, user", user, "account", account);
+export const asyncSetUserAccountFK = (user, account_id) => {
+    console.log("action asyncSetUserAccountFK, user", user, "account id", account_id);
     return dispatch => {
-        user.accountFK = account.id;
+        user.accountFK = account_id;
         console.log("action asyncSetUserAccountFK, updated user", user);
         axios.put(`/users/${user.id}`, user)
         .then(response => {
@@ -79,7 +79,7 @@ export const asyncSetUserAccountFK = (user, account) => {
                     console.log("ERROR", response.data.sqlMessage);
                     dispatch(setUserAccountFKFailed(response.data.sqlMessage));
                 } else {
-                    dispatch(setUserAccountFK(account.id));
+                    dispatch(setUserAccountFK(account_id));
                 }
             }
         })

@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 
 import axios from '../../../axios-survey';
 
-import {asyncSurveyList} from "../../../store/actions";
+import {asyncSurveyList, asyncGetSurveyAndQuestions} from "../../../store/actions";
 
 import {
     Table,
@@ -32,8 +32,10 @@ class ListSurveys extends Component {
 
     }
 
-    takeTheSurvey(id) {
-        alert(`You take survey #${id}`);
+    takeTheSurvey(survey_id) {
+        // alert(`You take survey #${id}`);
+        this.props.onGetSurveyAndQuestions(survey_id);
+        this.props.history.push("/survey");
     }
 
 
@@ -88,7 +90,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onListSurveys: () => dispatch(asyncSurveyList())
+        onListSurveys: () => dispatch(asyncSurveyList()),
+        onGetSurveyAndQuestions: (survey_id) => dispatch(asyncGetSurveyAndQuestions(survey_id))
     }
 };
 

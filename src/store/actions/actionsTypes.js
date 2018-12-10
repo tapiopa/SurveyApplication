@@ -5,12 +5,15 @@
 /**************** APP ACTIONS **************************/
 export const FETCH_USER_FIRSTNAME = 'FETCH_USER_FIRSTNAME';
 export const SET_ACCOUNT_ID = 'SET_ACCOUNT_ID';
-export const SET_ACCOUNT_ID_NAME = 'SET_ACCOUNT_ID_NAME';
+export const SET_ACCOUNT_ID_NAME = 'SET_ACCOUNT_ID_NAME'; // set account's id and user's name
 export const SET_DEFAULT_USER_ACCOUNT_ID  = 'SET_DEFAULT_USER_ACCOUNT_ID';
 export const SET_DEFAULT_USER_ACCOUNT_ID_FAILED = 'SET_DEFAULT_USER_ACCOUNT_ID_FAILED';
 export const FETCH_USER_FIRSTNAME_FAILED = 'FETCH_USER_FIRSTNAME_FAILED';
-export const LOGIN_USER = 'LOGIN_USER';
+export const LOGIN_USER = 'LOGIN_USER'; //login with user id
 export const LOGIN_USER_FAILED = 'LOGIN_USER_FAILED';
+export const LOGOUT_USER = 'LOGOUT_USER';
+export const USER_LOGIN = 'USER_LOGIN';//login with username and password
+export const USER_LOGIN_FAILED = 'USER_LOGIN_FAILED';
 
 /**************** SURVEY ACTIONS **************************/
 export const CREATE_SURVEY = 'CREATE_SURVEY';
