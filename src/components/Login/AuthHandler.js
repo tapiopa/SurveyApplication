@@ -1,5 +1,5 @@
 import decode from 'jwt-decode';
-import axios from 'axios';
+// import axios from 'axios';
 export default class AuthHandler {
   login = (account, password) => {
     // Get a token from api server using the fetch api
@@ -11,8 +11,11 @@ export default class AuthHandler {
         password
       })
     }).then(res => {
-      this.setToken(res.token); // Save the token in localStorage
-      return Promise.resolve(res);
+        if(res.status){
+            this.setToken(res.token); // Save the token in localStorage
+        }
+        console.log(Promise.resolve(res));
+        return Promise.resolve(res);
     });
   };
   loggedIn = () => {
@@ -49,10 +52,10 @@ export default class AuthHandler {
     }
   };
 
-    setToken = idToken => {
+  setToken = idToken => {
         // Saves user token to localStorage
         localStorage.setItem('id_token', idToken);
-    };
+  };
   logout = () => {
     // Clear user token and profile data from localStorage
     localStorage.removeItem('id_token');

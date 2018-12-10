@@ -52,7 +52,6 @@ class App extends Component {
         this.props.onLoginUser(this.AuthHandler.getData().id);
         this._setInfo();
       }      
-
   }
 
   _setInfo(){
@@ -60,6 +59,7 @@ class App extends Component {
         console.log("state for the props: "  + this.state.id);
   });
   }
+
   _navCheck(){
     if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
       if(this.AuthHandler.getData().type === "admin"){
@@ -99,9 +99,11 @@ class App extends Component {
   componentDidUpdate() {
     this._navCheck();
     this._btnCheck();
-    if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
-      alert('token has expired');
-      this._handleLogout();
+    if(this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()){
+        if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
+           alert('token has expired');
+           this._handleLogout();
+        }
     }
   }
 

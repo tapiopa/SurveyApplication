@@ -25,11 +25,8 @@ import { NavLink, Link, Route } from 'react-router-dom';
 class ListSurveys extends Component {
     constructor(props) {
         super(props);
-        this.state = {surveyClicked : false};
-        this.takeTheSurvey = this.takeTheSurvey.bind(this);
     }
-
-
+    
     componentDidMount() {
         this.props.onListSurveys();
     }
@@ -39,16 +36,6 @@ class ListSurveys extends Component {
         this.props.onGetSurveyAndQuestions(survey_id);
         this.props.history.push("/survey");
     }
-    buttonClicked() {
-        // alert(`You take survey #${id}`);
-        if(this.state.surveyClicked === false){
-            this.setState({surveyClicked: true});
-        }
-        else{
-            this.setState({surveyClicked: false});
-        }
-    }
-
 
     render() {
         return (
@@ -65,6 +52,7 @@ class ListSurveys extends Component {
                     </tr>
                     </thead>
                     <tbody>
+                    {<Route path='/survey' component={Survey}/>}
                     {/*{console.log("SurveysList, surveys", this.props.surveys)}*/}
                     {this.props.survey.surveys && this.props.survey.surveys.map(survey => {
                         return (
@@ -73,18 +61,12 @@ class ListSurveys extends Component {
                                 <td>{survey.title}</td>
                                 <td>{survey.owner}</td>
                                 <td>
-                                                                            {/* <Button onClick={this.takeTheSurvey} bsStyle="primary">
-                                        {this.state.surveyClicked ? <Survey id={survey.id} /> : "Take the Survey"}</Button> */}
-                                    <ButtonGroup>
                                     <Link to={{pathname: '/survey', state: { survey_id: survey.id} }}>
-                                    {/* <Link to={'test/' + survey.id}> */}
                                         <Button bsStyle="primary">
                                             Take the Survey
                                         </Button>
                                     </Link>
                                         {/*<Button onClick={() =>this.deleteUser(user.id)} bsStyle="danger">Delete</Button>*/}
-                                    </ButtonGroup>
-                                    <Route path='/survey' exact component={Survey}/>
                                 </td>
                             </tr>
                         )

@@ -77,14 +77,13 @@ export const asyncUserLogin = (account, password) => {
     return dispatch => {
         axios.post("/login", login)
         .then(response => {
-            // console.log("asyncUserLogin, response", response);
             if (response && response.status === 200) {
                 if (response.data.errno) {
                     dispatch(userLoginFailed(response.data.sqlMessage))
                 } else if (response.data.err && response.data.message) {
                     dispatch(userLoginFailed(response.data.message));
                 } else {
-                    let token = response.data.token;
+                    if(response.data.status){
                     // console.log("asyncUserLogin, token", token);
                     const data = decode(response.data.token);
                     // console.log("asyncUserLogin, data", data);
@@ -105,6 +104,10 @@ export const asyncUserLogin = (account, password) => {
                     .catch(error => {
                         fetchFirstNameFailed(error);
                     });
+                }
+                else{
+                    dispatch(userLoginFailed(response.data.status));
+                }
                 }
             }
         })

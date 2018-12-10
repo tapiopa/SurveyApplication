@@ -30,7 +30,7 @@ class SurveyForm extends Component {
   // };
 
     componentDidMount(){
-        const url = "http://localhost:3000/surveys/" + this.props.history.location.state.survey_id ;
+        const url = "http://localhost:3000/surveys/" + /* this.props.history.location.state.survey_id */1 ;
         axios.get(url).then(res =>{
             this.setState({title : res.data[0].title});
         })
@@ -43,7 +43,7 @@ class SurveyForm extends Component {
   componentWillMount(){
         // if (this.props.survey.fetchData) {
             // this.getSurvey(this.props.survey.id);
-            this.getSurvey(this.props.history.location.state.survey_id);
+            this.getSurvey(/* this.props.history.location.state.survey_id */1);
         // }
       // this.loadQuestion();
       // this.loadAnswerOpt();

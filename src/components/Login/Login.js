@@ -28,16 +28,13 @@ class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log("Login, handleSubmit, account", this.state.account, "password", this.state.password);
     this.props.onUserLogin(this.state.account, this.state.password);
     this.AuthHandler.login(this.state.account, this.state.password)
       .then(res => {
         if (res.status === false) {
-          alert('Account does not exist');
+          alert(res.message);
           this.props.history.push('/login');
         } else {
-          console.log("From login component " + JSON.stringify(this.props));
-
           localStorage.setItem('sec', this.AuthHandler.whenExpired());
           this.props.history.replace('/home');
         }
