@@ -37,7 +37,7 @@ class Login extends Component {
           this.props.history.push('/login');
         } else {
           console.log("From login component " + JSON.stringify(this.props));
-          window.location.reload();
+
           localStorage.setItem('sec', this.AuthHandler.whenExpired());
           this.props.history.replace('/home');
         }

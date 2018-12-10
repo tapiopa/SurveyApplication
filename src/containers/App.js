@@ -37,7 +37,6 @@ class App extends Component {
   constructor(){
     super();
       this.state = {
-        account: 'guest',
         id: ''
       };
   }
@@ -47,24 +46,18 @@ class App extends Component {
     //         // this.props.onSetUserAccountFK(this.props.app.account_id);
     console.log('App, componentDidMount, props', this.props);
 
-    // if (!this.props.app.loggedIn) {
-    //     this.props.history.push("/registration");
-    // }
-
     this._btnCheck();
     this._navCheck();
       if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
         this.props.onLoginUser(this.AuthHandler.getData().id);
         this._setInfo();
-        // this.interval = setInterval(() => this._setInfo(), 1000);
       }      
 
   }
 
   _setInfo(){
-    this.setState({account: this.AuthHandler.getData().account,
-      id: this.AuthHandler.getData().id}, function () {
-        console.log("state for the props :" + this.state.account + " and " + this.state.id)
+    this.setState({ id: this.AuthHandler.getData().id}, function () {
+        console.log("state for the props: "  + this.state.id);
   });
   }
   _navCheck(){
@@ -96,40 +89,12 @@ class App extends Component {
     }
   }
 
-
-    componentDidUpdate() {
-        // console.log("App, componentDidUpdate, this.props.app", this.props.app);
-        this._btnCheck();
-        // console.log("App, componentDidUpdate, btnCheck");
-        const token = localStorage.getItem('id_token');
-        // console.log("App, componentDidUpdate, token", token);
-        if (token && token !== "undefined") {
-            //const expired = this.AuthHandler.isTokenExpired(token);
-            // console.log("App, componentDidUpdate, expired?", expired);
-            if ( this.AuthHandler.isTokenExpired(token)) {
-                alert('token has expired');
-                this._handleLogout();
-            }
-        //     else if (this.AuthHandler.loggedIn() && !this.props.app.logged_in) {
-        //         // this.props.onLoginUser(this.AuthHandler.getData().id);
-        //         // console.log("App, componentDidUpdate, auth logged in, props not logged in, user id", this.AuthHandler.getData().id, "proops", this.props);
-        //     } else {
-        //         // console.log("!!!App, componentDidUpdate, auth logged in, props logged in, user id", this.AuthHandler.getData().id, "props", this.props);
-        //     }
-        }
-    }
-
     _handleLogout = () => {
         console.log("App, handleLogout");
         this.AuthHandler.logout();
         this.props.onLogoutUser();
         this.props.history.replace('/login');
     };
-  // componentWillUnmount() {
-  //   if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
-  //     clearInterval(this.interval);
-  //   }
-  // }
 
   componentDidUpdate() {
     this._navCheck();
@@ -140,22 +105,11 @@ class App extends Component {
     }
   }
 
-
-  _handleLogout = () => {
-    this.setState({ name: "guest"})
-    this.AuthHandler.logout();
-    window.location.reload();
-    this.props.history.replace('/login');
-  };
-
   render() {
-
     return (
       <div className={classes.App}>
         <header className={classes.header}>
-          {!this.props.app.logged_in ? null :  <p>Hello {this.props.app.firstname}!
-    <br/>Welcomel {this.state.account}</p>}
-
+          {!this.props.app.logged_in ? null :  <p>Hello {this.props.app.firstname}!</p>}
     <div id="logout-btn">
             <button
               className="btn btn-warning"
@@ -241,8 +195,8 @@ class App extends Component {
         </nav>
 </div>
 );
-}
-}
+}//this is end of render
+}//This is end of class
 
     
 
