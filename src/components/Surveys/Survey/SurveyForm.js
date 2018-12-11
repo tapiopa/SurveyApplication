@@ -21,6 +21,7 @@ class SurveyForm extends Component {
     constructor(props){
         super(props);
         this.getSurvey = this.getSurvey.bind(this);
+        this.logState = this.logState.bind(this);
         this.state={title: ""}
     }
 
@@ -75,6 +76,13 @@ class SurveyForm extends Component {
     //     this.setState({AnswerOpt});
     // };
 
+    logState = () => {
+        // for (const key of Object.keys(this.state)) {
+        //     console.log(key, this.state[key]);
+        // }
+        console.log("User, state", this.state);
+    };
+
     handleSubmit = (e) => {
         console.log("!!!!SurveyForm, handleSubmit, HERE, e", e);
         e.preventDefault();
@@ -85,13 +93,28 @@ class SurveyForm extends Component {
     };
 
     onSave = val => {
-
-        let newAnswer = this.state.Answer.filter( ans => ans.questionId !== val.questionId);
+        console.log("SurveyForm, onSave,  BEFORE", this.state);
+        // if (!this.state.Answer) {
+        //     this.setState({Answer: []});
+        // }
+        let newAnswer = null;
+        if (this.state.Answer) {
+            newAnswer = this.state.Answer.filter( ans => ans.questionId !== val.questionId);
+        } else {
+            newAnswer = [];
+        }
 
         this.setState(prevState => ({
             Answer: [...newAnswer, val]
         }));
-        console.log("SurveyForm, onSave, state", this.state);
+        const answerElement = document.getElementById(val.answerId);
+        console.log("SurveyForm, onSave, answer Element", answerElement);
+        if (answerElement && answerElement !== "undefined") {
+            console.log("!!!SurveyForm, onSave, answer Element SET");
+            document.getElementById(val.answerId).checked = "checked";
+        }
+        console.log("SurveyForm, onSave, answer Element AFTER",  document.getElementById(val.answerId));
+        console.log("SurveyForm, onSave, state AFTER", this.state);
     };
 
   render() {
@@ -141,6 +164,7 @@ class SurveyForm extends Component {
                         Submit
                     </Button>
                 </form>
+                <button className="btn btn-success" onClick={this.logState}>Log</button>
             </div>
         );
 

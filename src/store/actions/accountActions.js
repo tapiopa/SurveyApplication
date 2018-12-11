@@ -151,8 +151,8 @@ export const cancelEditAccount = (account) => {
     return {type: CANCEL_EDIT_ACCOUNT, account};
 };
 
-export const resetAccount = () => {
-    return {type: RESET_ACCOUNT}
+export const resetAccount = (newAccount, routing) => {
+    return {type: RESET_ACCOUNT, newAccount, routing}
 };
 
 const saveAccount = (account) => {

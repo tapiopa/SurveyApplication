@@ -10,7 +10,8 @@ import {
   asyncFetchAccount,
   asyncDeleteAccount,
   asyncCreateAccount,
-  resetAccount
+  resetAccount,
+    setAccountId
 } from '../../../store/actions';
 
 import axios from '../../../axios-survey';
@@ -54,8 +55,9 @@ class AccountsManager extends Component {
 
   editAccount(account) {
     this.props.onResetAccount();
-    this.props.onEditAccount(account);
-    this.props.onFetchAccount(account);
+    // this.props.onEditAccount(account);
+      this.props.onSetAccountId(account.id);
+    // this.props.onFetchAccount(account);
     this.props.history.push('/account');
   }
 
@@ -131,7 +133,8 @@ const mapDispatchToProps = dispatch => {
     onDeleteAccount: account_id => dispatch(asyncDeleteAccount(account_id)),
     onCreateAccount: () => dispatch(asyncCreateAccount()),
     onResetAccount: () => dispatch(resetAccount()),
-    onFetchAccount: account_id => dispatch(asyncFetchAccount(account_id))
+    onFetchAccount: account_id => dispatch(asyncFetchAccount(account_id)),
+      onSetAccountId: (account_id) => dispatch(setAccountId(account_id))
   };
 };
 

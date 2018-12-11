@@ -89,14 +89,14 @@ class User extends Component {
 
     componentDidMount() {
         console.log("componentDidMount, props", this.props);
-        if (this.props.user) {
+        if (this.props.user && this.props.user.id) {
             if (this.props.user.newUser) {
                 this.setState({newUser: true});
-
             }
             if (this.props.user.accountFK) {
                 console.log("componentDidMount, props USER", this.props.user);
-                this.props.onFetchUser(this.props.user);
+                this.setState({newUser: false});
+                // this.props.onFetchUser(this.props.user);
             }
         } else if (this.props.app.account_id) {
             console.log("componentDidMount, props !!!APP", this.props.app);
@@ -458,7 +458,7 @@ class User extends Component {
                                      defaultValue={this.state.postalCode}/>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel className={classes.Label} htmlFor="rewards">User Account</ControlLabel>
+                        <ControlLabel className={classes.Label} htmlFor="rewards">Account ID</ControlLabel>
                         <FormControl className={classes.Input}
                                      type="number" name="rewards" id="rewards"
                                      onChange={this.handleAccountFKChange}
@@ -496,13 +496,13 @@ class User extends Component {
                             Save User</Button>
                         <Button disabled={!this.state.editing} onClick={this.cancelEditing}>
                             Cancel</Button>
-                        <Button disabled={this.state.editing} bsStyle="primary" onClick={this.goBack}>Go Back</Button>
+                        <Button disabled={this.state.editing} bsStyle="info" onClick={this.goBack}>Go Back</Button>
                     </ButtonToolbar>
                     {/*<Button disabled={!this.state.editing} bsStyle="primary" onClick={this.listUsers}>*/}
                     {/*List Users</Button>*/}
-                    <br/>
-                    <br/>
-                    <button className="btn btn-success" onClick={this.logState}>Log</button>
+                    {/*<br/>*/}
+                    {/*<br/>*/}
+                    {/*<button className="btn btn-success" onClick={this.logState}>Log</button>*/}
                 </form>
             </div>
         );

@@ -121,15 +121,20 @@ const accountReducers = (state = initialState, action) => {
                 modifiedDate: moment(),
                 password: "",
                 routing: action.routing,
-                newUser: action.newUser,
+                newAccount: action.newAccount,
                 editing: false,
                 componentShouldUpdate: true
             };
+            const newState = {...state, ...account};
+            console.log("accountReducers, reset account, newState", newState);
             return {...state, ...account};
+            // return {...initialState};
         }
 
         case SET_ACCOUNT_ID: {
             const account = {id: action.accountId};
+            const newState = {...state, ...account};
+            console.log("accountReducers, set account id, newState", newState);
             return {...state, ...account};
         }
 

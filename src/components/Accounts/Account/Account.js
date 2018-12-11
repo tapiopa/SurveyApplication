@@ -88,18 +88,24 @@ class Account extends Component {
   }
 
   componentDidMount() {
-    console.log('Passing props ' + this.props.accountProp + " and " + this.props.idProp );
-    console.log('componentDidMount, props', this.props);
+    console.log('Passing props account' + this.props.account + " and props.id" + this.props.account.id );
+    console.log('Account, componentDidMount, props', this.props);
     // if (this.props.app.account_id) {
     //     console.log("account_id");
     //     if (!this.props.account.id) {
     //         console.log("not account id");
     //     }
     // }
-    console.log(
-      '!!!!!!!componentDidMount, props new account',
-      this.props.account.newAccount
-    );
+    console.log('componentDidMount, props new account', this.props.account.newAccount);
+    if (this.props.account && this.props.account.id) {
+        console.log('Account, componentDidMount, account id', this.props.account.id);
+        this.setState({editing: false, id: this.props.account.id});
+        this.props.onFetchAccount(this.props.account.id);
+    } else if (this.props.app.account_id) {
+        console.log('Account, componentDidMount, app account_id', this.props.app.account_id);
+        this.setState({editing: false, id: this.props.app.account_id});
+        this.props.onFetchAccount(this.props.app.account_id);
+    }
     //if (this.props.account && !this.props.account.routing && !this.state.newAccount) {
     // if (!this.props.account.newAccount) {
     //     console.log("componentDidMount, not new account");
@@ -113,74 +119,75 @@ class Account extends Component {
     //
     // } else
     //     if (this.props.account.newAccount) {
-    console.log('componentDidMount, new account, props', this.props);
-    this.updateState(this.props);
+    console.log('componentDidMount,AFTER, props', this.props);
+    // this.updateState(this.props);
     // }
   }
 
-  componentDidUpdate() {
-    console.log('componentDidUpdate, state', this.state);
-    if (
-      this.props.account &&
-      this.props.account.id &&
-      this.props.account.id !== this.state.id
-    ) {
-      this.updateState(this.props);
-    }
-  }
+  // componentDidUpdate() {
+  //   console.log('componentDidUpdate, state', this.state);
+  //   if (
+  //     this.props.account &&
+  //     this.props.account.id &&
+  //     this.props.account.id !== this.state.id
+  //   ) {
+  //     this.updateState(this.props);
+  //   }
+  // }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('Account, componentWillReceiveProps, nextProps', nextProps);
-    if (!this.props.account.newAccount && this.props.account.fetchSuccess) {
-      console.log('componentWillReceiveProps, not new account');
-      if (!this.props.account.id && this.props.app.account_id) {
-        console.log(
-          'componentWillReceiveProps, setting account id, APP  account_id',
-          this.props.app.account_id
-        );
-        this.props.onFetchAccount(this.props.app.account_id);
-      } else if (this.props.account.id) {
-        console.log(
-          'Account, componentWillReceiveProps, ACCOUNT id: ',
-          this.props.account.id
-        );
-        this.props.onFetchAccount(this.props.account.id);
-      }
-    }
-    if (nextProps.account) {
-      if (nextProps.account.id) {
-        this.updateState(nextProps);
-      }
-      if (nextProps.account.newAccount) {
-        this.setState({ newAccount: true });
-      }
-      if (nextProps.account.saveSuccess) {
-        this.setState({ editing: false });
-      }
-      if (nextProps.account.editing) {
-        this.setState({ editing: nextProps.account.editing });
-      }
-    }
-    console.log('Account, componentWillReceiveProps, state', this.state);
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   console.log('Account, componentWillReceiveProps, nextProps', nextProps);
+  //   if (!this.props.account.newAccount && this.props.account.fetchSuccess) {
+  //     console.log('componentWillReceiveProps, not new account');
+  //     if (!this.props.account.id && this.props.app.account_id) {
+  //       console.log(
+  //         'componentWillReceiveProps, setting account id, APP  account_id',
+  //         this.props.app.account_id
+  //       );
+  //       this.props.onFetchAccount(this.props.app.account_id);
+  //     } else if (this.props.account.id) {
+  //       console.log(
+  //         'Account, componentWillReceiveProps, ACCOUNT id: ',
+  //         this.props.account.id
+  //       );
+  //       this.props.onFetchAccount(this.props.account.id);
+  //     }
+  //   }
+  //   if (nextProps.account) {
+  //     if (nextProps.account.id) {
+  //       this.updateState(nextProps);
+  //     }
+  //     if (nextProps.account.newAccount) {
+  //       this.setState({ newAccount: true });
+  //     }
+  //     if (nextProps.account.saveSuccess) {
+  //       this.setState({ editing: false });
+  //     }
+  //     if (nextProps.account.editing) {
+  //       this.setState({ editing: nextProps.account.editing });
+  //     }
+  //   }
+  //   console.log('Account, componentWillReceiveProps, state', this.state);
+  // }
 
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    console.log(
-      'shouldComponentUpdate this.props',
-      this.props,
-      'next props',
-      nextProps
-    );
-    if (
-      nextProps.account !== this.props.account ||
-      nextProps.account.componentShouldUpdate
-    ) {
-      console.log('shouldComponentUpdate, YESS');
-      nextProps.account.componentShouldUpdate = false;
-      return true;
-    }
-    console.log('shouldComponentUpdate, no difference in account');
-  }
+  // shouldComponentUpdate(nextProps, nextState, nextContext) {
+  //   console.log(
+  //     'shouldComponentUpdate this.props',
+  //     this.props,
+  //     'next props',
+  //     nextProps
+  //   );
+  //   // if (
+  //   //   nextProps.account !== this.props.account ||
+  //   //   nextProps.account.componentShouldUpdate
+  //   // ) {
+  //   //   console.log('shouldComponentUpdate, YESS');
+  //   //   nextProps.account.componentShouldUpdate = false;
+  //   //   return true;
+  //   // }
+  //   // console.log('shouldComponentUpdate, no difference in account');
+  //   return true;
+  // }
 
   updateState(someProps) {
     console.log('Account, updateState, props', someProps);
@@ -533,9 +540,7 @@ class Account extends Component {
           </ButtonToolbar>
         </form>
 
-        <button className="btn btn-success" onClick={this.logState}>
-          Log
-        </button>
+        <button className="btn btn-success" onClick={this.logState}>Log</button>
       </div>
     );
   }

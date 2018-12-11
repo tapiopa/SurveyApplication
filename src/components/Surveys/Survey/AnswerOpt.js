@@ -6,7 +6,7 @@ import FormControl from '@material-ui/core/FormControl';
 
 class AnswerOpt extends React.Component {
   state = {
-    value: '',
+    value: ''
   };
 
   // handleChange = event => {
@@ -16,16 +16,49 @@ class AnswerOpt extends React.Component {
   //     console.log("AnswerOpt, handleChange, this.state.value", this.state.value);
   // };
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        console.log("AnswerOpt, shouldComponentUpdate");
+        return true;
+    }
+
     handleChange = event => {
-        console.log("AnswerOpt, handleChange, this.state", this.state);
+        console.log("AnswerOpt, handleChange, this.state BEFORE", this.state);
+        console.log("AnswerOpt, handleChange, event target", event.target);
         let Answer = Object.assign({}, this.state.Answer);
 
         Answer.AnswerOpt = event.target.value;
         Answer.questionId = this.props.questionId;
-
-        this.setState({Answer});
+        Answer.answerId = event.target.id;
+        console.log("AnswerOpt, handleChange, Answer", Answer);
+        this.setState({Answer: Answer});
         console.log("AnswerOpt, handleChange, this.state AFTER", this.state);
+        // console.log("SurveyForm, onSave, answer Element", answerElement);
+        const answerElement = document.getElementById(Answer.answerId);
+        if (answerElement && answerElement !== "undefined") {
+            console.log("!!!AnswerOpt, handleChange, answer Element SET");
+            document.getElementById(Answer.answerId).checked = true;
+        }
+        console.log("AnswerOpt, handleChange, answer Element AFTER",  document.getElementById(Answer.answerId));
         this.props.onSave(Answer);
+    };
+
+    isAnswerSelected = (answer_id) => {
+        // console.log("AnswerOpt, isAnswerSelected, this.props.Answer", this.props.Answer, "answer_id", answer_id);
+        if (this.props.Answer && this.props.Answer !== "undefined") {
+            const answers = this.props.Answer;//.slice(0);
+            // console.log("AnswerOpt, isAnswerSelected, answers", answers, "answer_id", answer_id);
+            // console.log("AnswerOpt, isAnswerSelected, answers forEach", answers.forEach);
+            answers.forEach(answer => {
+                // console.log("!!!AnswerOpt, isAnswerSelected, forEach, answer.id", answer.answerId, "answer_id", answer_id);
+                if (+answer.answerId === answer_id) {
+                    console.log("BINGO!!! AnswerOpt, isAnswerSelected, forEach, answer.id", answer.answerId, "answer_id", answer_id);
+                    this.shouldComponentUpdate();
+                    return true;
+                }
+            });
+        }
+        console.log("AnswerOpt, isAnswerSelected, return FALSE");
+        return false;
     };
 
   render() {
@@ -36,7 +69,9 @@ class AnswerOpt extends React.Component {
         return <FormControlLabel
                 key={ans.id}
                 value={ans.answer_option}
-                control={<Radio color="primary" />}
+                name={ans.id}
+                checked={this.isAnswerSelected(ans.id)}
+                control={<Radio id={ans.id} checked={this.isAnswerSelected(ans.id)/*ans.id === 44*/} color="primary" />}
                 label={ans.answer_option}
                 labelPlacement="top"
             />
