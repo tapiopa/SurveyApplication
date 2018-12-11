@@ -81,6 +81,7 @@ class App extends Component {
 
   _navCheck(){
     if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
+      document.getElementById("login_ok").style.display = "block";
       if(this.AuthHandler.getData().type === "admin"){
         document.getElementById("adminOnly").style.display = "block";
         document.getElementById("companyOnly").style.display = "block";
@@ -96,6 +97,7 @@ class App extends Component {
     } else {
       document.getElementById("adminOnly").style.display = "none";
       document.getElementById("companyOnly").style.display = "none";
+      document.getElementById("login_ok").style.display = "none";
     }
   }
   _btnCheck() {
@@ -181,10 +183,15 @@ class App extends Component {
         {/*{!this.props.app.loggedIn ? null :*/}
         <nav className={classes.nav}>
           <ul className={classes.list}>
+          <div id="login_ok">
             <li className={classes.link}>
               <NavLink to="/home">Home</NavLink>
             </li>
             <br />
+            <li className={classes.link} title="Take the survey which is available">
+              <NavLink to="/surveys">List of Surveys</NavLink>
+            </li>
+          </div>
             {/*<li className={classes.link}><NavLink to="/account">Account</NavLink></li>*/}
             {/*<br/>*/}
             {/*<li className={classes.link}><NavLink to="/user">Personal Data</NavLink></li>*/}
@@ -207,9 +214,6 @@ class App extends Component {
             </div>
             {/*<li className={classes.link}><NavLink to="/registration">Registration</NavLink></li>*/}
             {/*<br/>*/}
-            <li className={classes.link} title="Take the survey which is available">
-              <NavLink to="/surveys">List of Surveys</NavLink>
-            </li>
             <br />
             <div id="companyOnly">
               <li className={classes.link} title="Check survey result with chart" name="companyOnly">
