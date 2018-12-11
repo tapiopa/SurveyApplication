@@ -683,10 +683,10 @@ class SurveyBuilder extends Component {
                 {/*{!this.state.newSurvey ? null :*/}
                     <Button bsStyle="info" onClick={this.goBack}>Go Back</Button>
                 {/*}*/}
-                <ButtonToolbar>
-                    <Button bsStyle="success" bsSize="small" onClick={this.logState}>Log State</Button>
-                    <Button bsStyle="success" bsSize="small" onClick={this.logProps}>Log Props</Button>
-                </ButtonToolbar>
+                {/*<ButtonToolbar>*/}
+                    {/*<Button bsStyle="success" bsSize="small" onClick={this.logState}>Log State</Button>*/}
+                    {/*<Button bsStyle="success" bsSize="small" onClick={this.logProps}>Log Props</Button>*/}
+                {/*</ButtonToolbar>*/}
 
             </div>
         );

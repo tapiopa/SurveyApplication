@@ -1,5 +1,12 @@
+/*
+* HomePage.js
+*
+*/
 
 import React, {Component} from 'react';
+import {
+    NavLink,
+    // Redirect
 // import {NavLink} from "react-router-dom";
 import {connect} from 'react-redux';
 
