@@ -1,19 +1,9 @@
-/*
- * App.js
- *
- */
 import React, {Component} from 'react';
 import {NavLink, Route, withRouter, Redirect, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from '../axios-survey';
 
-import {
-    asyncFetchFirstName,
-    setUserAccountFK,
-    setAccountId,
-    asyncLoginUser,
-    logoutUser
-} from '../store/actions/';
+import { asyncFetchFirstName, setUserAccountFK, setAccountId, asyncLoginUser, logoutUser} from '../store/actions/';
 
 import classes from './App.css';
 
@@ -38,6 +28,8 @@ import MaterialIcon from 'react-google-material-icons';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import Header from './Header';
 
 class App extends Component {
   AuthHandler = new AuthHandler();
@@ -65,8 +57,8 @@ class App extends Component {
     //         // this.props.onSetUserAccountFK(this.props.app.account_id);
     console.log('App, componentDidMount, props', this.props);
 
-    this._btnCheck();
-    this._navCheck();
+    // this._btnCheck();
+    // this._navCheck();
       if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
         this.props.onLoginUser(this.AuthHandler.getData().id);
         this._setInfo();
@@ -100,13 +92,6 @@ class App extends Component {
       document.getElementById("login_ok").style.display = "none";
     }
   }
-  _btnCheck() {
-    if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
-      document.getElementById('login-btn').style.display = 'none';
-    } else {
-      document.getElementById('login-btn').style.display = 'block';
-    }
-  }
 
     _handleLogout = () => {
         console.log("App, handleLogout");
@@ -116,13 +101,9 @@ class App extends Component {
     };
 
   componentDidUpdate() {
-    this._navCheck();
-    this._btnCheck();
-    if(this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()){
-        if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
-           alert('token has expired');
-           this._handleLogout();
-        }
+    if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
+      alert('token has expired');
+      this._handleLogout();
     }
   }
 
@@ -227,6 +208,7 @@ class App extends Component {
             </div>
           </ul>
         </nav>
+        <Header/>
 </div>
 );
 }//this is end of render
