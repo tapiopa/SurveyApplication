@@ -48,7 +48,7 @@ export const asyncFetchAccount = (account_id) => {
 };
 
 export const setAccountId = (account_id) => {
-    return {type: SET_ACCOUNT_ID, accountId: account_id}
+    return {type: SET_ACCOUNT_ID/*, accountId: account_id*/}
 };
 
 const createAccount = (id) => {

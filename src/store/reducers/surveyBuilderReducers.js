@@ -69,6 +69,7 @@ const surveyBuilderReducers = (state = initialState, action) => {
             survey.editingSurvey = false;
             survey.newSurvey = false;
             survey.questions = questions;
+            survey.saveSuccess = true;
             console.log("reducer, save survey, returned survey", survey);
             return {...state, survey};
         }

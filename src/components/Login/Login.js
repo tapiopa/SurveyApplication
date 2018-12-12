@@ -55,7 +55,7 @@ class Login extends Component {
       <div className={classes.login}>
         <div className={classes.outer}>
           <div
-            className={classes.container}
+            // className={classes.container}
             className="row justify-content-center"
           >
             <form onSubmit={this.handleSubmit} className="form-group">

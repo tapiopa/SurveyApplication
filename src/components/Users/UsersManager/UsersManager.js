@@ -6,7 +6,14 @@ import {connect} from 'react-redux';
 
 import axios from '../../../axios-survey';
 
-import {asyncListUsers, asyncCreateUser, asyncFetchUser, resetUser, asyncDeleteUser} from "../../../store/actions";
+import {
+    asyncListUsers,
+    asyncCreateUser,
+    asyncFetchUser,
+    resetUser,
+    asyncDeleteUser,
+    selectUser
+} from "../../../store/actions";
 
 import {
     Table,
@@ -46,7 +53,8 @@ class UsersManager extends Component {
     editUser(user) {
         console.log("Users Manager, editUser, user accountFK", user);
         this.props.onResetUser(true, false);
-        this.props.onFetchUser(user);
+        this.props.onSelectUser(user.id);
+        // this.props.onFetchUser(user);
         this.props.history.push("/user");
     }
 
@@ -109,7 +117,8 @@ const mapDispatchToProps = (dispatch) => {
         onCreateUser: () => dispatch(asyncCreateUser()),
         onFetchUser: (user) => dispatch(asyncFetchUser(user)),
         onResetUser: (routing, newUser) => dispatch(resetUser(routing, newUser)),
-        onDeleteUser: (user_id) => dispatch(asyncDeleteUser(user_id))
+        onDeleteUser: (user_id) => dispatch(asyncDeleteUser(user_id)),
+        onSelectUser: (user_kd) => dispatch(selectUser(user_kd))
     }
 };
 

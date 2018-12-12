@@ -132,10 +132,11 @@ const accountReducers = (state = initialState, action) => {
         }
 
         case SET_ACCOUNT_ID: {
-            const account = {id: action.accountId};
-            const newState = {...state, ...account};
-            console.log("accountReducers, set account id, newState", newState);
-            return {...state, ...account};
+            // const account = {id: action.accountId};
+            // const newState = {...state, ...account};
+            // console.log("accountReducers, set account id, newState", newState);
+            // return {...state, ...account};
+            return state;
         }
 
         default:
