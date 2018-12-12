@@ -24,7 +24,6 @@ export class Drawer extends Component {
   render() {
       const style = {
         drawerStyle:{
-            marginLeft: 'auto',
             padding: '0.5rem 2rem',
       },
         link:{

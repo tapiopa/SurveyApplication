@@ -58,9 +58,6 @@ class Login extends Component {
       <div className={classes.wrapper}>
        <div className={classes.left} >
          <div className={classes.signin}>
-          <div className={classes.logo}>
-            Survey Application
-          </div>
           <form onSubmit={this.handleSubmit}>
             <div>
               <label>Email or username</label>

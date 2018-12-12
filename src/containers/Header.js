@@ -47,20 +47,36 @@ export class Header extends Component {
             height: '4rem',
             boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)' 
         }
-    }  
+    } 
+    
+    const btnStyle = {
+        marginLeft: "auto",
+        padding: '0.9rem 2rem',
+        display:  !this.props.app.logged_in ? "none" : "block"
+    }
+
+    const toolbarStyle = {
+        margin: "0 auto",
+        fontSize: "2rem",
+        fontWeight: 400,
+        letterSpacing: ".6rem",
+        textTransform: "uppercase"
+
+    } 
     const { anchorEl } = this.state;
     return (
       <div>
         <AppBar {...navProps}>
-            <Toolbar>
-                <div> 
-                    Survey App
-                </div>
-            </Toolbar>
-            <Drawer/>
-            <div>
+
+        {!this.props.app.logged_in ? null : <Drawer/> }
+            
+
+        {this.props.app.logged_in ? null : <Toolbar style={{...toolbarStyle}}> Survey App </Toolbar> }
+        
+        <div style={{...btnStyle}}>
           {!this.props.app.logged_in ? null :  <div><p>Hello {this.props.app.firstname}! {'   '}
           <Button
+            style = {{color:"#E8BD36", outline:"none"}}
             aria-owns={anchorEl ? 'simple-menu' : undefined}
             aria-haspopup="true"
             onClick={this.showDropdown}
