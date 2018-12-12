@@ -1,6 +1,6 @@
 import {
     DELETE_USER, DELETE_USER_FAILED,
-    LIST_USERS, LIST_USERS_FAILED
+    LIST_USERS, LIST_USERS_FAILED, SELECT_USER
 } from "./actionsTypes";
 import axios from "../../axios-survey";
 
@@ -28,6 +28,10 @@ export const asyncListUsers = () => {
             }
         });
     }
+};
+
+export const selectUser = (user_id) => {
+    return {type: SELECT_USER, id: user_id};
 };
 
 const deleteUser = (user_id) => {

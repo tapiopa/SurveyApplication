@@ -5,7 +5,7 @@ import {
     LIST_ACCOUNTS,
     LIST_ACCOUNTS_FAILED,
     DELETE_ACCOUNT,
-    DELETE_ACCOUNT_FAILED
+    DELETE_ACCOUNT_FAILED, SELECT_ACCOUNT
 } from "./actionsTypes";
 import axios from "../../axios-survey";
 
@@ -40,6 +40,11 @@ export const asyncListAccounts = () => {
             dispatch(listAccountsFailed(error))
         });
     }
+};
+
+
+export const selectAccount = (account_id) => {
+    return {type: SELECT_ACCOUNT, id: account_id}
 };
 
 const deleteAccount = (account_id) => {

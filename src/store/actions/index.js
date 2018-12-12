@@ -52,12 +52,14 @@ export {
 
 export {
     asyncListAccounts,
-    asyncDeleteAccount
+    asyncDeleteAccount,
+    selectAccount
 } from "./accountsManagerActions";
 
 export {
     asyncListUsers,
-    asyncDeleteUser
+    asyncDeleteUser,
+    selectUser
 } from "./usersManagerActions";
 
 export {

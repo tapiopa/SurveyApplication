@@ -48,7 +48,7 @@ export const asyncFetchAccount = (account_id) => {
 };
 
 export const setAccountId = (account_id) => {
-    return {type: SET_ACCOUNT_ID, accountId: account_id}
+    return {type: SET_ACCOUNT_ID/*, accountId: account_id*/}
 };
 
 const createAccount = (id) => {
@@ -151,8 +151,8 @@ export const cancelEditAccount = (account) => {
     return {type: CANCEL_EDIT_ACCOUNT, account};
 };
 
-export const resetAccount = () => {
-    return {type: RESET_ACCOUNT}
+export const resetAccount = (newAccount, routing) => {
+    return {type: RESET_ACCOUNT, newAccount, routing}
 };
 
 const saveAccount = (account) => {

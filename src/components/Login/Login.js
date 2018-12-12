@@ -53,6 +53,65 @@ class Login extends Component {
   render() {
     return (
       <div>
+        {// <div className={classes.login}>}
+        // <div className={classes.outer}>}
+          /*<div}
+        //     className={classes.container}
+        //     className="row justify-content-center"
+        //   >
+        //     <form onSubmit={this.handleSubmit} className="form-group">
+        //       <div className="row">
+        //         <div className="col-xs-2">
+        //           <label htmlFor="account">Username:</label>
+        //         </div>
+        //       </div>
+        //       <div className="row">
+        //         <div className="col-xs-2">
+        //           <input
+        //             type="text"
+        //             id="account"
+        //             name="account"
+        //             className="form-control"
+        //             autoComplete="false"
+        //             autoFocus={true}
+        //             onChange={this.onChange}
+        //           />
+        //         </div>
+        //       </div>
+        //       <div className="row">
+        //         <div className="col-xs-2">
+        //           <label htmlFor="password">Password:</label>
+        //         </div>
+        //       </div>
+        //       <div className="row">
+        //         <div className="col-xs-2">
+        //           <input
+        //             type="password"
+        //             id="password"
+        //             name="password"
+        //             className="form-control"
+        //             autoComplete="false"
+        //             onChange={this.onChange}
+        //           />
+        //         </div>
+        //       </div>
+        //       <br />
+        //       <div className="row">
+        //         <div className="col-xs-2 col-md-4">
+        //           <button type="submit" className="btn btn-primary">
+        //             Login
+        //           </button>
+        //         </div>
+        //         <div className="col-xs-2 col-md-4"><NavLink to="/registration">
+        //           <label className="btn btn-success">Sign-Up</label></NavLink>
+        //           <Route path="/registration" component={UserForm} />
+        //         </div>
+        //       </div>
+        //     </form>
+        //   </div>
+        // </div>
+        // </div>
+    */}
 
     <div className={classes.body}>    
       <div className={classes.wrapper}>
@@ -117,6 +176,8 @@ class Login extends Component {
         </div>
       </div>
     </div>
+      </div>
+      </div>
     );
   }
 }

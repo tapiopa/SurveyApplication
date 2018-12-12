@@ -56,6 +56,7 @@ export class Header extends Component {
                     Survey App
                 </div>
             </Toolbar>
+
             <Drawer/>
             <div>
           {!this.props.isLogged ? null :  <div><p>Hello {this.props.app.firstname}! {'   '}

@@ -5,12 +5,11 @@ import {connect} from 'react-redux';
 
 // import {PageHeader} from 'react-bootstrap';
 
-// import Registration from "../Registration/UserForm";
 // import Aux from "../../hoc/Auxiliary/Auxiliary";
 import classes from "./HomePage.css";
 
 // import Account from "../Accounts/Account/Account";
-// import User from "../Users/User/User";
+import Protected from "../Login/Protected";
 
 class HomePage extends Component {
     render() {
@@ -22,7 +21,7 @@ class HomePage extends Component {
                             Survey is <span> a feedback </span> 
                             for education
                         </h1>
-                        <a className={classes.featureBtn} href="/import {NavLink, Route, withRouter, Redirect, Switch} from 'react-router-dom';">GET STARTED</a>
+                        <a className={classes.featureBtn} href="/survey">GET STARTED</a>
                         <div> Current Version: <strong> v0.10.0 </strong></div>
                     </div>
                 </div>
@@ -95,6 +94,5 @@ const mapStateToProps = (state) => {
         app: state.app
     }
 };
-
 
 export default connect(mapStateToProps)(HomePage);

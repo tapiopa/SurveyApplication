@@ -3,7 +3,8 @@ import {Redirect} from 'react-router-dom';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import HomePage from "../HomePage/HomePage";
+// import HomePage from "../HomePage/HomePage";
+import Login from "../Login/Login";
 import {asyncSetUserAccountFK, setAppUserAccountIdName} from "../../store/actions"
 import connect from "react-redux/es/connect/connect";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
@@ -39,7 +40,10 @@ export class FormUserDetails extends Component {
 
           <React.Fragment>
           <AppBar title="Success" />
-            <Redirect to={HomePage}/>
+              {/*{this.props.history && this.props.history.push("/home")}*/}
+            {/*<Redirect to={HomePage}/>*/}
+              <Redirect to={Login}/>
+              <h1>Please, log in next</h1>
           {/*<h1>Thanks You For Your Submission</h1>*/}
         </React.Fragment>
       </MuiThemeProvider>

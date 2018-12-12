@@ -13,15 +13,15 @@ import {
     // FormControl, FormGroup, ControlLabel, PageHeader,
     Button,
     // ButtonToolbar,
-    ButtonGroup,
+    // ButtonGroup,
     //Alert
 } from 'react-bootstrap';
 
 import classes from "./SurveysList.css";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import Protected from "../../Login/Protected";
-import SurveyForm from '../Survey/SurveyForm';
-import { NavLink, Link, Route } from 'react-router-dom';
+// import SurveyForm from '../Survey/SurveyForm';
+// import { NavLink, Link, Route } from 'react-router-dom';
 class ListSurveys extends Component {
     constructor(props) {
         super(props);

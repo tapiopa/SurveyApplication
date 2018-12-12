@@ -1,11 +1,12 @@
 import {
     DELETE_USER, DELETE_USER_FAILED,
-    LIST_USERS, LIST_USERS_FAILED
+    LIST_USERS, LIST_USERS_FAILED, SELECT_USER
 } from "../actions/actionsTypes";
 import {updateObject} from "../utility";
 
 const initialState = {
-    usersManager: null
+    usersManager: null,
+    selectedUser: null
 };
 
 const usersManagerReducers = (state = initialState, action) => {
@@ -20,6 +21,9 @@ const usersManagerReducers = (state = initialState, action) => {
         }
         case LIST_USERS_FAILED: {
             return updateObject(state, {error: true, errorMessage: action.error});
+        }
+        case SELECT_USER: {
+            return {...state, selectedUser: action.id}
         }
         case DELETE_USER: {
             console.log("usersManagerReducers, state users", state.users);

@@ -51,5 +51,7 @@
 
 .buttonToolbar {
     width: 30rem;
-    float: right;
+    /*float: right;*/
+    /*margin-left: 12rem;*/
+    /*border: 1px solid red;*/
 }

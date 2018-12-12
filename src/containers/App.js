@@ -1,3 +1,7 @@
+/*
+ * App.js
+ *
+ */
 import React, {Component} from 'react';
 import {NavLink, Route, withRouter, Redirect, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -24,6 +28,7 @@ import Result from '../components/Chart/Result';
 import Login from '../components/Login/Login';
 import AuthHandler from '../components/Login/AuthHandler';
 import SurveyForm from '../components/Surveys/Survey/SurveyForm';
+
 
 import Header from './Header';
 
@@ -61,20 +66,35 @@ class App extends Component {
   });
   }
 
+  _navCheck(){
+    if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
+      if(this.AuthHandler.getData().type === "admin"){
   _handleLogout = () => {
-      console.log("App, handleLogout");
+        document.getElementById("companyOnly").style.display = "block";
+      }
+      else if(this.AuthHandler.getData().type === "company"){
+        document.getElementById("companyOnly").style.display = "block";
+        document.getElementById("adminOnly").style.display = "none";
+      }
+      else {
       this.AuthHandler.logout();
       /**Here required to handle with redux !!!
        * for handling logout user from redux!!!!
        */
-      // this.props.onLogoutUser();
-      this.props.history.replace('/login');
-  };
+  // }
+
+    _handleLogout = () => {
+        console.log("App, handleLogout");
+        this.AuthHandler.logout();
+        this.props.onLogoutUser();
+        this.props.history.replace('/login');
+    };
 
   componentDidUpdate() {
     if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
       alert('token has expired');
       this._handleLogout();
+        }
     }
   }
 
@@ -82,7 +102,7 @@ class App extends Component {
 
     return (
       <div className={classes.App}>
-       
+        </div>
 
         <Switch>
           <Route path="/home" component={HomePage} />
