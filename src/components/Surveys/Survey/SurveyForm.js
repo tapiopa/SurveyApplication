@@ -92,6 +92,7 @@ class SurveyForm extends Component {
             Answer: [...newAnswer, val]
         }));
         console.log("SurveyForm, onSave, state", this.state);
+        
     };
 
   render() {

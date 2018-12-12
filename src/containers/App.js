@@ -16,6 +16,8 @@ import {
 } from '../store/actions/';
 
 import classes from './App.css';
+
+
 // import Auxiliary from "../hoc/Auxiliary/Auxiliary";
 // import Registration from "../components/Registration/UserForm";
 import Account from '../components/Accounts/Account/Account';
@@ -31,17 +33,32 @@ import SurveysList from '../components/Surveys/SurveysList/SurveysList';
 import Result from '../components/Chart/Result';
 import Login from '../components/Login/Login';
 import AuthHandler from '../components/Login/AuthHandler';
-import SurveyForm from '../components/Surveys/Survey/SurveyForm'
-
+import SurveyForm from '../components/Surveys/Survey/SurveyForm';
+import MaterialIcon from 'react-google-material-icons';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 class App extends Component {
   AuthHandler = new AuthHandler();
   constructor(){
     super();
       this.state = {
-        id: ''
+        id: '',
+        anchorEl: null
       };
+      this.showDropdown = this.showDropdown.bind(this);
+      this.closeDropdown = this.closeDropdown.bind(this);
   }
+
+  showDropdown(e){
+    e.preventDefault();
+    this.setState({anchorEl : e.currentTarget});
+  }
+  closeDropdown(){
+    this.setState({anchorEl : null});
+  }
+
   componentDidMount() {
     // this.props.onFetchFirstname(this.props.app.account_id);
     //         // this.props.onSetAccountId(this.props.app.account_id);
@@ -64,6 +81,7 @@ class App extends Component {
 
   _navCheck(){
     if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
+      document.getElementById("login_ok").style.display = "block";
       if(this.AuthHandler.getData().type === "admin"){
         document.getElementById("adminOnly").style.display = "block";
         document.getElementById("companyOnly").style.display = "block";
@@ -79,14 +97,13 @@ class App extends Component {
     } else {
       document.getElementById("adminOnly").style.display = "none";
       document.getElementById("companyOnly").style.display = "none";
+      document.getElementById("login_ok").style.display = "none";
     }
   }
   _btnCheck() {
     if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
-      document.getElementById('logout-btn').style.display = 'block';
       document.getElementById('login-btn').style.display = 'none';
     } else {
-      document.getElementById('logout-btn').style.display = 'none';
       document.getElementById('login-btn').style.display = 'block';
     }
   }
@@ -110,25 +127,43 @@ class App extends Component {
   }
 
   render() {
+    const { anchorEl } = this.state;
     return (
       <div className={classes.App}>
         <header className={classes.header}>
-          {!this.props.app.logged_in ? null :  <p>Hello {this.props.app.firstname}!</p>}
-    <div id="logout-btn">
-            <button
-              className="btn btn-warning"
-              onClick={this._handleLogout}
-            >
-              Logout
-            </button>
-        </div>
-
-        <div id="login-btn">
-          <NavLink to="/login">
-            <button className="btn btn-primary">Login</button>
-          </NavLink>
-      </div>
+          {!this.props.app.logged_in ? null :  <div><p>Hello {this.props.app.firstname}! {'   '}
+          <Button
+          aria-owns={anchorEl ? 'simple-menu' : undefined}
+          aria-haspopup="true"
+          onClick={this.showDropdown}
+        >
+            <MaterialIcon icon="list" size={20}/>
+        </Button>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={this.closeDropdown}
+          className="dropMenu"
+        >
+          <MenuItem onClick={this.closeDropdown}><NavLink to="/user">Profile</NavLink></MenuItem>
+          <MenuItem onClick={this.closeDropdown}><NavLink to="/account">My account</NavLink></MenuItem>
+          <MenuItem onClick={this.closeDropdown}>
+                <button
+                  className="btn-sm btn-warning"
+                  onClick={this._handleLogout}>
+                  Logout
+                </button>
+          </MenuItem>
+        </Menu>
+          </p></div>}
+              <div id="login-btn">
+                <NavLink to="/login">
+                  <button className="btn-sm btn-primary">Login</button>
+                </NavLink>
+              </div>
         </header>
+
         <Switch>
           <Route path="/home" component={HomePage} />
           <Route path="/account" component={Account}/>
@@ -148,18 +183,15 @@ class App extends Component {
         {/*{!this.props.app.loggedIn ? null :*/}
         <nav className={classes.nav}>
           <ul className={classes.list}>
+          <div id="login_ok">
             <li className={classes.link}>
               <NavLink to="/home">Home</NavLink>
             </li>
             <br />
-            <li className={classes.link}>
-              <NavLink to="/account">Account</NavLink>
+            <li className={classes.link} title="Take the survey which is available">
+              <NavLink to="/surveys">List of Surveys</NavLink>
             </li>
-            <br />
-            <li className={classes.link}>
-              <NavLink to="/user">User</NavLink>
-            </li>
-            <br />
+          </div>
             {/*<li className={classes.link}><NavLink to="/account">Account</NavLink></li>*/}
             {/*<br/>*/}
             {/*<li className={classes.link}><NavLink to="/user">Personal Data</NavLink></li>*/}
@@ -182,9 +214,6 @@ class App extends Component {
             </div>
             {/*<li className={classes.link}><NavLink to="/registration">Registration</NavLink></li>*/}
             {/*<br/>*/}
-            <li className={classes.link} title="Take the survey which is available">
-              <NavLink to="/surveys">List of Surveys</NavLink>
-            </li>
             <br />
             <div id="companyOnly">
               <li className={classes.link} title="Check survey result with chart" name="companyOnly">
@@ -192,7 +221,7 @@ class App extends Component {
               </li>
               <br />
               <li className={classes.link}>
-              <NavLink to="/surveybuilder">SurveyBuilder</NavLink>
+              <NavLink to="/surveysmanager">SurveyBuilder</NavLink>
             </li>
             <br />
             </div>

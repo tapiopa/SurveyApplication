@@ -54,10 +54,8 @@ class Login extends Component {
     return (
       <div className={classes.login}>
         <div className={classes.outer}>
-          <div
-            className={classes.container}
-            className="row justify-content-center"
-          >
+          <div className={classes.container}>
+          <div className="row justify-content-center">
             <form onSubmit={this.handleSubmit} className="form-group">
               <div className="row">
                 <div className="col-xs-2">
@@ -107,6 +105,7 @@ class Login extends Component {
                 </div>
               </div>
             </form>
+          </div>
           </div>
         </div>
       </div>

@@ -36,19 +36,19 @@ class AnswerOpt extends React.Component {
         return <FormControlLabel
                 key={ans.id}
                 value={ans.answer_option}
-                control={<Radio color="primary" />}
+                control={<Radio /*color="primary"**/ />}
                 label={ans.answer_option}
                 labelPlacement="top"
             />
     });
 
     return (
-      <FormControl style={styles.RadioAnswer} component="fieldset">
+      <FormControl style={styles.RadioAnswer} /* component="fieldset" */>
         <RadioGroup
           aria-label="position"
           name="position"
           value={this.state.value}
-          onChange={this.handleChange}
+          // onChange={this.handleChange}
           row
         >
           {Options}
