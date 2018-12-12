@@ -7,12 +7,7 @@ import {NavLink, Route, withRouter, Redirect, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from '../axios-survey';
 
-import {
-    asyncFetchFirstName,
-    setUserAccountFK,
-    setAccountId,
-    asyncLoginUser,
-    logoutUser
+
 import { asyncFetchFirstName, setUserAccountFK, setAccountId, asyncLoginUser, logoutUser} from '../store/actions/';
 
 import classes from './App.css';

@@ -115,6 +115,7 @@ class SurveyForm extends Component {
         }
         console.log("SurveyForm, onSave, answer Element AFTER",  document.getElementById(val.answerId));
         console.log("SurveyForm, onSave, state AFTER", this.state);
+        console.log("!!!!!SurveyForm, onSave, answer Element IS CHECKED?",  document.getElementById(val.answerId).checked);
     };
 
   render() {

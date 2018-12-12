@@ -16,12 +16,18 @@ class AnswerOpt extends React.Component {
   //     console.log("AnswerOpt, handleChange, this.state.value", this.state.value);
   // };
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        console.log("AnswerOpt, shouldComponentUpdate");
-        return true;
-    }
+    // shouldComponentUpdate(nextProps, nextState, nextContext) {
+    //     console.log("AnswerOpt, shouldComponentUpdate");
+    //     return true;
+    // }
 
-    handleChange = event => {
+    handleRadioButtonChange = (answer_id) => {
+        console.log("AnswerOpt, handleRadioButtonChange");
+        document.getElementById(answer_id).checked = true;
+        console.log("AnswerOpt, handleRadioButtonChange, radiobuttons", document.getElementById(answer_id));
+    };
+
+    handleChange = (event) => {
         console.log("AnswerOpt, handleChange, this.state BEFORE", this.state);
         console.log("AnswerOpt, handleChange, event target", event.target);
         let Answer = Object.assign({}, this.state.Answer);
@@ -51,14 +57,14 @@ class AnswerOpt extends React.Component {
             answers.forEach(answer => {
                 // console.log("!!!AnswerOpt, isAnswerSelected, forEach, answer.id", answer.answerId, "answer_id", answer_id);
                 if (+answer.answerId === answer_id) {
-                    console.log("BINGO!!! AnswerOpt, isAnswerSelected, forEach, answer.id", answer.answerId, "answer_id", answer_id);
-                    this.shouldComponentUpdate();
+                    // console.log("BINGO!!! AnswerOpt, isAnswerSelected, forEach, answer.id", answer.answerId, "answer_id", answer_id);
+                    // this.shouldComponentUpdate();
                     return true;
                 }
             });
         }
-        console.log("AnswerOpt, isAnswerSelected, return FALSE");
-        return false;
+        // console.log("AnswerOpt, isAnswerSelected, return FALSE");
+        return null;
     };
 
   render() {
@@ -69,9 +75,18 @@ class AnswerOpt extends React.Component {
         return <FormControlLabel
                 key={ans.id}
                 value={ans.answer_option}
+                valueSelected={() => this.isAnswerSelected(ans.id)}
+                onChange={() => this.handleRadioButtonChange(ans.id)}
                 name={ans.id}
                 checked={this.isAnswerSelected(ans.id)}
-                control={<Radio id={ans.id} checked={this.isAnswerSelected(ans.id)/*ans.id === 44*/} color="primary" />}
+                control={<Radio
+                    id={ans.id}
+                    // checked={null}
+                    checked={this.isAnswerSelected(ans.id)}
+                    // valueSelected={() => this.isAnswerSelected(ans.id)}
+                    // onChange={() => this.handleRadioButtonChange(ans.id)}
+                    color="primary"
+                />}
                 label={ans.answer_option}
                 labelPlacement="top"
             />
