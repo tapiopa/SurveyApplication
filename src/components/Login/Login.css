@@ -25,6 +25,7 @@ h6 {
 }
 
 .left {
+  margin-top: 2rem; 
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -39,6 +40,7 @@ h6 {
 
 /* Sign In */
 .signin {
+  margin-top:1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,12 +54,13 @@ h6 {
   padding-bottom: 3rem;
 }
 
-.signin .logo {
-  margin-bottom: 8vh;
-}
-
-.signin .logo img {
-  width: 300px;
+.logo {
+  letter-spacing: .5rem;
+  font-size: 1.5rem;
+  width: 80%;
+  text-transform: uppercase;
+  margin-top: 2rem;
+  padding: 1rem 0;
 }
 
 .signin label {
