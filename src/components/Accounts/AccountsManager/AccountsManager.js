@@ -67,7 +67,6 @@ class AccountsManager extends Component {
     return (
       <div className={classes.accountManager}>
         <h1>Accounts Manager</h1>
-        <h2>Accounts:</h2>
         <Table className={classes.table}>
           <thead>
             <tr>
@@ -86,12 +85,14 @@ class AccountsManager extends Component {
                     <td>
                       <ButtonGroup>
                         <Button
+                          className={classes.btnPrimary}
                           onClick={() => this.editAccount(account)}
                           bsStyle="primary btn-sm"
                         >
                           Edit
                         </Button>
                         <Button
+                          className={classes.btnDanger}
                           onClick={() => this.deleteAccount(account)}
                           bsStyle="danger btn-sm"
                         >

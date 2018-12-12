@@ -47,7 +47,6 @@ class UsersManager extends Component {
         return (
             <div className={classes.usersManager}>
                 <h1>Users Manager</h1>
-                <h2>Users:</h2>
                 <Table className={classes.table}>
                     <thead>
                     <tr>
@@ -66,8 +65,8 @@ class UsersManager extends Component {
                                 <td>{user.lastname}</td>
                                 <td>
                                     <ButtonGroup>
-                                        <Button onClick={() => this.editUser(user)} bsStyle="primary btn-sm">Edit</Button>
-                                        <Button onClick={() =>this.deleteUser(user.id)} bsStyle="danger btn-sm">Delete</Button>
+                                        <Button onClick={() => this.editUser(user)} className={classes.btnPrimary} bsStyle="primary btn-sm">Edit</Button>
+                                        <Button onClick={() =>this.deleteUser(user.id)} className={classes.btnDanger} bsStyle="danger btn-sm">Delete</Button>
                                     </ButtonGroup>
                                 </td>
                             </tr>

@@ -4,6 +4,14 @@
     flex-direction: column;
 }
 
+table{
+    margin-top: 2rem;
+}
+
+table.table thead tr th:first-child{
+    width: 15%
+}
+
 table.table thead tr th{
     width: 35%
 }
@@ -33,4 +41,19 @@ table.table thead tr th:last-child{
     background-color: #2d343a;
     border-color: #2d343a;
     text-decoration: none;
+}
+
+
+.btnPrimary{
+    font-weight: 500;
+    border: 3px solid #007bff;
+    border-top-left-radius: .5rem; 
+    border-bottom-left-radius: .5rem; 
+}
+
+.btnDanger{
+    font-weight: 500;
+    border: 3px solid #dc3545;
+    border-top-right-radius: .5rem; 
+    border-bottom-right-radius: .5rem; 
 }
