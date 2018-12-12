@@ -37,7 +37,7 @@ export default class AuthHandler {
     else{
       return true;
     }
-  }
+  };
 
   isTokenExpired = token => {
     try {
@@ -47,7 +47,7 @@ export default class AuthHandler {
         return true;
       } else return false;
     } catch (err) {
-      console.log('expired check failed! Line 32: AuthHandler.js');
+      console.log('expired check failed! Line 50: AuthHandler.js');
       return false;
     }
   };
@@ -67,17 +67,8 @@ export default class AuthHandler {
         return localStorage.getItem('id_token');
     };
 
-    isThereToken = () => {
-        const token = localStorage.getItem("id_token");
-        if (token === null) {
-            return false;
-        } else {
-            return true;
-        }
-    };
-
     logout = () => {
-        console.log("AuthaHandler, logtou");
+        console.log("AuthaHandler, logout");
         // Clear user token and profile data from localStorage
         localStorage.removeItem('id_token');
     };
