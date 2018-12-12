@@ -22,7 +22,7 @@ class HomePage extends Component {
                             Survey is <span> a feedback </span> 
                             for education
                         </h1>
-                        <a className={classes.featureBtn} href="/survey">GET STARTED</a>
+                        <a className={classes.featureBtn} href="/import {NavLink, Route, withRouter, Redirect, Switch} from 'react-router-dom';">GET STARTED</a>
                         <div> Current Version: <strong> v0.10.0 </strong></div>
                     </div>
                 </div>
