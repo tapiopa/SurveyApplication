@@ -1,19 +1,9 @@
-/*
- * App.js
- *
- */
 import React, {Component} from 'react';
 import {NavLink, Route, withRouter, Redirect, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from '../axios-survey';
 
-import {
-    asyncFetchFirstName,
-    setUserAccountFK,
-    setAccountId,
-    asyncLoginUser,
-    logoutUser
-} from '../store/actions/';
+import { asyncFetchFirstName, setUserAccountFK, setAccountId, asyncLoginUser, logoutUser} from '../store/actions/';
 
 import classes from './App.css';
 // import Auxiliary from "../hoc/Auxiliary/Auxiliary";
@@ -32,6 +22,8 @@ import Result from '../components/Chart/Result';
 import Login from '../components/Login/Login';
 import AuthHandler from '../components/Login/AuthHandler';
 
+import Header from './Header';
+
 class App extends Component {
   AuthHandler = new AuthHandler();
   constructor(){
@@ -46,8 +38,8 @@ class App extends Component {
     //         // this.props.onSetUserAccountFK(this.props.app.account_id);
     console.log('App, componentDidMount, props', this.props);
 
-    this._btnCheck();
-    this._navCheck();
+    // this._btnCheck();
+    // this._navCheck();
       if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
         this.props.onLoginUser(this.AuthHandler.getData().id);
         this._setInfo();
@@ -79,15 +71,15 @@ class App extends Component {
       document.getElementById("companyOnly").style.display = "none";
     }
   }
-  _btnCheck() {
-    if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
-      document.getElementById('logout-btn').style.display = 'block';
-      document.getElementById('login-btn').style.display = 'none';
-    } else {
-      document.getElementById('logout-btn').style.display = 'none';
-      document.getElementById('login-btn').style.display = 'block';
-    }
-  }
+  // _btnCheck() {
+  //   if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
+  //     document.getElementById('logout-btn').style.display = 'block';
+  //     document.getElementById('login-btn').style.display = 'none';
+  //   } else {
+  //     document.getElementById('logout-btn').style.display = 'none';
+  //     document.getElementById('login-btn').style.display = 'block';
+  //   }
+  // }
 
     _handleLogout = () => {
         console.log("App, handleLogout");
@@ -97,8 +89,8 @@ class App extends Component {
     };
 
   componentDidUpdate() {
-    this._navCheck();
-    this._btnCheck();
+    // this._navCheck();
+    // this._btnCheck();
     if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
       alert('token has expired');
       this._handleLogout();
@@ -108,7 +100,7 @@ class App extends Component {
   render() {
     return (
       <div className={classes.App}>
-        <header className={classes.header}>
+        {/*<header className={classes.header}>
           {!this.props.app.logged_in ? null :  <p>Hello {this.props.app.firstname}!</p>}
     <div id="logout-btn">
             <button
@@ -124,7 +116,7 @@ class App extends Component {
             <button className="btn btn-primary">Login</button>
           </NavLink>
       </div>
-        </header>
+    </header>*/}
         <Switch>
           <Route path="/home" component={HomePage} />
           <Route path="/account" component={Account}/>
@@ -193,6 +185,7 @@ class App extends Component {
             </div>
           </ul>
         </nav>
+        <Header/>
 </div>
 );
 }//this is end of render
