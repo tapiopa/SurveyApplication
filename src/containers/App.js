@@ -69,6 +69,13 @@ class App extends Component {
 
   render() {
 
+    const footerStyle= {
+      padding: "1.5rem 0",
+      background: "#2d343a",
+      color: "white",
+      fontSize:"1.5rem"
+    }
+
     return (
       <div className={classes.App}>
         <Switch>
@@ -89,6 +96,7 @@ class App extends Component {
         </Switch>
         {/*{!this.props.app.loggedIn ? null :*/}
         <Header history={this.props.history}/>
+        {/*<div style={{...footerStyle}}> &copy; Survey Inc. </div>*/}
 </div>
 );
 }//this is end of render
