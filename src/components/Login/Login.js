@@ -101,7 +101,7 @@ class Login extends Component {
             <h1  className={classes.show}caseText>
               Let's survey <strong>the future</strong>
             </h1>
-            <NavLink to="#"  className={classes.secondaryBtn}>Start a FREE 10-day trial</NavLink>
+            <NavLink to="/Home"  className={classes.secondaryBtn}>Start a FREE 10-day trial</NavLink>
           </div>
           </div>
           </div>
