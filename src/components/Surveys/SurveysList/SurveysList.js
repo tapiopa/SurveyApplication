@@ -3,11 +3,12 @@ import {connect} from 'react-redux';
 
 import axios from '../../../axios-survey';
 import {asyncSurveyList, asyncGetSurveyAndQuestions} from "../../../store/actions";
-import { Table, Button} from 'react-bootstrap';
+// import { Table, Button} from 'react-bootstrap';
 
 import classes from "./SurveysList.css";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import Protected from "../../Login/Protected";
+import Edit from '@material-ui/icons/Edit';
 
 class ListSurveys extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ class ListSurveys extends Component {
             return (
                     <div className={classes.item}>
                         <div className={classes.text}>{`${survey.id}. ${survey.title}`}</div>
-                        <i onClick={() =>this.takeTheSurvey(survey.id)} class="fa fa-camera"></i>
+                        <Edit onClick={() =>this.takeTheSurvey(survey.id)} className={classes.check}/>
                     </div>
                
             );

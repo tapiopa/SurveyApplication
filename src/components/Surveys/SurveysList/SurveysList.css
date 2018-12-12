@@ -48,6 +48,21 @@ div.item i {
   cursor: pointer;
 }
 
+div.item .check {
+  position: absolute;
+  padding: .5rem;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  font-size: 34px;
+  color: rgb(56, 64, 72);
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
 div.item .text{
     position: absolute;
     top: 20%;
@@ -62,7 +77,13 @@ div.item .text{
 div.item i {
   color: rgb(180, 151, 55);
   transform: translate(-50%, -50%) scale(0);
-  transition: transform 300ms 0ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  transition: transform 300ms 0ms cubic-bezier(.95,-0.14,.53,.64);
+}
+
+div.item .check {
+  color: rgb(180, 151, 55);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 300ms 0ms cubic-bezier(.95,-0.14,.53,.64);
 }
 
 div.item:hover {
@@ -84,4 +105,11 @@ div.item:hover i {
   transform: translate(-50%, -50%) scale(1);
   transition: transform 300ms 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+div.item:hover .check {
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 300ms 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
  
