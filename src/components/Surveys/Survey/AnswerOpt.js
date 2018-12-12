@@ -27,14 +27,27 @@ class AnswerOpt extends React.Component {
         console.log("AnswerOpt, handleRadioButtonChange, radiobuttons", document.getElementById(answer_id));
     };
 
-    handleChange = (event) => {
+    handleChange = (event, options) => {
         console.log("AnswerOpt, handleChange, this.state BEFORE", this.state);
         console.log("AnswerOpt, handleChange, event target", event.target);
+        console.log("AnswerOpt, handleChange, options", options);
         let Answer = Object.assign({}, this.state.Answer);
 
         Answer.AnswerOpt = event.target.value;
         Answer.questionId = this.props.questionId;
         Answer.answerId = event.target.id;
+        options.Options.map(option => {
+            const newOption = {...option};
+            // const props = option.props.slice(0);
+            const props = {...newOption.props};
+            if (props.name === Answer.answerId) {
+                props.checked = true;
+            } else {
+                props.checked = null;
+            }
+           return newOption;
+            // option.props = props;
+        });
         console.log("AnswerOpt, handleChange, Answer", Answer);
         this.setState({Answer: Answer});
         console.log("AnswerOpt, handleChange, this.state AFTER", this.state);
@@ -98,7 +111,7 @@ class AnswerOpt extends React.Component {
           aria-label="position"
           name="position"
           value={this.state.value}
-          onChange={this.handleChange}
+          onChange={(event) => this.handleChange(event, {Options})}
           row
         >
           {Options}
