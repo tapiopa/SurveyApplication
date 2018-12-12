@@ -87,13 +87,13 @@ class AccountsManager extends Component {
                       <ButtonGroup>
                         <Button
                           onClick={() => this.editAccount(account)}
-                          bsStyle="success"
+                          bsStyle="primary btn-sm"
                         >
                           Edit
                         </Button>
                         <Button
                           onClick={() => this.deleteAccount(account)}
-                          bsStyle="danger"
+                          bsStyle="danger btn-sm"
                         >
                           Delete
                         </Button>
@@ -102,17 +102,9 @@ class AccountsManager extends Component {
                   </tr>
                 );
               })}
-            <tr>
-              <td />
-              <td>
-                <Button onClick={this.createAccount} bsStyle="primary">
-                  Add New Account
-                </Button>
-              </td>
-              <td />
-            </tr>
           </tbody>
         </Table>
+        <Button onClick={this.createAccount} className={classes.btn}>Add New Account</Button>
       </div>
     );
   }

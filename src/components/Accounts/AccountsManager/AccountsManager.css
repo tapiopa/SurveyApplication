@@ -1,4 +1,36 @@
 .accountManager {
-    width: 70%;
-    float: right;
+    margin: 6rem 6rem 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+table.table thead tr th{
+    width: 35%
+}
+
+table.table thead tr th:last-child{
+    width: 1%
+}
+
+.btn {
+    position: relative;
+    display: block;
+    padding: 0.5rem;
+    border: 4px solid transparent;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 0.5em;
+    border-color: #E8BD36;
+    background-color: #E8BD36;
+    color: #2d343a;
+}    
+
+.btn:hover, .btn:active, .btn:focus {
+    color: #fff;
+    background-color: #2d343a;
+    border-color: #2d343a;
+    text-decoration: none;
 }
