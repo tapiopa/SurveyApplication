@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import AuthHandler from '../components/Login/AuthHandler';
 
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -35,42 +34,42 @@ export class Drawer extends Component {
 
       
 
-      const menuItems = [
-          {
-              name: "Home",
-              link: "/home"
-          },
-          {
-            name: "Survey Manager",
-            link: "/surveysmanager"
-        },
-        {
-            name: "Accounts Manager",
-            link: "/accountsmanager"
-        },
-        {
-            name: "Users Manager",
-            link: "/usersmanager"
-        },
-        {
-            name: "Survey",
-            link: "/survey"
-        },
-      ]
+    //   const menuItems = [
+    //       {
+    //           name: "Home",
+    //           link: "/home"
+    //       },
+    //       {
+    //         name: "Survey Manager",
+    //         link: "/surveysmanager"
+    //     },
+    //     {
+    //         name: "Accounts Manager",
+    //         link: "/accountsmanager"
+    //     },
+    //     {
+    //         name: "Users Manager",
+    //         link: "/usersmanager"
+    //     },
+    //     {
+    //         name: "Survey",
+    //         link: "/survey"
+    //     },
+    //   ]
 
-      const sideList = (
-        <div>
-          {menuItems.map( (items, idx) => {
-            return (
-            <List key={idx} style={style.link} component={Link} to={items.link}>
-                <ListItem button>
-                    <ListItemText primary={items.name} />
-                </ListItem>
-            </List>)
-          })}
+    //   const sideList = (
+    //     <div>
+    //       {menuItems.map( (items, idx) => {
+    //         return (
+    //         <List key={idx} style={style.link} component={Link} to={items.link}>
+    //             <ListItem button>
+    //                 <ListItemText primary={items.name} />
+    //             </ListItem>
+    //         </List>)
+    //       })}
 
-        </div>
-      );
+    //     </div>
+    //   );
 
       const menuItemsAdmin = [
           {

@@ -19,7 +19,7 @@ h6 {
   flex-direction: row;
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
-  background: #181818;
+  background: #2d343a;
   color: #fff;
   overflow: hidden;
 }
@@ -74,7 +74,7 @@ h6 {
   margin-bottom: 1.3rem;
   width: 100%;
   border-radius: 2px;
-  background: #181818;
+  background: #2d343a;
   border: 1px solid #555;
   color: #ccc;
   padding: 0.5rem 1rem;
@@ -149,7 +149,7 @@ h6 {
   border: 0;
   border-radius: 2px;
   font-weight: 500;
-  background: #f96816;
+  background: #E8BD36;
   color: #fff;
   text-decoration: none!important;
   cursor: pointer;
@@ -158,7 +158,7 @@ h6 {
 }
 
 .primaryBtn:hover {
-  background-color: #ff7b39;
+  background-color: rgb(161, 132, 36);
 }
 
 .secondaryBtn {
@@ -177,8 +177,8 @@ h6 {
 }
 
 .secondaryBtn:hover {
-  border-color: #ff7b39;
-  color: #ff7b39;
+  border-color: rgb(161, 132, 36);
+  color: rgb(161, 132, 36);
 }
 
 /* Media Queries */

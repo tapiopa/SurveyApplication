@@ -121,9 +121,22 @@ class SurveyChart extends Component {
         /**In here if question is having multiple choices then it would compare answer options and
          * clients answer so whenever it matches it would count then give it to values
          */
-        for (var i = 0; i < this.state.optionArray.length; i++) {
-          var count = 0;
-          for (var j = 0; j < this.state.answerArray.length; j++) {
+
+        //* 
+        // this.state.optionArray.forEach( opts => {
+        //   let count = 0;
+        //   this.state.answerArray.forEach( ans => {
+        //     if (this.state.optionArray[opts] === this.state.answerArray[ans]) {
+        //       count++;
+        //     }
+        //   })
+        //   values.push(count);
+        // })
+        //  
+
+        for (let i = 0; this.state.optionArray.length; i++) {
+          let count = 0;
+          for (let j = 0; j < this.state.answerArray.length; j++) {
             if (this.state.optionArray[i] === this.state.answerArray[j]) {
               count++;
             }
@@ -140,8 +153,8 @@ class SurveyChart extends Component {
           data.push(setOfData);
         }
       } else {
-        var data = [['Phrases']];
-        for (var i = 0; i < answerArray.length; i++) {
+        let data = [['Phrases']];
+        for (let i = 0; i < answerArray.length; i++) {
           data.push([answerArray[i]]);
         }
       }

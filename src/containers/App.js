@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, withRouter, Redirect, Switch} from 'react-router-dom';
+import {Route, withRouter, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from '../axios-survey';
 
@@ -69,12 +69,12 @@ class App extends Component {
 
   render() {
 
-    const footerStyle= {
-      padding: "1.5rem 0",
-      background: "#2d343a",
-      color: "white",
-      fontSize:"1.5rem"
-    }
+    // const footerStyle= {
+    //   padding: "1.5rem 0",
+    //   background: "#2d343a",
+    //   color: "white",
+    //   fontSize:"1.5rem"
+    // }
 
     return (
       <div className={classes.App}>
