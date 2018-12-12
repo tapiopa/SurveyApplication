@@ -32,8 +32,6 @@ export class Header extends Component {
         console.log("App, handleLogout");
         this.AuthHandler.logout();
         this.props.onLogoutUser();
-        debugger
-        console.log(this.props)
         this.props.history.replace('/login');
     };
 
@@ -61,7 +59,6 @@ export class Header extends Component {
             </Toolbar>
             <Drawer/>
             <div>
-                {console.log(this.props)}
           {!this.props.app.logged_in ? null :  <div><p>Hello {this.props.app.firstname}! {'   '}
           <Button
             aria-owns={anchorEl ? 'simple-menu' : undefined}

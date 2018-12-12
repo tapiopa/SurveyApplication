@@ -13,6 +13,9 @@ import classes from "./HomePage.css";
 // import User from "../Users/User/User";
 
 class HomePage extends Component {
+    constructor(props){
+        super(props)
+    }
     render() {
         return (
             <div className={classes.content}>

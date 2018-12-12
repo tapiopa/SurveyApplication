@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {NavLink, Route, withRouter, Redirect, Switch} from 'react-router-dom';
+import {Route, withRouter, Redirect, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from '../axios-survey';
 
@@ -24,7 +24,6 @@ import Result from '../components/Chart/Result';
 import Login from '../components/Login/Login';
 import AuthHandler from '../components/Login/AuthHandler';
 import SurveyForm from '../components/Surveys/Survey/SurveyForm';
-
 import Header from './Header';
 
 class App extends Component {
@@ -57,6 +56,7 @@ class App extends Component {
       console.log("App, handleLogout");
       this.AuthHandler.logout();
       this.props.onLogoutUser();
+
       this.props.history.replace('/login');
   };
 
@@ -85,10 +85,11 @@ class App extends Component {
           <Route path="/survey" component={SurveyForm} />
           <Route path="/result" component={Result} />
           <Route path="/login" component={Login}/>
-          <Redirect to="/home" />
+
         </Switch>
         {/*{!this.props.app.loggedIn ? null :*/}
-        <Header/>
+        <Header history={this.props.history}/>
+        <button onClick={this._handleLogout}>Logout</button>
 </div>
 );
 }//this is end of render
