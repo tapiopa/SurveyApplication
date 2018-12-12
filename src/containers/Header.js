@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {connect} from "react-redux";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Drawer from './Drawer';
@@ -22,10 +23,10 @@ export class Header extends Component {
     showDropdown = (e) => {
         e.preventDefault();
         this.setState({anchorEl : e.currentTarget});
-      }
+      };
     closeDropdown = () =>{
         this.setState({anchorEl : null});
-    }
+    };
     _handleLogout = () => {
         console.log("App, handleLogout");
         this.AuthHandler.logout();
@@ -57,7 +58,7 @@ export class Header extends Component {
             </Toolbar>
             <Drawer/>
             <div>
-          {!this.props.isLogged ? null :  <div><p>Hello {/* this.props.app.firstname */}! {'   '}
+          {!this.props.isLogged ? null :  <div><p>Hello {this.props.app.firstname}! {'   '}
           <Button
             aria-owns={anchorEl ? 'simple-menu' : undefined}
             aria-haspopup="true"
@@ -91,4 +92,10 @@ export class Header extends Component {
   }
 }
 
-export default Header
+const mapStateToProps = (state) => {
+    return {
+        app: state.app
+    }
+};
+
+export default connect(mapStateToProps)(Header);

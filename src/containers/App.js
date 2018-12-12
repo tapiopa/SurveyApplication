@@ -36,7 +36,7 @@ class App extends Component {
         anchorEl: null
       };
       this.showDropdown = this.showDropdown.bind(this);
-      this.closeDropdown = this.closeDropdown.bind(this);
+      // this.closeDropdown = this.closeDropdown.bind(this);
   }
 
   showDropdown(e){
