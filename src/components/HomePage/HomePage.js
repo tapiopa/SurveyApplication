@@ -1,48 +1,89 @@
-/*
-* HomePage.js
-*
-*/
 
 import React, {Component} from 'react';
-import {
-    NavLink,
-    // Redirect
-} from "react-router-dom";
+// import {NavLink} from "react-router-dom";
 import {connect} from 'react-redux';
 
-import {PageHeader} from 'react-bootstrap';
+// import {PageHeader} from 'react-bootstrap';
 
 // import Registration from "../Registration/UserForm";
-import Aux from "../../hoc/Auxiliary/Auxiliary";
+// import Aux from "../../hoc/Auxiliary/Auxiliary";
 import classes from "./HomePage.css";
-import Protected from "../Login/Protected";
+
 // import Account from "../Accounts/Account/Account";
 // import User from "../Users/User/User";
 
 class HomePage extends Component {
     render() {
         return (
-            <div className={classes.homePage}>
-                {/*<PageHeader>Welcome {this.props.name}!</PageHeader>*/}
-                {/*<Route path="/account" render={ () => <Account user_id={this.props.user.user_id} isAuthenticated={true}/> }/>*/}
-                {/*<Route path="/user" render={ () => <User user_id={this.props.user.user_id} isAuthenticated={true}/> }/>*/}
-                {/*<Route path="/home"  render={() => <HomePage name={this.state.name}/>}/>*/}
-                {/*{!this.props.app.loggedIn ? <Redirect to={Registration}/> :*/}
-                    <Aux>
-                        <PageHeader>Select from following</PageHeader>
-                        <ul className={classes.list}>
-                            {/*<li className={classes.link}><NavLink to="/home">Home</NavLink></li>*/}
-                            {/*<li className={classes.link}><NavLink to="/account">Account</NavLink></li>*/}
-                            {/*<li className={classes.link}><NavLink to="/user">Personal Data</NavLink></li>*/}
-                            {/*<li className={classes.link}><NavLink to="/surveybuilder">Survey Builder</NavLink></li>*/}
-                            <li className={classes.link}><NavLink to="/surveysmanager">Manage Surveys</NavLink></li>
-                            <li className={classes.link}><NavLink to="/accountsmanager">Manage Accounts</NavLink></li>
-                            <li className={classes.link}><NavLink to="/usersmanager">Manage Users</NavLink></li>
-                            <li className={classes.link}><NavLink to="/surveys">Take a Survey</NavLink></li>
-                        </ul>
-                        <p>This is the Home Page</p>
-                    </Aux>
-                {/*}*/}
+            <div className={classes.content}>
+                <div className={classes.featureHero}> 
+                    <div className="container"> 
+                        <h1 className={classes.featureHeading}>
+                            Survey is <span> a feedback </span> 
+                            for education
+                        </h1>
+                        <a className={classes.featureBtn} href="/import {NavLink, Route, withRouter, Redirect, Switch} from 'react-router-dom';">GET STARTED</a>
+                        <div> Current Version: <strong> v0.10.0 </strong></div>
+                    </div>
+                </div>
+                <div className={classes.featureLight}> 
+                    <div className="container"> 
+                    
+                        <div className="row">
+                        <div className="col-12 col-md-7">
+                            <h2 className={classes.featureLightHeading}> Survey Better </h2>
+                            <p className={classes.featureLightText}> Don't have fun in finding idea? Survey identifies exactly the need for your work and what to improve, give a try. </p>
+                            <a className={classes.featureLightBtn} href="/survey">Learn More</a>
+                        </div>
+                        <div className="col-12 col-md-5">
+                            <img className="img-fluid rounded" src={require('./img/survey-01.gif')} alt=""/>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={classes.featureGray}> 
+                    <div className="container"> 
+                        <div className="row">
+                        <div className="col-12 col-md-7 order-md-1">
+                            <h2 className={classes.featureLightHeading}> Survey Smarter </h2>
+                            <p className={classes.featureLightText}> It's difficult to create smart tools for educators. Survey understands your work and make it convenient to use, encouraging smarter creation of ideas  . </p>
+                            <a className={classes.featureLightBtn} href="/survey">Learn More</a>
+                        </div>
+                        <div className="col-12 col-md-5">
+                            <img className="img-fluid rounded" src={require('./img/survey-02.gif')} alt=""/>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={classes.featureDark}> 
+                    <div className="container"> 
+                        <div className="row">
+                        <div className="col-12 col-md-7">
+                            <h2 className={classes.featureDarkHeading}> Survey Confidently </h2>
+                            <p className={classes.featureDarkText}> Learning the majority of opinions can be overwhelming. Survey helps you do so calmly, focus on what you need to do and not be afraid of overloading. </p>
+                            <a className={classes.featureBtn} href="/survey">Learn More</a>
+                        </div>
+                        <div className="col-12 col-md-5">
+                            <img className="img-fluid rounded" src={require('./img/survey-03.gif')} alt=""/>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={classes.featureYellow}> 
+                    <div className="container"> 
+                        <div className="row">
+                        <h2 className={classes.featureYellowHeading}>Ready Get Going? </h2>
+                        </div>
+                        <div className="row">
+                        <div className="col-12 col-md-6">
+                            <a className={classes.featureYellowBtn} href="/survey">Get Started</a>
+                        </div>
+                        <div className="col-12 col-md-6 d-none d-md-block">
+                            <a className={classes.featureYellowBtn} href="/survey">Learn More</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -56,4 +97,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default Protected(connect(mapStateToProps)(HomePage));
+export default connect(mapStateToProps)(HomePage);
