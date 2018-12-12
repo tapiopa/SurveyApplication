@@ -168,15 +168,15 @@ class App extends Component {
             {/*<br/>*/}
             <div id="adminOnly">
             <li className={classes.link} title="Edit the survey" name="adminOnly">
-              <NavLink to="/surveysmanager">Surveys Manager</NavLink>
+              <NavLink to="/surveysmanager">Surveys' Manager</NavLink>
             </li>
             <br />
             <li className={classes.link} title="Edit the accounts" name="adminOnly">
-              <NavLink to="/accountsmanager">Accounts Manager</NavLink>
+              <NavLink to="/accountsmanager">Accounts' Manager</NavLink>
             </li>
             <br />
             <li className={classes.link} title="Edit the user information" name="adminOnly">
-              <NavLink to="/usersmanager">Users Manager</NavLink>
+              <NavLink to="/usersmanager">Users' Manager</NavLink>
             </li>
             <br />
             </div>
@@ -190,11 +190,11 @@ class App extends Component {
               <li className={classes.link} title="Check survey result with chart" name="companyOnly">
                 <NavLink to="/result">Result</NavLink>
               </li>
-              <br />
-              <li className={classes.link}>
-              <NavLink to="/surveybuilder">SurveyBuilder</NavLink>
-            </li>
-            <br />
+              {/*<br />*/}
+              {/*<li className={classes.link}>*/}
+              {/*<NavLink to="/surveybuilder">SurveyBuilder</NavLink>*/}
+            {/*</li>*/}
+            {/*<br />*/}
             </div>
           </ul>
         </nav>

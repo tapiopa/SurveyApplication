@@ -164,7 +164,7 @@ class SurveyForm extends Component {
                         Submit
                     </Button>
                 </form>
-                <button className="btn btn-success" onClick={this.logState}>Log</button>
+                {/*<button className="btn btn-success" onClick={this.logState}>Log</button>*/}
             </div>
         );
 
