@@ -82,8 +82,8 @@ class Login extends Component {
             <button type="submit"  className={classes.primaryBtn}>Sign In</button>
           </form>
           <div className={classes.links}>
-            <a href="#">Forgot Password</a>
-            <a href="#">Sign in with company or school</a>
+            <NavLink to="#">Forgot Password</NavLink>
+            <NavLink to="#">Sign in with company or school</NavLink>
           </div>
           <div  className={classes.or}>
             <hr className={classes.bar} />
@@ -94,12 +94,6 @@ class Login extends Component {
           <NavLink to="/registration" className={classes.secondaryBtn}>Create an account</NavLink>
           <Route path="/registration" component={UserForm} />
         </div>
-        <footer  className={classes.mainFooter}>
-          <p>Copyright &copy; 2018, Survey All Rights Reserved</p>
-          <div>
-            <a href="#">terms of use</a> | <a href="#">Privacy Policy</a>
-          </div>
-        </footer>
       </div>
       <div  className={classes.right}>
         <div  className={classes.showcase}>
@@ -107,7 +101,7 @@ class Login extends Component {
             <h1  className={classes.show}caseText>
               Let's survey <strong>the future</strong>
             </h1>
-            <a href="#"  className={classes.secondaryBtn}>Start a FREE 10-day trial</a>
+            <NavLink to="#"  className={classes.secondaryBtn}>Start a FREE 10-day trial</NavLink>
           </div>
           </div>
           </div>

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import FormControl from '@material-ui/core/FormControl';
@@ -25,14 +23,13 @@ export class FormUserDetails extends Component {
     return (
       <MuiThemeProvider>
         <React.Fragment>
-          <AppBar title="Enter User Details" />
           
           <FormControl style={styles.InputFirst}>
           <InputLabel htmlFor="adornment-firstname">Enter Your First Name</InputLabel>
           <Input
             type='text'
             defaultValue={values.firstname}
-            onChange={handleChange('firstname')}
+            onChange={handleChange('firstName')}
           />
           
           </FormControl>
@@ -42,7 +39,7 @@ export class FormUserDetails extends Component {
           <Input
             type='text'
             defaultValue={values.lastname}
-            onChange={handleChange('lastname')}
+            onChange={handleChange('lastName')}
           />
           </FormControl>
           <br />
@@ -50,7 +47,7 @@ export class FormUserDetails extends Component {
           <FormControl style={styles.InputLast}>
           <InputLabel htmlFor="adornment-email">Enter Your Email</InputLabel>
           <Input
-            type='text'
+            type='email'
             defaultValue={values.email}
             onChange={handleChange('email')}
           />
@@ -81,7 +78,7 @@ const styles = {
   },
   InputFirst:{
     width: 256,
-    marginTop:25
+    marginTop:75
   },
   Input:{
     width: 256,

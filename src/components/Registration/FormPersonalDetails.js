@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import TextDate from '@material-ui/core/TextField';
@@ -29,7 +27,6 @@ export class FormPersonalDetails extends Component {
     return (
       <MuiThemeProvider>
         <React.Fragment>
-          <AppBar title="Enter Personal Details" />
 
           <FormControl style={styles.InputFirst}>
           <InputLabel htmlFor="adornment-phone">Enter Your Phone</InputLabel>
@@ -50,11 +47,11 @@ export class FormPersonalDetails extends Component {
           InputLabelProps={{
             shrink: true,
           }}
-          style={{width:256}}
+          style={styles.InputDate}
         />
         <br />
 
-          <FormControl style={styles.InputFirst}>
+          <FormControl style={styles.Input}>
           <InputLabel htmlFor="adornment-streetAddress">Enter Your Street Address</InputLabel>
           <Input
             type='text'
@@ -98,12 +95,18 @@ const styles = {
   },
   InputFirst:{
     width: 256,
-    marginTop:25,
+    marginTop:75,
     marginBottom:15
+  },
+  InputDate:{
+    width: 256,
+    marginTop: "15px",
+    marginBottom: "10px"
   },
   Input:{
     width: 256,
-    margin:25
+    marginTop: "15px",
+    marginBottom: "25px"
   },
   InputLast:{
     width: 256,

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
 import FormControl from '@material-ui/core/FormControl';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -55,7 +54,6 @@ export class FormUserDetails extends Component {
     return (
       <MuiThemeProvider>
         <React.Fragment>
-          <AppBar title="Create your Account" />
 
           <FormControl style={styles.InputFirst}>
           <InputLabel htmlFor="adornment-username">Enter Your Username</InputLabel>
@@ -116,7 +114,7 @@ const styles = {
   },
   InputFirst:{
     width: 256,
-    marginTop:25
+    marginTop:75
   },
   Input:{
     width: 256,

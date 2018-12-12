@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
 import HomePage from "../HomePage/HomePage";
 import {asyncSetUserAccountFK, setAppUserAccountIdName} from "../../store/actions"
 import connect from "react-redux/es/connect/connect";
@@ -38,7 +37,6 @@ export class FormUserDetails extends Component {
       <MuiThemeProvider>
 
           <React.Fragment>
-          <AppBar title="Success" />
             <Redirect to={HomePage}/>
           {/*<h1>Thanks You For Your Submission</h1>*/}
         </React.Fragment>
