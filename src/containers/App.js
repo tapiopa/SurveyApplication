@@ -32,16 +32,8 @@ class App extends Component {
   constructor(){
     super();
       this.state = {
-        id: '',
-        anchorEl: null
+        id: ''
       };
-      this.showDropdown = this.showDropdown.bind(this);
-      // this.closeDropdown = this.closeDropdown.bind(this);
-  }
-
-  showDropdown(e){
-    e.preventDefault();
-    this.setState({anchorEl : e.currentTarget});
   }
 
   componentDidMount() {
@@ -64,10 +56,7 @@ class App extends Component {
   _handleLogout = () => {
       console.log("App, handleLogout");
       this.AuthHandler.logout();
-      /**Here required to handle with redux !!!
-       * for handling logout user from redux!!!!
-       */
-      // this.props.onLogoutUser();
+      this.props.onLogoutUser();
       this.props.history.replace('/login');
   };
 
@@ -82,8 +71,6 @@ class App extends Component {
 
     return (
       <div className={classes.App}>
-       
-
         <Switch>
           <Route path="/home" component={HomePage} />
           <Route path="/account" component={Account}/>
@@ -101,7 +88,7 @@ class App extends Component {
           <Redirect to="/home" />
         </Switch>
         {/*{!this.props.app.loggedIn ? null :*/}
-        <Header isLogged={this.props.app.logged_in}/>
+        <Header/>
 </div>
 );
 }//this is end of render

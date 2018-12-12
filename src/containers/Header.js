@@ -9,13 +9,12 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {NavLink} from 'react-router-dom';
 import AuthHandler from '../components/Login/AuthHandler';
-
+import {logoutUser} from '../store/actions/';
 export class Header extends Component {
     AuthHandler = new AuthHandler();
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.state={
-            isLoggedin: this.props.isLogged,
             anchorEl: null
         }
     }
@@ -23,14 +22,18 @@ export class Header extends Component {
     showDropdown = (e) => {
         e.preventDefault();
         this.setState({anchorEl : e.currentTarget});
-      };
+    };
+
     closeDropdown = () =>{
         this.setState({anchorEl : null});
     };
+
     _handleLogout = () => {
         console.log("App, handleLogout");
         this.AuthHandler.logout();
         this.props.onLogoutUser();
+        debugger
+        console.log(this.props)
         this.props.history.replace('/login');
     };
 
@@ -58,7 +61,8 @@ export class Header extends Component {
             </Toolbar>
             <Drawer/>
             <div>
-          {!this.props.isLogged ? null :  <div><p>Hello {this.props.app.firstname}! {'   '}
+                {console.log(this.props)}
+          {!this.props.app.logged_in ? null :  <div><p>Hello {this.props.app.firstname}! {'   '}
           <Button
             aria-owns={anchorEl ? 'simple-menu' : undefined}
             aria-haspopup="true"
@@ -92,10 +96,16 @@ export class Header extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+          onLogoutUser: () => dispatch(logoutUser())
+    };
+};
+
 const mapStateToProps = (state) => {
     return {
         app: state.app
     }
 };
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
