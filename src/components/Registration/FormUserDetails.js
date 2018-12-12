@@ -4,6 +4,11 @@ import AppBar from 'material-ui/AppBar';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+
+
 export class FormUserDetails extends Component {
   continue = e => {
     e.preventDefault();
@@ -21,27 +26,37 @@ export class FormUserDetails extends Component {
       <MuiThemeProvider>
         <React.Fragment>
           <AppBar title="Enter User Details" />
-          <TextField
-            hintText="Enter Your First Name"
-            floatingLabelText="First Name"
-            onChange={handleChange('firstName')}
-            defaultValue={values.firstName}
+          
+          <FormControl style={styles.InputFirst}>
+          <InputLabel htmlFor="adornment-firstname">Enter Your First Name</InputLabel>
+          <Input
+            type='text'
+            defaultValue={values.firstname}
+            onChange={handleChange('firstname')}
           />
+          
+          </FormControl>
           <br />
-          <TextField
-            hintText="Enter Your Last Name"
-            floatingLabelText="Last Name"
-            onChange={handleChange('lastName')}
-            defaultValue={values.lastName}
+          <FormControl style={styles.Input}>
+          <InputLabel htmlFor="adornment-lastname">Enter Your Last Name</InputLabel>
+          <Input
+            type='text'
+            defaultValue={values.lastname}
+            onChange={handleChange('lastname')}
           />
+          </FormControl>
           <br />
-          <TextField
-            hintText="Enter Your Email"
-            floatingLabelText="Email"
-            onChange={handleChange('email')}
+          
+          <FormControl style={styles.InputLast}>
+          <InputLabel htmlFor="adornment-email">Enter Your Email</InputLabel>
+          <Input
+            type='text'
             defaultValue={values.email}
+            onChange={handleChange('email')}
           />
+          </FormControl>
           <br />
+
           <RaisedButton
             label="Continue"
             primary={true}
@@ -63,7 +78,19 @@ export class FormUserDetails extends Component {
 const styles = {
   button: {
     margin: 15
+  },
+  InputFirst:{
+    width: 256,
+    marginTop:25
+  },
+  Input:{
+    width: 256,
+    margin:25
+  },
+  InputLast:{
+    width: 256,
   }
 };
+
 
 export default FormUserDetails;

@@ -89,7 +89,6 @@ class App extends Component {
         </Switch>
         {/*{!this.props.app.loggedIn ? null :*/}
         <Header history={this.props.history}/>
-        <button onClick={this._handleLogout}>Logout</button>
 </div>
 );
 }//this is end of render

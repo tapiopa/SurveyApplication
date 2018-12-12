@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Drawer from './Drawer';
-import MaterialIcon from 'react-google-material-icons';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -68,20 +67,19 @@ export class Header extends Component {
       <div>
         <AppBar {...navProps}>
 
-        {!this.props.app.logged_in ? null : <Drawer/> }
+        {!this.props.app.logged_in ? null : <Drawer isLogged={this.props.app.logged_in}/> }
             
 
         {this.props.app.logged_in ? null : <Toolbar style={{...toolbarStyle}}> Survey App </Toolbar> }
         
-        <div style={{...btnStyle}}>
-          {!this.props.app.logged_in ? null :  <div><p>Hello {this.props.app.firstname}! {'   '}
+          {!this.props.app.logged_in ? null :  <div style={{...btnStyle}}>
           <Button
-            style = {{color:"#E8BD36", outline:"none"}}
+            style = {{color:"#E8BD36", outline:"none", letterSpacing:".4rem", boxShadow:"0px 0px 5px"}}
             aria-owns={anchorEl ? 'simple-menu' : undefined}
             aria-haspopup="true"
             onClick={this.showDropdown}
             >
-                <MaterialIcon icon="list" size={20}/>
+            <span style={{marginRight:"0.4rem"}}>Hello</span> {this.props.app.firstname}!
           </Button>
         <Menu
           id="simple-menu"
@@ -99,10 +97,8 @@ export class Header extends Component {
                   Logout
                 </button>
           </MenuItem>
-        </Menu>
-          </p></div>}
+        </Menu></div>}
 
-        </div>
         </AppBar>
       </div>
     )

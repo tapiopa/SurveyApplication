@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import AuthHandler from '../components/Login/AuthHandler';
+
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -69,6 +71,43 @@ export class Drawer extends Component {
 
         </div>
       );
+
+      const menuItemsAdmin = [
+          {
+              name: "Home",
+              link: "/home"
+          },
+          {
+              name: "Surveys",
+              link: "/surveys"
+          },
+          {
+              name: "Users Manager",
+              link: "/usersmanager"
+          },
+          {
+            name: "Survey Manager",
+            link: "/surveysmanager"
+          },
+          {
+              name: "Accounts Manager",
+              link: "/accountsmanager"
+          },
+      ]
+
+      const sideListAdmin = (
+        <div>
+          {menuItemsAdmin.map( (items, idx) => {
+            return (
+            <List key={idx} style={style.link} component={Link} to={items.link}>
+                <ListItem button>
+                    <ListItemText primary={items.name} />
+                </ListItem>
+            </List>)
+          })}
+
+        </div>
+      );
       
     return (
       <div style={style.drawerStyle}>
@@ -88,7 +127,10 @@ export class Drawer extends Component {
           onClick={this.toggleDrawer('left', false)}
           onKeyDown={this.toggleDrawer('left', false)}
         >
-          {sideList}
+        
+
+        {!this.props.isLogged ? null : sideListAdmin  }
+          
         </div>
       </SwipeableDrawer>
       </div>
