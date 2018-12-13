@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import AuthHandler from '../Login/AuthHandler';
+// import {connect} from "react-redux";
+// import {logoutUser} from "../../store/actions";
 
 /* A higher order component (HOC) is frequently written as a function that returns a class. */
 export default function CompanyOnly(CompanyComponent) {
-  
 
   return class ProtectionCompanyComponent extends Component {
     AuthHandler = new AuthHandler();
-    constructor() {
-      super();
-      this.state = {
-        loaded: false,
-        isCompany: false
-      };
-    }
+      state = {
+          loaded: false,
+          isCompany: false
+      }
+
+
     componentDidMount() {
       if (!this.AuthHandler.loggedIn()) {
         this.props.history.replace('/login');
@@ -28,12 +28,14 @@ export default function CompanyOnly(CompanyComponent) {
             /* if there's an error it will print it out and log the user out for security reasons. */
             console.log(err);
             this.AuthHandler.logout();
+              this.props.onLogoutUser();
             this.props.history.push('/login');
           }
         } else {
           alert('Only Company User can see this features!');
           /**In here if user type is not company then it will redirect to login page and logged out automatically */
           this.AuthHandler.logout();
+            this.props.onLogoutUser();
           this.props.history.push('/login');
         }
       }

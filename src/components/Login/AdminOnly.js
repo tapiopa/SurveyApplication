@@ -27,12 +27,14 @@ export default function AdminOnly(AdminComponent) {
             /* if there's an error it will print it out and log the user out for security reasons. */
             console.log(err);
             AuthHandler.logout();
+              this.props.onLogoutUser();
             this.props.history.push('/login');
           }
         } else {
           alert('Only Admin User can do! Please contact the admin');
           /**In here if user type is not admin then it will redirect to login page and logged out automatically */
           this.AuthHandler.logout();
+            this.props.onLogoutUser();
           this.props.history.push('/login');
         }
       }

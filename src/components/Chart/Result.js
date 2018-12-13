@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import {connect} from "react-redux";
+import {logoutUser} from "../../store/actions";
 import Question from './Question';
 import classes from './Result.css';
 import CompanyOnly from '../Login/CompanyOnly';
@@ -49,5 +51,11 @@ class Result extends Component {
   }
 }
 
-export default CompanyOnly(Result);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLogoutUser: () => dispatch(logoutUser())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(CompanyOnly(Result));
 // export default Result;

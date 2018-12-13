@@ -7,7 +7,8 @@ import {connect} from 'react-redux';
 import axios from '../../../axios-survey';
 import {
     asyncSurveyList,
-    asyncGetSurveyAndQuestions
+    asyncGetSurveyAndQuestions,
+    logoutUser
 } from "../../../store/actions";
 
 import classes from "./SurveysList.css";
@@ -94,7 +95,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onListSurveys: () => dispatch(asyncSurveyList()),
-        onGetSurveyAndQuestions: (survey_id) => dispatch(asyncGetSurveyAndQuestions(survey_id))
+        onGetSurveyAndQuestions: (survey_id) => dispatch(asyncGetSurveyAndQuestions(survey_id)),
+        onLogoutUser: () => dispatch(logoutUser())
     }
 };
 

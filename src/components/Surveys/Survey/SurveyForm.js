@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 
 import AnswerOpt from './AnswerOpt';
 
-import {asyncGetSurveyAndQuestions, asynRegisterAnswer} from "../../../store/actions";
+import {asyncGetSurveyAndQuestions, asynRegisterAnswer, logoutUser} from "../../../store/actions";
 import {connect} from "react-redux";
 import axios from "../../../axios-survey";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
@@ -194,7 +194,8 @@ const maptStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onGetSurveyAndQuestions: (survey_id) => dispatch(asyncGetSurveyAndQuestions(survey_id)),
-        onRegisterAnswer: (answer, question, user_id) => dispatch(asynRegisterAnswer(answer, question, user_id))
+        onRegisterAnswer: (answer, question, user_id) => dispatch(asynRegisterAnswer(answer, question, user_id)),
+        onLogoutUser: () => dispatch(logoutUser())
     }
 };
 

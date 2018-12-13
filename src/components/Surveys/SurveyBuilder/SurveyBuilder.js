@@ -39,8 +39,9 @@ import {
     editSurvey,
     setSurveyTitle,
     setQuestionString,
-    setAnswerString
-} from "../../../store/actions/surveyBuilderActions";
+    setAnswerString,
+    logoutUser
+} from "../../../store/actions";
 
 import Question from "../../Question/Question";
 import NewQuestion from "./NewQuestion";
@@ -725,7 +726,8 @@ const mapDispatchToProps = (dispatch) => {
         onAnswerDeleted: (answer) => dispatch(asyncDeleteAnswer(answer)),
         onSetSurveyTitle: (survey, title) => dispatch(setSurveyTitle(survey, title)),
         onSetQuestionString: (question_id, question_string) => dispatch(setQuestionString(question_id, question_string)),
-        onSetAnswerString: (answer_id, answer_string) => dispatch(setAnswerString(answer_id, answer_string))
+        onSetAnswerString: (answer_id, answer_string) => dispatch(setAnswerString(answer_id, answer_string)),
+        onLogoutUser: () => dispatch(logoutUser())
     }
 };
 

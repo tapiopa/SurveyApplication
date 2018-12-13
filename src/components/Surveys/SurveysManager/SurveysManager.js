@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import axios from '../../../axios-survey';
 
-import {asyncListSurveys, setSurveyId, asyncDeleteSurvey, asyncCreateNewSurvey} from "../../../store/actions";
+import {asyncListSurveys, setSurveyId, asyncDeleteSurvey, asyncCreateNewSurvey, logoutUser} from "../../../store/actions";
 
 import { Table, Button, ButtonGroup,} from 'react-bootstrap';
 
@@ -94,7 +94,8 @@ const mapDispatchToProps = (dispatch) => {
         onListSurveys: (user_id) => dispatch(asyncListSurveys(user_id)),
         onCreateNewSurvey: () => dispatch(asyncCreateNewSurvey()),
         onSetSurveyId: (survey_id) => dispatch(setSurveyId(survey_id)),
-        onDeleteSurvey: (survey) => dispatch(asyncDeleteSurvey(survey))
+        onDeleteSurvey: (survey) => dispatch(asyncDeleteSurvey(survey)),
+        onLogoutUser: () => dispatch(logoutUser)
     }
 };
 

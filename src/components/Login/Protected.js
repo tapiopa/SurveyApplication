@@ -29,6 +29,7 @@ export default function Protected(ProtectedComponent) {
           /* if there's an error it will print it out and log the user out for security reasons. */
           console.log(err);
           authHandler.logout();
+            this.props.onLogoutUser();
           this.props.history.push('/login');
         }
       }
