@@ -7,7 +7,8 @@ import {
 } from "../actions/actionsTypes";
 
 const initialState = {
-    logged_in: false,
+    loggged_in: false,
+    loggedIn: false,
     account_id: null,
     user_id: null,
     type: "",
@@ -21,6 +22,7 @@ const appReducers = (state = initialState, action) => {
             // console.log("appReducers, LOGIN_USER, action", action);
             return {
                 logged_in: true,
+                loggedIn: true,
                 account_id: action.account_id,
                 user_id: action.user_id,
                 // type: action.type,
@@ -33,6 +35,7 @@ const appReducers = (state = initialState, action) => {
         case USER_LOGIN: {
             return {
                 logged_in: true,
+                loggedIn: true,
                 account_id: action.data.owner,
                 user_id: action.data.id,
                 type: action.data.type,
@@ -51,7 +54,12 @@ const appReducers = (state = initialState, action) => {
            return  {account_id: action.id, firstname: action.name}
         }
         case SET_ACCOUNT_ID_NAME: {
-            return {loggedIn: true, account_id: action.account.id, user_id: action.user.id, firstname: action.user.firstname}
+            return {
+                loggedIn: true,
+                logged_in: true,
+                account_id: action.account.id,
+                user_id: action.user.id,
+                firstname: action.user.firstname}
         }
         case FETCH_USER_FIRSTNAME: {
             // console.log("appReducers, fetch user firstname, state", state);

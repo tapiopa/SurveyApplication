@@ -69,12 +69,12 @@ export class Header extends Component {
       <div>
         <AppBar {...navProps}>
 
-        {!this.props.app.logged_in ? null : <Drawer isLogged={this.props.app.logged_in}/> }
+        {!this.props.app.loggedIn ? null : <Drawer isLogged={this.props.app.logged_in}/> }
             
 
-        {this.props.app.logged_in ? null : <Toolbar style={{...toolbarStyle}}> Survey App </Toolbar> }
+        {!this.props.app.loggedIn ? null : <Toolbar style={{...toolbarStyle}}> Survey App </Toolbar> }
         
-          {!this.props.app.logged_in ? null :  <div style={{...btnStyle}}>
+          {!this.props.app.loggedIn ? null :  <div style={{...btnStyle}}>
           <Button
             style = {{color:"#E8BD36", outline:"none", letterSpacing:".4rem", boxShadow:"0px 0px 5px"}}
             aria-owns={anchorEl ? 'simple-menu' : undefined}
