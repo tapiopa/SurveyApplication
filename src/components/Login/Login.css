@@ -19,13 +19,13 @@ h6 {
   flex-direction: row;
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
-  background: #181818;
+  background: #2d343a;
   color: #fff;
   overflow: hidden;
 }
 
 .left {
-  margin-top: 2rem; 
+  margin-top: 4rem; 
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -35,6 +35,7 @@ h6 {
 }
 
 .right {
+  margin-top: 4rem; 
   flex: 1;
 }
 
@@ -73,7 +74,7 @@ h6 {
   margin-bottom: 1.3rem;
   width: 100%;
   border-radius: 2px;
-  background: #181818;
+  background: #2d343a;
   border: 1px solid #555;
   color: #ccc;
   padding: 0.5rem 1rem;
@@ -93,7 +94,7 @@ h6 {
 .signin .links a {
   display: block;
   color: #fff;
-  text-decoration: none;
+  text-decoration: none!important;
   margin-bottom: 1rem;
   text-align: center;
   font-size: 0.9rem;
@@ -140,20 +141,6 @@ h6 {
   margin: auto;
 }
 
-/* Footer */
-.mainFooter {
-  color: #ccc;
-  text-align: center;
-  font-size: 0.8rem;
-  max-width: 80%;
-  padding-top: 5rem;
-}
-
-.mainFooter a {
-  color: #f96816;
-  text-decoration: underline;
-}
-
 /* Button */
 .primaryBtn {
   padding: 0.7rem 1rem;
@@ -162,16 +149,16 @@ h6 {
   border: 0;
   border-radius: 2px;
   font-weight: 500;
-  background: #f96816;
+  background: #E8BD36;
   color: #fff;
-  text-decoration: none;
+  text-decoration: none!important;
   cursor: pointer;
   text-align: center;
   transition: all 0.5s;
 }
 
 .primaryBtn:hover {
-  background-color: #ff7b39;
+  background-color: rgb(161, 132, 36);
 }
 
 .secondaryBtn {
@@ -183,15 +170,15 @@ h6 {
   font-weight: 500;
   background: none;
   color: #fff;
-  text-decoration: none;
+  text-decoration: none!important;
   cursor: pointer;
   text-align: center;
   transition: all 0.5s;
 }
 
 .secondaryBtn:hover {
-  border-color: #ff7b39;
-  color: #ff7b39;
+  border-color: rgb(161, 132, 36);
+  color: rgb(161, 132, 36);
 }
 
 /* Media Queries */

@@ -1,13 +1,9 @@
-/*
- * App.js
- *
- */
 import React, {Component} from 'react';
-import {NavLink, Route, withRouter, Redirect, Switch} from 'react-router-dom';
+import {Route, withRouter, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from '../axios-survey';
 
-import {asyncFetchFirstName, setUserAccountFK, setAccountId, asyncLoginUser, logoutUser} from '../store/actions/';
+import { asyncFetchFirstName, setUserAccountFK, setAccountId, asyncLoginUser, logoutUser} from '../store/actions/';
 
 import classes from './App.css';
 
@@ -28,99 +24,85 @@ import Result from '../components/Chart/Result';
 import Login from '../components/Login/Login';
 import AuthHandler from '../components/Login/AuthHandler';
 import SurveyForm from '../components/Surveys/Survey/SurveyForm';
-
-
 import Header from './Header';
 
 class App extends Component {
-    AuthHandler = new AuthHandler();
+  AuthHandler = new AuthHandler();
+  constructor(){
+    super();
+      this.state = {
+        id: ''
+      };
+  }
 
-    constructor() {
-        super();
-        this.state = {
-            id: '',
-            anchorEl: null
-        };
+  componentDidMount() {
+    // this.props.onFetchFirstname(this.props.app.account_id);
+    //         // this.props.onSetAccountId(this.props.app.account_id);
+    //         // this.props.onSetUserAccountFK(this.props.app.account_id);
+    console.log('App, componentDidMount, props', this.props);
+      if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
+        this.props.onLoginUser(this.AuthHandler.getData().id);
+        this._setInfo();
+      }      
+  }
+
+  _setInfo(){
+    this.setState({ id: this.AuthHandler.getData().id}, function () {
+        console.log("state for the props: "  + this.state.id);
+  });
+  }
+
+  _handleLogout = () => {
+      console.log("App, handleLogout");
+      this.AuthHandler.logout();
+      this.props.onLogoutUser();
+
+      this.props.history.replace('/login');
+  };
+
+  componentDidUpdate() {
+    if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
+      alert('token has expired');
+      this._handleLogout();
     }
+  }
 
-    componentDidMount() {
-        // this.props.onFetchFirstname(this.props.app.account_id);
-        //         // this.props.onSetAccountId(this.props.app.account_id);
-        //         // this.props.onSetUserAccountFK(this.props.app.account_id);
-        console.log('App, componentDidMount, props', this.props);
-        if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
-            this.props.onLoginUser(this.AuthHandler.getData().id);
-            this._setInfo();
-        }
-    }
+  render() {
 
-    _setInfo() {
-        this.setState({id: this.AuthHandler.getData().id}, function () {
-            console.log("state for the props: " + this.state.id);
-        });
-    }
+    // const footerStyle= {
+    //   padding: "1.5rem 0",
+    //   background: "#2d343a",
+    //   color: "white",
+    //   fontSize:"1.5rem"
+    // }
 
-    _navCheck() {
-        if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
-            if (this.AuthHandler.getData().type === "admin") {
-                document.getElementById("companyOnly").style.display = "block";
-            } else if (this.AuthHandler.getData().type === "company") {
-                document.getElementById("companyOnly").style.display = "block";
-                document.getElementById("adminOnly").style.display = "none";
-            } else {
-                this.AuthHandler.logout();
-                /**Here required to handle with redux !!!
-                 * for handling logout user from redux!!!!
-                 */
-            }
-        }
-    }
+    return (
+      <div className={classes.App}>
+        <Switch>
+          <Route path="/home" component={HomePage} />
+          <Route path="/account" component={Account}/>
+          <Route path="/user" component={User} />
+          {/*<Route path="/home" component={HomePage}/>*/}
+          <Route path="/surveybuilder" component={SurveyBuilder} />
+          <Route path="/surveysmanager" component={SurveysManager} />
+          <Route path="/accountsmanager" component={AccountsManager} />
+          <Route path="/usersmanager" component={UsersManager} />
+          <Route path="/registration" component={UserForm} />
+          <Route path="/surveys" component={SurveysList} />
+          <Route path="/survey" component={SurveyForm} />
+          <Route path="/result" component={Result} />
+          <Route path="/login" component={Login}/>
 
-
-    _handleLogout = () => {
-        console.log("App, handleLogout");
-        this.AuthHandler.logout();
-        this.props.onLogoutUser();
-        this.props.history.replace('/login');
-    };
-
-    componentDidUpdate() {
-        if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
-            alert('token has expired');
-            this._handleLogout();
-        }
-    }
-
-
-    render() {
-
-        return (
-            <div className={classes.App}>
-                <Switch>
-                    <Route path="/home" component={HomePage}/>
-                    <Route path="/account" component={Account}/>
-                    <Route path="/user" component={User}/>
-                    <Route path="/surveybuilder" component={SurveyBuilder}/>
-                    <Route path="/surveysmanager" component={SurveysManager}/>
-                    <Route path="/accountsmanager" component={AccountsManager}/>
-                    <Route path="/usersmanager" component={UsersManager}/>
-                    <Route path="/registration" component={UserForm}/>
-                    <Route path="/surveys" component={SurveysList}/>
-                    <Route path="/survey" component={SurveyForm}/>
-                    <Route path="/result" component={Result}/>
-                    <Route path="/login" component={Login}/>
-                    <Redirect to="/home"/>
-                </Switch>
-                {/*{!this.props.app.loggedIn ? null :*/
-                }
-                <Header isLogged={this.props.app.logged_in}/>
-            </div>
-        );//end of return
-
-    }//this is end of render
-
+        </Switch>
+        {/*{!this.props.app.loggedIn ? null :*/}
+        <Header history={this.props.history}/>
+        {/*<div style={{...footerStyle}}> &copy; Survey Inc. </div>*/}
+</div>
+);
+}//this is end of render
 }//This is end of class
 
+    
 
 const mapStateToProps = state => {
     return {
@@ -139,4 +121,9 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(App, axios)));
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(withErrorHandler(App, axios))
+);

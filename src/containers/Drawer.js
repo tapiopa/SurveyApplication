@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -24,7 +25,6 @@ export class Drawer extends Component {
   render() {
       const style = {
         drawerStyle:{
-            marginLeft: 'auto',
             padding: '0.5rem 2rem',
       },
         link:{
@@ -34,32 +34,69 @@ export class Drawer extends Component {
 
       
 
-      const menuItems = [
+    //   const menuItems = [
+    //       {
+    //           name: "Home",
+    //           link: "/home"
+    //       },
+    //       {
+    //         name: "Survey Manager",
+    //         link: "/surveysmanager"
+    //     },
+    //     {
+    //         name: "Accounts Manager",
+    //         link: "/accountsmanager"
+    //     },
+    //     {
+    //         name: "Users Manager",
+    //         link: "/usersmanager"
+    //     },
+    //     {
+    //         name: "Survey",
+    //         link: "/survey"
+    //     },
+    //   ]
+
+    //   const sideList = (
+    //     <div>
+    //       {menuItems.map( (items, idx) => {
+    //         return (
+    //         <List key={idx} style={style.link} component={Link} to={items.link}>
+    //             <ListItem button>
+    //                 <ListItemText primary={items.name} />
+    //             </ListItem>
+    //         </List>)
+    //       })}
+
+    //     </div>
+    //   );
+
+      const menuItemsAdmin = [
           {
               name: "Home",
               link: "/home"
           },
           {
+              name: "Surveys",
+              link: "/surveys"
+          },
+          {
+              name: "Users Manager",
+              link: "/usersmanager"
+          },
+          {
             name: "Survey Manager",
             link: "/surveysmanager"
-        },
-        {
-            name: "Accounts Manager",
-            link: "/accountsmanager"
-        },
-        {
-            name: "Users Manager",
-            link: "/usersmanager"
-        },
-        {
-            name: "Survey",
-            link: "/survey"
-        },
+          },
+          {
+              name: "Accounts Manager",
+              link: "/accountsmanager"
+          },
       ]
 
-      const sideList = (
+      const sideListAdmin = (
         <div>
-          {menuItems.map( (items, idx) => {
+          {menuItemsAdmin.map( (items, idx) => {
             return (
             <List key={idx} style={style.link} component={Link} to={items.link}>
                 <ListItem button>
@@ -89,7 +126,10 @@ export class Drawer extends Component {
           onClick={this.toggleDrawer('left', false)}
           onKeyDown={this.toggleDrawer('left', false)}
         >
-          {sideList}
+        
+
+        {!this.props.isLogged ? null : sideListAdmin  }
+          
         </div>
       </SwipeableDrawer>
       </div>

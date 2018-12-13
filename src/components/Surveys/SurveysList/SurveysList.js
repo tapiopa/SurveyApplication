@@ -5,23 +5,14 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import axios from '../../../axios-survey';
-
 import {asyncSurveyList, asyncGetSurveyAndQuestions} from "../../../store/actions";
-
-import {
-    Table,
-    // FormControl, FormGroup, ControlLabel, PageHeader,
-    Button,
-    // ButtonToolbar,
-    // ButtonGroup,
-    //Alert
-} from 'react-bootstrap';
+// import { Table, Button} from 'react-bootstrap';
 
 import classes from "./SurveysList.css";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import Protected from "../../Login/Protected";
-// import SurveyForm from '../Survey/SurveyForm';
-// import { NavLink, Link, Route } from 'react-router-dom';
+import Edit from '@material-ui/icons/Edit';
+
 class ListSurveys extends Component {
     constructor(props) {
         super(props);
@@ -39,10 +30,20 @@ class ListSurveys extends Component {
     }
 
     render() {
+        const surveys = this.props.survey.surveys && this.props.survey.surveys.map(survey => {
+            return (
+                    <div className={classes.item}>
+                        <div className={classes.text}>{`${survey.id}. ${survey.title}`}</div>
+                        <Edit onClick={() =>this.takeTheSurvey(survey.id)} className={classes.check}/>
+                    </div>
+               
+            );
+        } )
+
         return (
             <div className={classes.surveysList}>
-                <h1>List of Surveys</h1>
-                <h2>Surveys</h2>
+                <h1 style={{textAlign:" center", fontFamily: "Raleway", color: "#34495e"}}>List of Surveys</h1>
+                {/*<h2>Surveys</h2>
                 <Table className={classes.table}>
                     <thead>
                     <tr>
@@ -55,7 +56,7 @@ class ListSurveys extends Component {
                     <tbody>
                     
                     {/*{console.log("SurveysList, surveys", this.props.surveys)}*/}
-                    {this.props.survey.surveys && this.props.survey.surveys.map(survey => {
+                    {/*{this.props.survey.surveys && this.props.survey.surveys.map(survey => {
                         return (
                             <tr key={survey.id}>
                                 <td>{survey.id}</td>
@@ -72,8 +73,10 @@ class ListSurveys extends Component {
                         {/*<td><Button onClick={this.createUser} bsStyle="primary">Add New User</Button></td>*/}
                         {/*<td></td>*/}
                     {/*</tr>*/}
-                    </tbody>
-                </Table>
+                    {/*</tbody>
+                </Table>*/}
+                
+                <div className={classes.container}> {surveys} </div>
             </div>
         );
     }

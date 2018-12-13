@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
 // import HomePage from "../HomePage/HomePage";
 import Login from "../Login/Login";
 import {asyncSetUserAccountFK, setAppUserAccountIdName} from "../../store/actions"
@@ -39,8 +38,6 @@ export class FormUserDetails extends Component {
       <MuiThemeProvider>
 
           <React.Fragment>
-          <AppBar title="Success" />
-              {/*{this.props.history && this.props.history.push("/home")}*/}
             {/*<Redirect to={HomePage}/>*/}
               <Redirect to={Login}/>
               <h1>Please, log in next</h1>

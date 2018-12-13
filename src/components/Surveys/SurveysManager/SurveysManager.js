@@ -5,14 +5,7 @@ import axios from '../../../axios-survey';
 
 import {asyncListSurveys, setSurveyId, asyncDeleteSurvey, asyncCreateNewSurvey} from "../../../store/actions";
 
-import {
-    Table,
-    // FormControl, FormGroup, ControlLabel, PageHeader,
-    Button,
-    // ButtonToolbar,
-    ButtonGroup,
-    //Alert
-} from 'react-bootstrap';
+import { Table, Button, ButtonGroup,} from 'react-bootstrap';
 
 import classes from "./SurveysManager.css";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
@@ -51,7 +44,6 @@ class SurveysManager extends Component {
         return (
             <div className={classes.surveysManager}>
                 <h1>Surveys Manager</h1>
-                <h2>Surveys:</h2>
                 <Table className={classes.table}>
                     <thead>
                     <tr>
@@ -68,23 +60,16 @@ class SurveysManager extends Component {
                                 <td>{survey.title}</td>
                                 <td>
                                     <ButtonGroup>
-                                        <Button onClick={() => this.editSurvey(survey)} bsStyle="success">Edit</Button>
-                                        <Button onClick={() => this.deleteSurvey(survey)} bsStyle="danger">Delete</Button>
+                                        <Button onClick={() => this.editSurvey(survey)} className={classes.btnPrimary} bsStyle="primary btn-sm">Edit</Button>
+                                        <Button onClick={() => this.deleteSurvey(survey)} className={classes.btnDanger} bsStyle="danger btn-sm">Delete</Button>
                                     </ButtonGroup>
                                 </td>
                             </tr>
                         )
                     })}
-                    <tr>
-                        <td></td>
-                        <td>
-                            <Button onClick={this.addNewSurvey} bsStyle="primary">Add New Survey</Button>
-                        </td>
-
-                        <td></td>
-                    </tr>
                     </tbody>
                 </Table>
+                <Button onClick={this.addNewSurvey} className={classes.btn}>Add New Survey</Button>
             </div>
         );
     }

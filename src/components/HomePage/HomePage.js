@@ -12,6 +12,7 @@ import classes from "./HomePage.css";
 import Protected from "../Login/Protected";
 
 class HomePage extends Component {
+    
     render() {
         return (
             <div className={classes.content}>
@@ -21,7 +22,7 @@ class HomePage extends Component {
                             Survey is <span> a feedback </span> 
                             for education
                         </h1>
-                        <a className={classes.featureBtn} href="/survey">GET STARTED</a>
+                        <a className={classes.featureBtn} href="/login">GET STARTED</a>
                         <div> Current Version: <strong> v0.10.0 </strong></div>
                     </div>
                 </div>

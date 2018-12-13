@@ -5,24 +5,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import axios from '../../../axios-survey';
-
-import {
-    asyncListUsers,
-    asyncCreateUser,
-    asyncFetchUser,
-    resetUser,
-    asyncDeleteUser,
-    selectUser
-} from "../../../store/actions";
-
-import {
-    Table,
-    // FormControl, FormGroup, ControlLabel, PageHeader,
-    Button,
-    // ButtonToolbar,
-    ButtonGroup,
-    //Alert
-} from 'react-bootstrap';
+import {asyncListUsers, asyncCreateUser, asyncFetchUser, resetUser, asyncDeleteUser} from "../../../store/actions";
+import { Table,Button, ButtonGroup,} from 'react-bootstrap';
 
 import classes from "./UsersManager.css";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
@@ -67,7 +51,6 @@ class UsersManager extends Component {
         return (
             <div className={classes.usersManager}>
                 <h1>Users Manager</h1>
-                <h2>Users:</h2>
                 <Table className={classes.table}>
                     <thead>
                     <tr>
@@ -86,20 +69,16 @@ class UsersManager extends Component {
                                 <td>{user.lastname}</td>
                                 <td>
                                     <ButtonGroup>
-                                        <Button onClick={() => this.editUser(user)} bsStyle="primary">Edit</Button>
-                                        <Button onClick={() =>this.deleteUser(user.id)} bsStyle="danger">Delete</Button>
+                                        <Button onClick={() => this.editUser(user)} className={classes.btnPrimary} bsStyle="primary btn-sm">Edit</Button>
+                                        <Button onClick={() =>this.deleteUser(user.id)} className={classes.btnDanger} bsStyle="danger btn-sm">Delete</Button>
                                     </ButtonGroup>
                                 </td>
                             </tr>
                         )
                     })}
-                    <tr>
-                        <td></td>
-                        <td><Button onClick={this.createUser} bsStyle="primary">Add New User</Button></td>
-                        <td></td>
-                    </tr>
                     </tbody>
                 </Table>
+                <Button onClick={this.createUser} className={classes.btn}>Add New User</Button>
             </div>
         );
     }

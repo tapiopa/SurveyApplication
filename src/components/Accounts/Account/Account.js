@@ -334,6 +334,12 @@ class Account extends Component {
     }
 
     logState = () => {
+      // console.log("getDateMoment, name of constructor of date string", dateString.constructor.name);
+      if (dateString.constructor.name === 'String') {
+        // console.log("getMomentFromDateString, dateString", dateString);
+        //dateString = "2020-12-20";
+        //dateString = this.getDateString(dateString);
+        const year = dateString.slice(0, 4);
         for (const key of Object.keys(this.state)) {
             console.log(key, this.state[key]);
         }
@@ -363,6 +369,9 @@ class Account extends Component {
     };
 
     getFormattedMoment = date => {
+    let dateMoment = dateString;
+    if (dateString && dateString.constructor.name === 'String') {
+      // console.log("formatMoment, going for getDateMoment with", dateString)
         return this.getDateMoment(date)
             ? this.getDateMoment(date).format('DD.M.YYYY')
             : null;

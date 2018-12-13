@@ -53,6 +53,24 @@ class Login extends Component {
 
     render() {
         return (
+      <div>
+
+    <div className={classes.body}>    
+      <div className={classes.wrapper}>
+       <div className={classes.left} >
+         <div className={classes.signin}>
+          <form onSubmit={this.handleSubmit}>
+            <div>
+              <label>Email or username</label>
+              <input 
+                type="text"
+                id="account"
+                name="account"
+                autoComplete="false"
+                autoFocus={true}
+                onChange={this.onChange}              
+                className={classes.textInput} />
+            </div>
             <div>
                 <div className={classes.body}>
                     <div className={classes.wrapper}>
@@ -74,25 +92,25 @@ class Login extends Component {
                                             className={classes.textInput}/>
                                     </div>
                                     <div>
-                                        <label>Password</label>
-                                        <input type="password"
-                                               id="password"
-                                               name="password"
-                                               autoComplete="false"
-                                               onChange={this.onChange}
-                                               className={classes.textInput}/>
-                                    </div>
-                                    <button type="submit" className={classes.primaryBtn}>Sign In</button>
-                                </form>
-                                <div className={classes.links}>
-                                    <a href="#">Forgot Password</a>
-                                    <a href="#">Sign in with company or school</a>
-                                </div>
-                                <div className={classes.or}>
-                                    <hr className={classes.bar}/>
-                                    <span>OR</span>
-                                    <hr className={classes.bar}/>
-                                </div>
+              <label>Password</label>
+              <input type="password"
+                        id="password"
+                        name="password"
+                        autoComplete="false"
+                        onChange={this.onChange}
+                        className={classes.textInput} />
+            </div>
+            <button type="submit"  className={classes.primaryBtn}>Sign In</button>
+          </form>
+          <div className={classes.links}>
+            <NavLink to="#">Forgot Password</NavLink>
+            <NavLink to="#">Sign in with company or school</NavLink>
+          </div>
+          <div  className={classes.or}>
+            <hr className={classes.bar} />
+            <span>OR</span>
+            <hr  className={classes.bar} />
+          </div>
 
                                 <NavLink to="/registration" className={classes.secondaryBtn}>Create an account</NavLink>
                                 <Route path="/registration" component={UserForm}/>
@@ -102,23 +120,22 @@ class Login extends Component {
                                 <div>
                                     <a href="#">terms of use</a> | <a href="#">Privacy Policy</a>
                                 </div>
-                            </footer>
-                        </div>
-                        <div className={classes.right}>
-                            <div className={classes.showcase}>
-                                <div className={classes.showcaseContent}>
-                                    <h1 className={classes.show} caseText>
-                                        Let's survey <strong>the future</strong>
-                                    </h1>
-                                    <a href="#" className={classes.secondaryBtn}>Start a FREE 10-day trial</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+      </div>
+      <div  className={classes.right}>
+        <div  className={classes.showcase}>
+          <div  className={classes.showcaseContent}>
+            <h1  className={classes.show}caseText>
+              Let's survey <strong>the future</strong>
+            </h1>
+            <NavLink to="/Home"  className={classes.secondaryBtn}>Start a FREE 10-day trial</NavLink>
+          </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    );
+  }
 }
 
 const mapDispathToProps = (dispatch) => {
