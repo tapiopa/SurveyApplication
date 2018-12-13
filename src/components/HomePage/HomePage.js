@@ -22,7 +22,7 @@ class HomePage extends Component {
                             Survey is <span> a feedback </span> 
                             for education
                         </h1>
-                        <a className={classes.featureBtn} href="/login">Sign In</a>
+                        <a className={classes.featureBtn} href="/login">{!this.props.app.logged_in ? "Sign In" : "Get Started"}</a>
                         <div> Current Version: <strong> v0.10.0 </strong></div>
                     </div>
                 </div>
