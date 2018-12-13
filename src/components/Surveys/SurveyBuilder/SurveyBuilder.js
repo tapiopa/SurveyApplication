@@ -12,8 +12,8 @@ import Aux from "../../../hoc/Auxiliary/Auxiliary";
 
 import {
     Table, FormControl, FormGroup, ControlLabel, PageHeader, Button,
-    ButtonToolbar,
-    ButtonGroup,
+    // ButtonToolbar,
+    ButtonGroup, Clearfix
     //Alert
 } from 'react-bootstrap';
 
@@ -105,20 +105,20 @@ class SurveyBuilder extends Component {
 
     componentDidMount() {
         console.log("componentDidMount, props", this.props);
-        const newSurveyBuilder = this.props.surveyBuilder && this.props.surveyBuilder.survey && this.props.surveyBuilder.survey.newSurvey;
+        const newSurveyBuilderSurvey = this.props.surveyBuilder && this.props.surveyBuilder.survey && this.props.surveyBuilder.survey.newSurvey;
         const newSurvey = this.props.survey && this.props.survey.id && this.props.survey.newSurvey;
-        const oldSurveyBuilderWithId = this.props.surveyBuilder && this.props.surveyBuilder.survey && this.props.surveyBuilder.survey.id && !this.props.surveyBuilder.survey.newSurvey;
-        const oldSurveyWithId  = this.props.survey && this.props.survey.id && !this.props.survey.newSurvey;
-        if (newSurveyBuilder) {
+        const oldSurveyBuilderSurvey = this.props.surveyBuilder && this.props.surveyBuilder.survey && this.props.surveyBuilder.survey.id && !this.props.surveyBuilder.survey.newSurvey;
+        const oldSurvey = this.props.survey && this.props.survey.id && !this.props.survey.newSurvey;
+        if (newSurveyBuilderSurvey) {
             console.log("componentDidMount, new SurveyBuilder", this.props.surveyBuilder.survey);
             this.updateState(this.props.surveyBuilder.survey);
         } else if (newSurvey) {
             console.log("componentDidMount, new Survey", this.props.survey);
             this.updateState(this.props.survey);
-        } else if (oldSurveyBuilderWithId) {
+        } else if (oldSurveyBuilderSurvey) {
             console.log("componentDidMount with SurveyBuilder, Fetch Survey, id", this.props.surveyBuilder.survey.id);
             this.props.onFetchSurvey(this.props.surveyBuilder.survey.id);
-        } else if (oldSurveyWithId) {
+        } else if (oldSurvey) {
             console.log("componentDidMount with Survey, Fetch Survey, id", this.props.survey.id);
             this.props.onFetchSurvey(this.props.survey.id);
         } else {
@@ -132,31 +132,32 @@ class SurveyBuilder extends Component {
     componentWillReceiveProps(nextProps, nextContext) {
         console.log("componentWillReceiveProps, nextProps", nextProps);
         console.log("componentWillReceiveProps, nextContext", nextContext);
-        const newSurveyBuilder = nextProps.surveyBuilder &&nextProps.surveyBuilder.survey && nextProps.surveyBuilder.survey.newSurvey;
-        const newSurvey = nextProps.survey && nextProps.survey.id;
-        const oldSurveyBuilderWithId = nextProps.surveyBuilder && nextProps.surveyBuilder.survey && nextProps.surveyBuilder.survey.id;
-        const oldSurveyWithId  = nextProps.survey && nextProps.survey.id;
-        if (newSurveyBuilder) {
-            console.log("componentWillReceiveProps, new SurveyBuilder", nextProps.surveyBuilder.survey);
-            this.updateState(nextProps.surveyBuilder.survey);
-        } else if (newSurvey) {
-            console.log("componentWillReceiveProps, new Survey",nextProps.survey);
-            this.updateState(nextProps.survey);
-        } else if (oldSurveyBuilderWithId) {
-            console.log("componentWillReceiveProps with SurveyBuilder, Fetch Survey, id", nextProps.surveyBuilder.survey.id);
-            this.props.onFetchSurvey(nextProps.surveyBuilder.survey.id);
-        } else if (oldSurveyWithId) {
-            console.log("componentWillReceiveProps with Survey, Fetch Survey, id", nextProps.survey.id);
-            this.props.onFetchSurvey(nextProps.survey.id);
-        } else {
-            console.log("componentWillReceiveProps, NO Survey, props", nextProps);
-        }
+        // const newSurveyBuilderSurvey = nextProps.surveyBuilder && nextProps.surveyBuilder.survey && nextProps.surveyBuilder.survey.newSurvey;
+        // const newSurvey = nextProps.survey && nextProps.survey.newSurvey;
+        // const oldSurveyBuilderSurvey = nextProps.surveyBuilder && nextProps.surveyBuilder.survey && nextProps.surveyBuilder.survey.id;
+        // const oldSurvey  = nextProps.survey && nextProps.survey.id;
+        // if (newSurveyBuilderSurvey) {
+        //     console.log("componentWillReceiveProps, new SurveyBuilder", nextProps.surveyBuilder.survey);
+        //     this.updateState(nextProps.surveyBuilder.survey);
+        // } else if (newSurvey) {
+        //     console.log("componentWillReceiveProps, new Survey",nextProps.survey);
+        //     this.updateState(nextProps.survey);
+        // } else if (oldSurveyBuilderSurvey) {
+        //     console.log("componentWillReceiveProps with SurveyBuilder, Fetch Survey, id", nextProps.surveyBuilder.survey.id);
+        //     this.props.onFetchSurvey(nextProps.surveyBuilder.survey.id);
+        // } else if (oldSurvey) {
+        //     console.log("componentWillReceiveProps with Survey, Fetch Survey, id", nextProps.survey.id);
+        //     this.props.onFetchSurvey(nextProps.survey.id);
+        // } else {
+        //     console.log("componentWillReceiveProps, NO Survey, props", nextProps);
+        // }
         if (nextProps.survey && nextProps.survey.saveSuccess) {
             this.setState({
                 saveSuccess: nextProps.saveSuccess,
                 editingSurvey: nextProps.editingSurvey
             })
         }
+        this.updateState(nextProps);
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -206,15 +207,17 @@ class SurveyBuilder extends Component {
         return true;
     }
 
-    updateState (someProps) {
+    updateState(someProps) {
         console.log("updateState, some props", someProps);
-        const questions = {...someProps.questions};
-        this.setState({
-            id: someProps.id,
-            title: someProps.title,
-            questions: questions,
-            newSurvey: someProps.newSurvey
-        });
+        if (someProps.survey) {
+            const questions = {...someProps.survey.questions};
+            this.setState({
+                id: someProps.survey.id,
+                title: someProps.survey.title,
+                questions: questions,
+                newSurvey: someProps.survey.newSurvey
+            });
+        }
         console.log("updateState, AFTER state", this.state);
     }
 
@@ -364,7 +367,6 @@ class SurveyBuilder extends Component {
     }
 
 
-
     // updateSurveyId = (evt) => {
     //     this.setState({surveyId: evt.target.value});
     // };
@@ -391,7 +393,7 @@ class SurveyBuilder extends Component {
             editedQuestion.question = this.state.inputValue;
             savedQuestion = editedQuestion;
         } else {
-           savedQuestion = {
+            savedQuestion = {
                 id: this.state.inputId,
                 question: this.state.inputValue,
                 surveyFK: this.props.survey.id
@@ -520,39 +522,39 @@ class SurveyBuilder extends Component {
 
         return (
             <div className={classes.surveyBuilder}>
-                <PageHeader>Survey Builder</PageHeader>
+                <PageHeader className={classes.pageHeader}>Survey Builder</PageHeader>
+                <br/>
+                <Clearfix/>
                 <form className={classes.form}>
+                    <br/>
+                    <Clearfix/>
                     <FormGroup className={classes.group}>
                         <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
                         <FormControl className={classes.input}
                                      type="text" name="id" id="id" disabled={true}
                             //onChange={props.updateId}
                                      value={this.state.id}/>
-                    </FormGroup>
+                    </FormGroup><br/>
+                    <Clearfix/>
                     <FormGroup className={classes.group}>
                         <ControlLabel className={classes.label} htmlFor="title">Survey Name</ControlLabel>
                         <FormControl className={classes.input}
                                      disabled={!this.state.editingSurvey}
                                      type="text" name="title" id="title"
                                      onChange={() => this.updateSurveyTitle(this.state.title)}
-                                     value={this.state.title}
-                        />
+                                     value={this.state.title}/>
                     </FormGroup>
-                    <Button onClick={this.editSurvey}
-                            disabled={this.state.editingSurvey}
-                            bsStyle="primary">Edit</Button>
-                    <Button onClick={this.saveSurveyIdAndTitle}
-                            disabled={!this.state.editingSurvey}
-                            bsStyle="success">Save</Button>
-                    {/*<SurveyData*/}
-                        {/*id={this.props.survey && this.props.survey.id ? this.props.survey.id : ""}*/}
-                        {/*title={this.props.survey && this.props.survey.title ? this.props.survey.title : ""}*/}
-                        {/*updateTitle={this.updateSurveyTitle}*/}
-                        {/*edit={this.editSurvey}*/}
-                        {/*save={this.saveSurveyIdAndTitle}*/}
-                        {/*editing={this.state.editingSurvey}*/}
-                    {/*/>*/}
+                    <Clearfix/>
+                    <ButtonGroup>
+                        <Button onClick={this.editSurvey}
+                                disabled={this.state.editingSurvey}
+                                bsStyle="primary">Edit</Button>
+                        <Button onClick={this.saveSurveyIdAndTitle}
+                                disabled={!this.state.editingSurvey}
+                                bsStyle="success">Save</Button>
+                    </ButtonGroup>
                 </form>
+                <Clearfix/>
                 <br/>
                 <br/>
                 <h2 className={classes.subheader}>Questions</h2>
@@ -560,7 +562,7 @@ class SurveyBuilder extends Component {
                 <Table className={classes.table}>
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th className={classes.tableId}>ID</th>
                         <th>Question</th>
                         <th>Action</th>
                     </tr>
@@ -678,12 +680,12 @@ class SurveyBuilder extends Component {
                 <Button onClick={this.addNewQuestion} bsStyle="success">Add a Question</Button>
 
                 {/*{!this.state.newSurvey ? null :*/}
-                    <Button bsStyle="info" onClick={this.goBack}>Go Back</Button>
+                <Button bsStyle="info" onClick={this.goBack}>Go Back</Button>
                 {/*}*/}
-                <ButtonToolbar>
-                    <Button bsStyle="success" bsSize="small" onClick={this.logState}>Log State</Button>
-                    <Button bsStyle="success" bsSize="small" onClick={this.logProps}>Log Props</Button>
-                </ButtonToolbar>
+                {/*<ButtonToolbar>*/}
+                {/*<Button bsStyle="success" bsSize="small" onClick={this.logState}>Log State</Button>*/}
+                {/*<Button bsStyle="success" bsSize="small" onClick={this.logProps}>Log Props</Button>*/}
+                {/*</ButtonToolbar>*/}
 
             </div>
         );

@@ -1,9 +1,14 @@
+/*
+* SurveysList.js
+*/
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import axios from '../../../axios-survey';
-import {asyncSurveyList, asyncGetSurveyAndQuestions} from "../../../store/actions";
-// import { Table, Button} from 'react-bootstrap';
+import {
+    asyncSurveyList,
+    asyncGetSurveyAndQuestions
+} from "../../../store/actions";
 
 import classes from "./SurveysList.css";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
@@ -39,7 +44,7 @@ class ListSurveys extends Component {
 
         return (
             <div className={classes.surveysList}>
-                <h1 style={{textAlign:" center", fontFamily: "Raleway", color: "#34495e"}}>List of Surveys</h1>
+                <h1 style={{textAlign:" center", fontFamily: "Raleway", color: "#34495e"}}>List of Available Surveys</h1>
                 {/*<h2>Surveys</h2>
                 <Table className={classes.table}>
                     <thead>

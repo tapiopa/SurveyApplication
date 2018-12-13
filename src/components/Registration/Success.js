@@ -2,32 +2,40 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import HomePage from "../HomePage/HomePage";
+// import HomePage from "../HomePage/HomePage";
+import Login from "../Login/Login";
 import {asyncSetUserAccountFK, setAppUserAccountIdName} from "../../store/actions"
 import connect from "react-redux/es/connect/connect";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../axios-survey";
+import AuthHandler from "../Login/AuthHandler";
 
 export class FormUserDetails extends Component {
+
+    autHandler = new AuthHandler();
 
     constructor(props) {
         super(props);
         this.setAccountFK = this.setAccountFK.bind(this);
+
     }
 
 
     setAccountFK (user, account) {
         console.log("setAccountFK, user", this.props.user, "account", this.props.account);
         this.props.onSetUserAccountFK(user, account.id);
+        this.autHandler.login(account.account, account.password);
         this.props.onSetApp(account, user);
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
         console.log("componentWillReceiveProps, nextProps", nextProps);
+        console.log("!!!!!Success componentWillReceiveProps, logged in", nextProps.app.loggedIn);
         if (nextProps.user && nextProps.user.saveSuccess &&
             nextProps.account && nextProps.account.saveSuccess &&
-            !nextProps.user.accountFK) {
-            this.setAccountFK(nextProps.user, nextProps.account.id);
+            nextProps.app && !nextProps.app.loggedIn) {
+            console.log("Surcces, component will rescueve props", nextProps);
+            this.setAccountFK(nextProps.user, nextProps.account);
         }
     }
 
@@ -37,7 +45,11 @@ export class FormUserDetails extends Component {
       <MuiThemeProvider>
 
           <React.Fragment>
-            <Redirect to={HomePage}/>
+            {/*<Redirect to={HomePage}/>*/}
+              {!this.props.app.loggedIn ? null :
+                  <Redirect to="/home"/>
+                  // < h1 > Please, log in next</h1>
+              }
           {/*<h1>Thanks You For Your Submission</h1>*/}
         </React.Fragment>
       </MuiThemeProvider>

@@ -4,7 +4,7 @@
 import {
     LIST_ACCOUNTS,
     EDIT_ACCOUNT,
-    DELETE_ACCOUNT, LIST_ACCOUNTS_FAILED, DELETE_ACCOUNT_FAILED
+    DELETE_ACCOUNT, LIST_ACCOUNTS_FAILED, DELETE_ACCOUNT_FAILED, SELECT_ACCOUNT
 } from "../actions/actionsTypes";
 import {updateObject} from "../utility";
 
@@ -28,6 +28,9 @@ const accountsManagerReducers = (state = initialState, action) => {
         }
         case EDIT_ACCOUNT: {
             return {selectedAccount: action.accountId}
+        }
+        case SELECT_ACCOUNT: {
+            return {...state, selectedAccount: action.id}
         }
         case DELETE_ACCOUNT: {
             console.log("accountsManagerReducers, state accounts", state.accounts);

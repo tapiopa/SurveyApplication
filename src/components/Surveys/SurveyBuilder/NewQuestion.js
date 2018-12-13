@@ -5,6 +5,7 @@
 
 import React from 'react';
 import {Button, ButtonGroup} from "react-bootstrap";
+import classes from "./SurveyBuilder.css";
 // import {Table, FormControl, FormGroup, ControlLabel, PageHeader, Button,
 //     //ButtonToolbar,
 //     ButtonGroup,
@@ -14,7 +15,7 @@ import {Button, ButtonGroup} from "react-bootstrap";
 const newQuestion = props => {
     return (
         <tr key={props.id}>
-            <td>{props.id}</td>
+            <td className={classes.tableId}>{props.id}</td>
             <td>
                 <textarea
                     onChange={evt => props.onChange(evt)}

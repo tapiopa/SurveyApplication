@@ -3,15 +3,26 @@
 *
 */
 .surveyBuilder {
-    width: 70%;
-    float: right;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    /*float: right;*/
+    margin-top: 5rem;
+    border: 1px solid #cccccc;
+}
+
+.pageHeader {
+    float: left;
+    /*border: 1px solid red;*/
 }
 
 .form {
     float: left;
-    width: 70%;
-    display: inline-block;
-    /*border: 1px solid red;*/
+    width: 90%;
+    display: block;
+    border: 1px solid #cccccc;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 .label {
     width: 10rem;
@@ -29,11 +40,19 @@
 .group {
     float: left;
     /*border: 1px solid red;*/
+
+}
+
+.buttonGroup {
+    margin-left: 1rem;
+    margin-top: 2rem;
 }
 
 .table {
-    width: 70%;
-    /*border: 1px solid red;*/
+    width: 90%;
+    border: 1px solid #cccccc;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .tableText {
@@ -44,11 +63,18 @@
     text-align: right;
 }
 
+.tableId {
+    width: 5%;
+    /*text-align: right;*/
+    /*border: 1px solid red;*/
+}
+
 .subheader {
-    width: 70%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+    /*width: 70%;*/
+    float: left;
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    /*text-align: center;*/
     /*border: 1px solid red;*/
 }
 .showAnswers {

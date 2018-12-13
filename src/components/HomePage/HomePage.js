@@ -5,12 +5,11 @@ import {connect} from 'react-redux';
 
 // import {PageHeader} from 'react-bootstrap';
 
-// import Registration from "../Registration/UserForm";
 // import Aux from "../../hoc/Auxiliary/Auxiliary";
 import classes from "./HomePage.css";
 
 // import Account from "../Accounts/Account/Account";
-// import User from "../Users/User/User";
+import Protected from "../Login/Protected";
 
 class HomePage extends Component {
     
@@ -96,6 +95,5 @@ const mapStateToProps = (state) => {
         app: state.app
     }
 };
-
 
 export default connect(mapStateToProps)(HomePage);
