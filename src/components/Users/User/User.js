@@ -471,7 +471,7 @@ class User extends Component {
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel className={classes.Label} htmlFor="rewards">User Account Type</ControlLabel>
-                        <FormControl componentClass="select"
+                        <FormControl componentClass="select" className={classes.select}
                                      name="accountType" id="accountType"
                                      onChange={this.handleAccountTypeChange}>
                             <option  value="notSelected">Select...</option>

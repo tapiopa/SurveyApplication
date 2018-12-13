@@ -5,13 +5,27 @@
 
 .account {
     width: 70%;
-    float: right;
+    /*float: right;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5rem;
+    /*border: 1px solid red;*/
+    /*text-align: center;*/
+    align-content: center;
+}
+
+.pageHeader {
+    /*float: left;*/
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .form {
-    float: left;
-    width: 70%;
-    display: inline-block;
+    /*float: left;*/
+    width: 32rem;
+    /*display: inline-block;*/
+    margin-left: auto;
+    margin-right: auto;
     /*border: 1px solid red;*/
 }
 .label {

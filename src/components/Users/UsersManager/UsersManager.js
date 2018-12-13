@@ -5,7 +5,14 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import axios from '../../../axios-survey';
-import {asyncListUsers, asyncCreateUser, asyncFetchUser, resetUser, asyncDeleteUser} from "../../../store/actions";
+import {
+    asyncListUsers,
+    asyncCreateUser,
+    asyncFetchUser,
+    resetUser,
+    asyncDeleteUser,
+    selectUser
+} from "../../../store/actions";
 import { Table,Button, ButtonGroup,} from 'react-bootstrap';
 
 import classes from "./UsersManager.css";

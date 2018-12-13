@@ -123,10 +123,9 @@ class SurveyForm extends Component {
       console.log("SurveyForm, render, props", this.props);
       // this.props.survey && this.props.survey.survey &&
         // console.log("SurveyForm, render, props.survey answers", this.props.survey.survey.questions[1].answers);
-      if (
-          this.props.survey && this.props.survey.survey /*&& /*this.props.survey.survey.fetched &&*/
+      if (this.props.survey && this.props.survey.survey ) {
+          /*&& /*this.props.survey.survey.fetched &&*/
           // this.props.survey.survey.questions && this.props.survey.survey.questions[0] /*&& this.props.survey.survey.questions[0].answers*/)
-      ) {
         const {Answer} = this.state;
         // console.log("SurveyForm, render. state questions 0 answers", this.state.questions[0].answers);
         // console.log("SurveyForm, Answer", Answer);

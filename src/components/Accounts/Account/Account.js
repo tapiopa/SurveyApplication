@@ -10,7 +10,8 @@ import {
     ControlLabel,
     PageHeader,
     Button,
-    ButtonToolbar
+    ButtonToolbar,
+    Clearfix
 } from 'react-bootstrap';
 import {connect} from 'react-redux';
 
@@ -102,7 +103,7 @@ class Account extends Component {
         //     this.setState({editing: false, id: this.props.account.id});
         //     this.props.onFetchAccount(this.props.account.id);
         if (this.props.accountsManager.selectedAccount) {
-            console.log('Account, componentDidMount, app account_id', this.props.app.account_id);
+            console.log('Account, componentDidMount, selectedAccount', this.props.accountsManager.selectedAccount);
             this.setState({editing: false, id: this.props.accountsManager.selectedAccount});
             this.props.onFetchAccount(this.props.accountsManager.selectedAccount);
         } else if (this.props.app.account_id) {
@@ -335,11 +336,7 @@ class Account extends Component {
 
     logState = () => {
       // console.log("getDateMoment, name of constructor of date string", dateString.constructor.name);
-      if (dateString.constructor.name === 'String') {
         // console.log("getMomentFromDateString, dateString", dateString);
-        //dateString = "2020-12-20";
-        //dateString = this.getDateString(dateString);
-        const year = dateString.slice(0, 4);
         for (const key of Object.keys(this.state)) {
             console.log(key, this.state[key]);
         }
@@ -369,8 +366,8 @@ class Account extends Component {
     };
 
     getFormattedMoment = date => {
-    let dateMoment = dateString;
-    if (dateString && dateString.constructor.name === 'String') {
+    // let dateMoment = dateString;
+    // if (dateString && dateString.constructor.name === 'String') {
       // console.log("formatMoment, going for getDateMoment with", dateString)
         return this.getDateMoment(date)
             ? this.getDateMoment(date).format('DD.M.YYYY')
@@ -411,12 +408,24 @@ class Account extends Component {
 
         return (
             <div className={classes.account}>
-                <PageHeader>Account</PageHeader>
-                <label>ID</label>
-                <p>
-                    state: {this.state.id} and props: {this.props.account.id}
-                </p>
+                <PageHeader className={classes.pageHeader}>Account</PageHeader>
+                {/*<label>ID</label>*/}
+                {/*<p>state: {this.state.id} and props: {this.props.account.id}</p>*/}
+                <Clearfix/>
                 <form className={classes.form}>
+                    <FormGroup>
+                        <ControlLabel className={classes.label} htmlFor="id">
+                            ID
+                        </ControlLabel>
+                        <FormControl
+                            className={classes.input}
+                            type="text"
+                            name="username"
+                            id="username"
+                            defaultValue={this.state.id}
+                            disabled={true}
+                        />
+                    </FormGroup>
                     <FormGroup>
                         <ControlLabel className={classes.label} htmlFor="username">
                             Username
@@ -539,7 +548,7 @@ class Account extends Component {
                     </ButtonToolbar>
                 </form>
 
-                <button className="btn btn-success" onClick={this.logState}>Log</button>
+                {/*<button className="btn btn-success" onClick={this.logState}>Log</button>*/}
             </div>
         );
     }

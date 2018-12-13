@@ -12,8 +12,8 @@ import Aux from "../../../hoc/Auxiliary/Auxiliary";
 
 import {
     Table, FormControl, FormGroup, ControlLabel, PageHeader, Button,
-    ButtonToolbar,
-    ButtonGroup,
+    // ButtonToolbar,
+    ButtonGroup, Clearfix
     //Alert
 } from 'react-bootstrap';
 
@@ -108,7 +108,7 @@ class SurveyBuilder extends Component {
         const newSurveyBuilderSurvey = this.props.surveyBuilder && this.props.surveyBuilder.survey && this.props.surveyBuilder.survey.newSurvey;
         const newSurvey = this.props.survey && this.props.survey.id && this.props.survey.newSurvey;
         const oldSurveyBuilderSurvey = this.props.surveyBuilder && this.props.surveyBuilder.survey && this.props.surveyBuilder.survey.id && !this.props.surveyBuilder.survey.newSurvey;
-        const oldSurvey  = this.props.survey && this.props.survey.id && !this.props.survey.newSurvey;
+        const oldSurvey = this.props.survey && this.props.survey.id && !this.props.survey.newSurvey;
         if (newSurveyBuilderSurvey) {
             console.log("componentDidMount, new SurveyBuilder", this.props.surveyBuilder.survey);
             this.updateState(this.props.surveyBuilder.survey);
@@ -207,7 +207,7 @@ class SurveyBuilder extends Component {
         return true;
     }
 
-    updateState (someProps) {
+    updateState(someProps) {
         console.log("updateState, some props", someProps);
         if (someProps.survey) {
             const questions = {...someProps.survey.questions};
@@ -367,7 +367,6 @@ class SurveyBuilder extends Component {
     }
 
 
-
     // updateSurveyId = (evt) => {
     //     this.setState({surveyId: evt.target.value});
     // };
@@ -394,7 +393,7 @@ class SurveyBuilder extends Component {
             editedQuestion.question = this.state.inputValue;
             savedQuestion = editedQuestion;
         } else {
-           savedQuestion = {
+            savedQuestion = {
                 id: this.state.inputId,
                 question: this.state.inputValue,
                 surveyFK: this.props.survey.id
@@ -523,39 +522,39 @@ class SurveyBuilder extends Component {
 
         return (
             <div className={classes.surveyBuilder}>
-                <PageHeader>Survey Builder</PageHeader>
+                <PageHeader className={classes.pageHeader}>Survey Builder</PageHeader>
+                <br/>
+                <Clearfix/>
                 <form className={classes.form}>
+                    <br/>
+                    <Clearfix/>
                     <FormGroup className={classes.group}>
                         <ControlLabel className={classes.label} htmlFor="id">Survey ID</ControlLabel>
                         <FormControl className={classes.input}
                                      type="text" name="id" id="id" disabled={true}
                             //onChange={props.updateId}
                                      value={this.state.id}/>
-                    </FormGroup>
+                    </FormGroup><br/>
+                    <Clearfix/>
                     <FormGroup className={classes.group}>
                         <ControlLabel className={classes.label} htmlFor="title">Survey Name</ControlLabel>
                         <FormControl className={classes.input}
                                      disabled={!this.state.editingSurvey}
                                      type="text" name="title" id="title"
                                      onChange={() => this.updateSurveyTitle(this.state.title)}
-                                     value={this.state.title}
-                        />
+                                     value={this.state.title}/>
                     </FormGroup>
-                    <Button onClick={this.editSurvey}
-                            disabled={this.state.editingSurvey}
-                            bsStyle="primary">Edit</Button>
-                    <Button onClick={this.saveSurveyIdAndTitle}
-                            disabled={!this.state.editingSurvey}
-                            bsStyle="success">Save</Button>
-                    {/*<SurveyData*/}
-                        {/*id={this.props.survey && this.props.survey.id ? this.props.survey.id : ""}*/}
-                        {/*title={this.props.survey && this.props.survey.title ? this.props.survey.title : ""}*/}
-                        {/*updateTitle={this.updateSurveyTitle}*/}
-                        {/*edit={this.editSurvey}*/}
-                        {/*save={this.saveSurveyIdAndTitle}*/}
-                        {/*editing={this.state.editingSurvey}*/}
-                    {/*/>*/}
+                    <Clearfix/>
+                    <ButtonGroup>
+                        <Button onClick={this.editSurvey}
+                                disabled={this.state.editingSurvey}
+                                bsStyle="primary">Edit</Button>
+                        <Button onClick={this.saveSurveyIdAndTitle}
+                                disabled={!this.state.editingSurvey}
+                                bsStyle="success">Save</Button>
+                    </ButtonGroup>
                 </form>
+                <Clearfix/>
                 <br/>
                 <br/>
                 <h2 className={classes.subheader}>Questions</h2>
@@ -563,7 +562,7 @@ class SurveyBuilder extends Component {
                 <Table className={classes.table}>
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th className={classes.tableId}>ID</th>
                         <th>Question</th>
                         <th>Action</th>
                     </tr>
@@ -681,12 +680,12 @@ class SurveyBuilder extends Component {
                 <Button onClick={this.addNewQuestion} bsStyle="success">Add a Question</Button>
 
                 {/*{!this.state.newSurvey ? null :*/}
-                    <Button bsStyle="info" onClick={this.goBack}>Go Back</Button>
+                <Button bsStyle="info" onClick={this.goBack}>Go Back</Button>
                 {/*}*/}
-                <ButtonToolbar>
-                    <Button bsStyle="success" bsSize="small" onClick={this.logState}>Log State</Button>
-                    <Button bsStyle="success" bsSize="small" onClick={this.logProps}>Log Props</Button>
-                </ButtonToolbar>
+                {/*<ButtonToolbar>*/}
+                {/*<Button bsStyle="success" bsSize="small" onClick={this.logState}>Log State</Button>*/}
+                {/*<Button bsStyle="success" bsSize="small" onClick={this.logProps}>Log Props</Button>*/}
+                {/*</ButtonToolbar>*/}
 
             </div>
         );

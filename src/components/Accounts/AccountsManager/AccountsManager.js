@@ -72,7 +72,7 @@ class AccountsManager extends Component {
         return (
             <div className={classes.accountManager}>
                 <h1>Accounts Manager</h1>
-                <h2>Accounts:</h2>
+                {/*<h2>Accounts:</h2>*/}
                 <Table className={classes.table}>
                     <thead>
                     <tr>
@@ -92,16 +92,12 @@ class AccountsManager extends Component {
                                     <ButtonGroup>
                                         <Button
                                             onClick={() => this.editAccount(account)}
-                                            bsStyle="success"
-                                        >
-                                            Edit
-                                        </Button>
+                                            bsStyle="success">
+                                            Edit</Button>
                                         <Button
                                             onClick={() => this.deleteAccount(account)}
-                                            bsStyle="danger"
-                                        >
-                                            Delete
-                                        </Button>
+                                            bsStyle="danger">
+                                            Delete</Button>
                                     </ButtonGroup>
                                 </td>
                             </tr>
@@ -110,9 +106,7 @@ class AccountsManager extends Component {
                     <tr>
                         <td/>
                         <td>
-                            <Button onClick={this.createAccount} bsStyle="primary">
-                                Add New Account
-                            </Button>
+                            <Button onClick={this.createAccount} bsStyle="primary">Add New Account</Button>
                         </td>
                         <td/>
                     </tr>

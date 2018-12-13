@@ -4,8 +4,11 @@
 */
 
 .userComponent {
-    float: right;
-    width: 70%;
+    /*float: right;*/
+    /*width: 70%;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5rem;
     /*border: 1px solid red;*/
 }
 
@@ -26,9 +29,12 @@
     /*float: right;*/
 /*}*/
 .Form {
-    float: left;
-    width: 70%;
-    display: inline-block;
+    /*float: left;*/
+    width: 32rem;
+    margin-left: auto;
+    margin-right: auto;
+    /*display: inline-block;*/
+    /*margin-top: 5rem;*/
     /*border: 1px solid red;*/
 }
 .Label {
@@ -66,6 +72,10 @@
 .formGroup {
     width: 25.5rem;
     /*border: 1px solid red;*/
+}
+
+.select {
+    width: 15rem;
 }
 
 .buttonToolbar {
