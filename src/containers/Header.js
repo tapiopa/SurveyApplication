@@ -39,6 +39,7 @@ export class Header extends Component {
     const navProps = {
         position:"relative", 
         style:{
+            position: "fixed",
             backgroundColor: '#384048',
             color:'#FFF',
             fontWeight: 700,

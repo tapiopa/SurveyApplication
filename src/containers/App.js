@@ -25,7 +25,6 @@ import Login from '../components/Login/Login';
 import AuthHandler from '../components/Login/AuthHandler';
 import SurveyForm from '../components/Surveys/Survey/SurveyForm';
 import Header from './Header';
-import Google from '../components/Google/components/Google';
 
 
 
@@ -81,6 +80,7 @@ class App extends Component {
 
     return (
       <div className={classes.App}>
+      <Header history={this.props.history}/>                      
         <Switch>
           <Route path="/home" component={HomePage} />
           <Route path="/account" component={Account}/>
@@ -95,11 +95,8 @@ class App extends Component {
           <Route path="/survey" component={SurveyForm} />
           <Route path="/result" component={Result} />
           <Route path="/login" component={Login}/>
-          <Route path="/google" component={Google}/>
         </Switch>
         {/*{!this.props.app.loggedIn ? null :*/}
-        <NavLink to="/google"><button className="btn-sm btn-primary">Google</button></NavLink>
-        <Header history={this.props.history}/>                
 </div>
 );
 }//this is end of render
