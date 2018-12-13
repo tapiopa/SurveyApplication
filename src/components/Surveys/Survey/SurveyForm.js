@@ -89,6 +89,8 @@ class SurveyForm extends Component {
         const {Answer} = this.state;
         console.log("SurveyForm, handleSubmit, Answer", Answer);
         Answer.forEach( (val) => this.props.onRegisterAnswer(val.AnswerOpt, val.questionId, this.props.app.user_id));
+        alert("Thank you for participating in this survey!");
+        this.props.history.push("/surveys");
         //apiCalls.registerAnswer(val.AnswerOpt, val.questionId));
     };
 
