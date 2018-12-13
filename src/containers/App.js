@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, withRouter, Redirect, Switch} from 'react-router-dom';
+import {Route, withRouter, NavLink, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from '../axios-survey';
 
@@ -25,6 +25,9 @@ import Login from '../components/Login/Login';
 import AuthHandler from '../components/Login/AuthHandler';
 import SurveyForm from '../components/Surveys/Survey/SurveyForm';
 import Header from './Header';
+import Google from '../components/Google/components/Google';
+
+
 
 class App extends Component {
   AuthHandler = new AuthHandler();
@@ -85,11 +88,11 @@ class App extends Component {
           <Route path="/survey" component={SurveyForm} />
           <Route path="/result" component={Result} />
           <Route path="/login" component={Login}/>
-
+          <Route path="/google" component={Google}/>
         </Switch>
         {/*{!this.props.app.loggedIn ? null :*/}
-        <Header history={this.props.history}/>
-        <button onClick={this._handleLogout}>Logout</button>
+        <NavLink to="/google"><button className="btn-sm btn-primary">Google</button></NavLink>
+        <Header history={this.props.history}/>                
 </div>
 );
 }//this is end of render
