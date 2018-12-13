@@ -69,15 +69,6 @@ class Login extends Component {
                                             autoFocus={true}
                                             onChange={this.onChange}
                                             className={classes.textInput}/>
-                                        <label>Email or username</label>
-                                        <input
-                                            type="text"
-                                            id="account"
-                                            name="account"
-                                            autoComplete="false"
-                                            autoFocus={true}
-                                            onChange={this.onChange}
-                                            className={classes.textInput}/>
                                     </div>
                                     <div>
                                         <label>Password</label>
@@ -104,12 +95,6 @@ class Login extends Component {
                                     an account</NavLink>
                                 <Route path="/registration" component={UserForm}/>
                             </div>
-                            <footer className={classes.mainFooter}>
-                                <p>Copyright &copy; 2018, Survey All Rights Reserved</p>
-                                <div>
-                                    <a href="#">terms of use</a> | <a href="#">Privacy Policy</a>
-                                </div>
-                            </footer>
                         </div>
                         <div className={classes.right}>
                             <div className={classes.showcase}>

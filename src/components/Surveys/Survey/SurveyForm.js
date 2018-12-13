@@ -138,9 +138,9 @@ class SurveyForm extends Component {
                     return <div>Loading...</div>
                 }
                 return (
-                    <div /* className={classes.survey_form} */ key={idx}>
+                    <div key={idx}>
                         <FormQuestions  {...q}/>
-                        <AnswerOpt
+                        <AnswerOpt 
                             questionId={q.id}
                             AnswerOption={q.answers} //{this.state.AnswerOpt}
                             Answer={Answer}

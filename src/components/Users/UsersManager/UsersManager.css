@@ -1,5 +1,6 @@
 .usersManager {
-    margin: 6rem 6rem 2rem;
+    margin: 0rem 6rem 2rem;
+    padding-top: 6rem;
     display: flex;
     flex-direction: column;
 }

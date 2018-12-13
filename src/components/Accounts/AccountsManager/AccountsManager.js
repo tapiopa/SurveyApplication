@@ -92,26 +92,22 @@ class AccountsManager extends Component {
                                     <ButtonGroup>
                                         <Button
                                             onClick={() => this.editAccount(account)}
-                                            bsStyle="success">
+                                            className={classes.btnPrimary} 
+                                            bsStyle="primary btn-sm">
                                             Edit</Button>
                                         <Button
                                             onClick={() => this.deleteAccount(account)}
-                                            bsStyle="danger">
+                                            className={classes.btnDanger} 
+                                            bsStyle="danger btn-sm">
                                             Delete</Button>
                                     </ButtonGroup>
                                 </td>
                             </tr>
                         );
                     })}
-                    <tr>
-                        <td/>
-                        <td>
-                            <Button onClick={this.createAccount} bsStyle="primary">Add New Account</Button>
-                        </td>
-                        <td/>
-                    </tr>
                     </tbody>
                 </Table>
+                <Button onClick={this.createAccount} className={classes.btn}>Add New Account</Button>
             </div>
         );
     }

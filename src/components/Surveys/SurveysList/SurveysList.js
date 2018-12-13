@@ -34,9 +34,9 @@ class ListSurveys extends Component {
     render() {
         const surveys = this.props.survey.surveys && this.props.survey.surveys.map(survey => {
             return (
-                    <div className={classes.item}>
+                    <div onClick={() =>this.takeTheSurvey(survey.id)} className={classes.item}>
                         <div className={classes.text}>{`${survey.id}. ${survey.title}`}</div>
-                        <Edit onClick={() =>this.takeTheSurvey(survey.id)} className={classes.check}/>
+                        <Edit className={classes.check}/>
                     </div>
                
             );

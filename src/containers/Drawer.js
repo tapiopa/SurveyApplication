@@ -74,15 +74,17 @@ export class Drawer extends Component {
       const menuItemsAdmin = [
           {
               name: "Home",
-              link: "/home"
+              link: "/home",
           },
           {
               name: "Surveys",
-              link: "/surveys"
+              link: "/surveys",
+              
           },
           {
               name: "Users Manager",
-              link: "/usersmanager"
+              link: "/usersmanager",
+              
           },
           {
             name: "Survey Manager",
@@ -90,7 +92,7 @@ export class Drawer extends Component {
           },
           {
               name: "Accounts Manager",
-              link: "/accountsmanager"
+              link: "/accountsmanager",
           },
       ]
 
@@ -100,6 +102,7 @@ export class Drawer extends Component {
             return (
             <List key={idx} style={style.link} component={Link} to={items.link}>
                 <ListItem button>
+                    
                     <ListItemText primary={items.name} />
                 </ListItem>
             </List>)

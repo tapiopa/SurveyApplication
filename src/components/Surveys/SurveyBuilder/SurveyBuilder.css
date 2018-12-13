@@ -7,7 +7,8 @@
     margin-left: auto;
     margin-right: auto;
     /*float: right;*/
-    margin-top: 5rem;
+    /* margin-top: 5rem; */
+    padding-top: 5rem;
     border: 1px solid #cccccc;
 }
 

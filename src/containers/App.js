@@ -71,12 +71,12 @@ class App extends Component {
 
   render() {
 
-    // const footerStyle= {
-    //   padding: "1.5rem 0",
-    //   background: "#2d343a",
-    //   color: "white",
-    //   fontSize:"1.5rem"
-    // }
+    const footerStyle= {
+      padding: "1.5rem 0",
+      background: "#2d343a",
+      color: "white",
+      fontSize:"1.5rem",
+    }
 
     return (
       <div className={classes.App}>
@@ -97,6 +97,7 @@ class App extends Component {
           <Route path="/login" component={Login}/>
         </Switch>
         {/*{!this.props.app.loggedIn ? null :*/}
+        <footer style={{...footerStyle}}>&copy; Survey Inc</footer>
 </div>
 );
 }//this is end of render

@@ -43,7 +43,7 @@ class SurveysManager extends Component {
     render() {
         return (
             <div className={classes.surveysManager}>
-                <h1>Surveys Manager</h1>
+                <h1 style={{marginTop:'6rem'}}>Surveys Manager</h1>
                 <Table className={classes.table}>
                     <thead>
                     <tr>
