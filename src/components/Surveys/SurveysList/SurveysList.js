@@ -22,6 +22,7 @@ class ListSurveys extends Component {
     }
     
     componentDidMount() {
+
         this.props.onListSurveys();
     }
 

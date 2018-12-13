@@ -18,20 +18,35 @@ const listSurveysFailed = (error) => {
     return {type: LIST_SURVEYS_FAILED, error};
 };
 
-export const asyncListSurveys = () => {
+export const asyncListSurveys = (user_id) => {
     return dispatch => {
-        axios.get("/surveys")
-        .then(response => {
-            if (response.status === 200) {
-                if (response.data.errno) {
-                    dispatch(listSurveysFailed(response.data.sqlMessage));
-                } else {
-                    // console.log("!!!asyncListSurveys, response", response);
-                    const surveys = response.data;
-                    dispatch(listSurveys(surveys));
+        if (user_id > 0) {
+            axios.get(`/surveys/owner/${user_id}`)
+            .then(response => {
+                if (response.status === 200) {
+                    if (response.data.errno) {
+                        dispatch(listSurveysFailed(response.data.sqlMessage));
+                    } else {
+                        // console.log("!!!asyncListSurveys, response", response);
+                        const surveys = response.data;
+                        dispatch(listSurveys(surveys));
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            axios.get("/surveys")
+            .then(response => {
+                if (response.status === 200) {
+                    if (response.data.errno) {
+                        dispatch(listSurveysFailed(response.data.sqlMessage));
+                    } else {
+                        // console.log("!!!asyncListSurveys, response", response);
+                        const surveys = response.data;
+                        dispatch(listSurveys(surveys));
+                    }
+                }
+            });
+        }
     }
 };
 

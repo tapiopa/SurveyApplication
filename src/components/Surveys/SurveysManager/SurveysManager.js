@@ -21,7 +21,11 @@ class SurveysManager extends Component {
 
 
     componentDidMount() {
-        this.props.onListSurveys();
+        if (this.props.app && this.props.app.type && this.props.app.type === "company") {
+            this.props.onListSurveys(this.props.app.user_id);
+        } else {
+            this.props.onListSurveys();
+        }
     }
 
     editSurvey(survey) {
@@ -41,6 +45,9 @@ class SurveysManager extends Component {
     }
 
     render() {
+
+
+
         return (
             <div className={classes.surveysManager}>
                 <h1>Surveys Manager</h1>
@@ -54,6 +61,7 @@ class SurveysManager extends Component {
                     </thead>
                     <tbody>
                     {this.props.surveysManager.surveys && this.props.surveysManager.surveys.map(survey => {
+                        if (this.props.app.type === "company" && this.props.app.user_id === survey.owner)
                         return (
                             <tr key={survey.id}>
                                 <td>{survey.id}</td>
@@ -77,13 +85,14 @@ class SurveysManager extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        surveysManager: state.surveysManager
+        surveysManager: state.surveysManager,
+        app: state.app
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onListSurveys: () => dispatch(asyncListSurveys()),
+        onListSurveys: (user_id) => dispatch(asyncListSurveys(user_id)),
         onCreateNewSurvey: () => dispatch(asyncCreateNewSurvey()),
         onSetSurveyId: (survey_id) => dispatch(setSurveyId(survey_id)),
         onDeleteSurvey: (survey) => dispatch(asyncDeleteSurvey(survey))

@@ -65,7 +65,6 @@ export const asynRegisterAnswer = (answer, question, user_id) => {
         question: question
     };
     return dispatch => {
-
         axios.post("/answers", userAnswer)
         .then(response => {
             console.log("surveyActions, asyncRegisterAnswer, userAnswer", userAnswer, "response", response);
@@ -93,25 +92,44 @@ const surveyListFailed = (error) => {
     return {type: SURVEY_LIST_FAILED, error};
 };
 
-export const asyncSurveyList = () => {
+export const asyncSurveyList = (user_id) => {
     console.log("!!!asyncSurveyList");
     return dispatch => {
-        axios.get("/surveys")
-        .then(response => {
-            if (response.status === 200) {
-                if (response.data.errno) {
-                    console.log("asyncSurveyList, ERROR", response.data.sqlMessage);
-                    dispatch(surveyListFailed(response.data.sqlMessage));
-                } else {
-                    // console.log("!!!asyncSurveyList, response data", response.data);
-                    const surveys = response.data;
-                    dispatch(surveyList(surveys));
+        if (user_id > 0) {
+            axios.get(`/surveys/owner/${user_id}`)
+            .then(response => {
+                if (response.status === 200) {
+                    if (response.data.errno) {
+                        console.log("asyncSurveyList, ERROR", response.data.sqlMessage);
+                        dispatch(surveyListFailed(response.data.sqlMessage));
+                    } else {
+                        // console.log("!!!asyncSurveyList, response data", response.data);
+                        const surveys = response.data;
+                        dispatch(surveyList(surveys));
+                    }
                 }
-            }
-        })
-        .catch(error => {
-            dispatch(surveyListFailed(error));
-        });
+            })
+            .catch(error => {
+                dispatch(surveyListFailed(error));
+            });
+        } else {
+            axios.get("/surveys")
+            .then(response => {
+                if (response.status === 200) {
+                    if (response.data.errno) {
+                        console.log("asyncSurveyList, ERROR", response.data.sqlMessage);
+                        dispatch(surveyListFailed(response.data.sqlMessage));
+                    } else {
+                        // console.log("!!!asyncSurveyList, response data", response.data);
+                        const surveys = response.data;
+                        dispatch(surveyList(surveys));
+                    }
+                }
+            })
+            .catch(error => {
+                dispatch(surveyListFailed(error));
+            });
+        }
     }
 };
 
@@ -132,65 +150,62 @@ export const getSurveyAndQuestionsFailed = (error) => {
 
 export const asyncGetSurveyAndQuestions = (survey_id) => {
     return dispatch => {
-        /*********** FETCH SURVEY *************/
-        axios.get(`/surveys/${survey_id}`) //
-        .then(response => {
-            console.log("asyncGetSurveys... , survey response", response);
-            if (response.status === 200) {
-                if (response.data.errno) {
-                    dispatch(getSurveyAndQuestionsFailed(response.data.sqlMessage));
-                } else {
-                    let survey = response.data[0];
-                    console.log("asyncGetSurveys... , survey", survey);
-                    /*********** FETCH QUESTIONS *************/
-                    axios.get(`/surveys/${survey.id}/questions`)
-                    .then(questionsResponse => {
+            /*********** FETCH ALL SURVEYS *************/
+            axios.get(`/surveys/${survey_id}`) //
+            .then(response => {
+                console.log("asyncGetSurveys... , survey response", response);
+                if (response.status === 200) {
+                    if (response.data.errno) {
+                        dispatch(getSurveyAndQuestionsFailed(response.data.sqlMessage));
+                    } else {
+                        let survey = response.data[0];
+                        console.log("asyncGetSurveys... , survey", survey);
+                        /*********** FETCH QUESTIONS *************/
+                        axios.get(`/surveys/${survey.id}/questions`)
+                        .then(questionsResponse => {
+                            if (questionsResponse.status === 200) {
+                                if (questionsResponse.data.errno) {
+                                    dispatch(getSurveyAndQuestionsFailed(questionsResponse.data.sqlMessage));
+                                } else {
+                                    survey.questions = questionsResponse.data;
+                                    let qCount = survey.questions.length;
 
-                        if (questionsResponse.status === 200) {
-                            if (questionsResponse.data.errno) {
-                                dispatch(getSurveyAndQuestionsFailed(questionsResponse.data.sqlMessage));
-                            } else {
-                                survey.questions = questionsResponse.data;
-                                let qCount = survey.questions.length;
-
-                                survey.questions.forEach(question => {
-                                    /*********** FETCH ANSWERS *************/
-                                    axios.get(`questions/${question.id}/options`)
-                                    .then(answerResponse => {
-                                        if (answerResponse.status === 200) {
-                                            if (answerResponse.data.errno) {
-                                                qCount--;
-                                                dispatch(getSurveyAndQuestionsFailed(answerResponse.data.sqlMessage));
-                                            } else {
-                                                qCount--;
-                                                question.answers = answerResponse.data;
+                                    survey.questions.forEach(question => {
+                                        /*********** FETCH ANSWERS *************/
+                                        axios.get(`questions/${question.id}/options`)
+                                        .then(answerResponse => {
+                                            if (answerResponse.status === 200) {
+                                                if (answerResponse.data.errno) {
+                                                    qCount--;
+                                                    dispatch(getSurveyAndQuestionsFailed(answerResponse.data.sqlMessage));
+                                                } else {
+                                                    qCount--;
+                                                    question.answers = answerResponse.data;
+                                                }
                                             }
-                                        }
-                                        // console.log("surveyReducers, qCount", qCount);
-                                        if (qCount === 0) {
-                                            console.log("surveyReducers, BINGO!!!!", qCount);
-                                            dispatch(getSurveyAndQuestions(survey));
-                                        }
-                                    })//get answers
-                                    .catch(error => {
-                                        dispatch(getSurveyAndQuestionsFailed(error));
-                                    });//catch answers
-                                }); //for each question
-                                // const coffee = await waitAWhile();
-                                // setTimeout(() => resolve('☕'), 2000);
-
+                                            // console.log("surveyReducers, qCount", qCount);
+                                            if (qCount === 0) {
+                                                console.log("surveyReducers, BINGO!!!!", qCount);
+                                                dispatch(getSurveyAndQuestions(survey));
+                                            }
+                                        })//get answers
+                                        .catch(error => {
+                                            dispatch(getSurveyAndQuestionsFailed(error));
+                                        });//catch answers
+                                    }); //for each question
+                                    // const coffee = await waitAWhile();
+                                    // setTimeout(() => resolve('☕'), 2000);
+                                }
                             }
-                        }
-                    })//get questions then
-                    .catch(error => {
-                        dispatch(getSurveyAndQuestionsFailed(error))
-                    });//catch questions
+                        })//get questions then
+                        .catch(error => {
+                            dispatch(getSurveyAndQuestionsFailed(error))
+                        });//catch questions
+                    }
                 }
-            }
-
-        })//get survey
-        .catch(error => {
-            dispatch(getSurveyAndQuestionsFailed(error));
-        });//catch survey
-    }//dispatch
+            })//get survey
+            .catch(error => {
+                dispatch(getSurveyAndQuestionsFailed(error));
+            });//catch survey
+        }//dispatch
 };//asyncGetSurveyAndQuestions

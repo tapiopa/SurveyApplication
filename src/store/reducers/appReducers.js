@@ -7,7 +7,7 @@ import {
 } from "../actions/actionsTypes";
 
 const initialState = {
-    loggged_in: false,
+    logged_in: false,
     account_id: null,
     user_id: null,
     type: "",
@@ -23,6 +23,7 @@ const appReducers = (state = initialState, action) => {
                 logged_in: true,
                 account_id: action.account_id,
                 user_id: action.user_id,
+                // type: action.type,
                 firstname: action.user_name
             }
         }
