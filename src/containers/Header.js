@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {NavLink} from 'react-router-dom';
 import AuthHandler from '../components/Login/AuthHandler';
 import {logoutUser} from '../store/actions/';
+
 export class Header extends Component {
     AuthHandler = new AuthHandler();
     constructor(){
@@ -36,7 +37,7 @@ export class Header extends Component {
 
   render() {
     const navProps = {
-        position:"fixed", 
+        position:"relative", 
         style:{
             backgroundColor: '#384048',
             color:'#FFF',
