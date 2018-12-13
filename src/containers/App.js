@@ -7,7 +7,7 @@ import {NavLink, Route, withRouter, Redirect, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from '../axios-survey';
 
-import { asyncFetchFirstName, setUserAccountFK, setAccountId, asyncLoginUser, logoutUser} from '../store/actions/';
+import {asyncFetchFirstName, setUserAccountFK, setAccountId, asyncLoginUser, logoutUser} from '../store/actions/';
 
 import classes from './App.css';
 
@@ -33,55 +33,49 @@ import SurveyForm from '../components/Surveys/Survey/SurveyForm';
 import Header from './Header';
 
 class App extends Component {
-  AuthHandler = new AuthHandler();
-  constructor(){
-    super();
-      this.state = {
-        id: '',
-        anchorEl: null
-      };
-      this.showDropdown = this.showDropdown.bind(this);
-      // this.closeDropdown = this.closeDropdown.bind(this);
-  }
+    AuthHandler = new AuthHandler();
 
-  showDropdown(e){
-    e.preventDefault();
-    this.setState({anchorEl : e.currentTarget});
-  }
+    constructor() {
+        super();
+        this.state = {
+            id: '',
+            anchorEl: null
+        };
+    }
 
-  componentDidMount() {
-    // this.props.onFetchFirstname(this.props.app.account_id);
-    //         // this.props.onSetAccountId(this.props.app.account_id);
-    //         // this.props.onSetUserAccountFK(this.props.app.account_id);
-    console.log('App, componentDidMount, props', this.props);
-      if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
-        this.props.onLoginUser(this.AuthHandler.getData().id);
-        this._setInfo();
-      }      
-  }
+    componentDidMount() {
+        // this.props.onFetchFirstname(this.props.app.account_id);
+        //         // this.props.onSetAccountId(this.props.app.account_id);
+        //         // this.props.onSetUserAccountFK(this.props.app.account_id);
+        console.log('App, componentDidMount, props', this.props);
+        if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
+            this.props.onLoginUser(this.AuthHandler.getData().id);
+            this._setInfo();
+        }
+    }
 
-  _setInfo(){
-    this.setState({ id: this.AuthHandler.getData().id}, function () {
-        console.log("state for the props: "  + this.state.id);
-  });
-  }
+    _setInfo() {
+        this.setState({id: this.AuthHandler.getData().id}, function () {
+            console.log("state for the props: " + this.state.id);
+        });
+    }
 
-  _navCheck(){
-    if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
-      if(this.AuthHandler.getData().type === "admin"){
-  _handleLogout = () => {
-        document.getElementById("companyOnly").style.display = "block";
-      }
-      else if(this.AuthHandler.getData().type === "company"){
-        document.getElementById("companyOnly").style.display = "block";
-        document.getElementById("adminOnly").style.display = "none";
-      }
-      else {
-      this.AuthHandler.logout();
-      /**Here required to handle with redux !!!
-       * for handling logout user from redux!!!!
-       */
-  // }
+    _navCheck() {
+        if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
+            if (this.AuthHandler.getData().type === "admin") {
+                document.getElementById("companyOnly").style.display = "block";
+            } else if (this.AuthHandler.getData().type === "company") {
+                document.getElementById("companyOnly").style.display = "block";
+                document.getElementById("adminOnly").style.display = "none";
+            } else {
+                this.AuthHandler.logout();
+                /**Here required to handle with redux !!!
+                 * for handling logout user from redux!!!!
+                 */
+            }
+        }
+    }
+
 
     _handleLogout = () => {
         console.log("App, handleLogout");
@@ -90,44 +84,43 @@ class App extends Component {
         this.props.history.replace('/login');
     };
 
-  componentDidUpdate() {
-    if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
-      alert('token has expired');
-      this._handleLogout();
+    componentDidUpdate() {
+        if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
+            alert('token has expired');
+            this._handleLogout();
         }
     }
-  }
 
-  render() {
 
-    return (
-      <div className={classes.App}>
-        </div>
+    render() {
 
-        <Switch>
-          <Route path="/home" component={HomePage} />
-          <Route path="/account" component={Account}/>
-          <Route path="/user" component={User} />
-          {/*<Route path="/home" component={HomePage}/>*/}
-          <Route path="/surveybuilder" component={SurveyBuilder} />
-          <Route path="/surveysmanager" component={SurveysManager} />
-          <Route path="/accountsmanager" component={AccountsManager} />
-          <Route path="/usersmanager" component={UsersManager} />
-          <Route path="/registration" component={UserForm} />
-          <Route path="/surveys" component={SurveysList} />
-          <Route path="/survey" component={SurveyForm} />
-          <Route path="/result" component={Result} />
-          <Route path="/login" component={Login}/>
-          <Redirect to="/home" />
-        </Switch>
-        {/*{!this.props.app.loggedIn ? null :*/}
-        <Header isLogged={this.props.app.logged_in}/>
-</div>
-);
-}//this is end of render
+        return (
+            <div className={classes.App}>
+                <Switch>
+                    <Route path="/home" component={HomePage}/>
+                    <Route path="/account" component={Account}/>
+                    <Route path="/user" component={User}/>
+                    <Route path="/surveybuilder" component={SurveyBuilder}/>
+                    <Route path="/surveysmanager" component={SurveysManager}/>
+                    <Route path="/accountsmanager" component={AccountsManager}/>
+                    <Route path="/usersmanager" component={UsersManager}/>
+                    <Route path="/registration" component={UserForm}/>
+                    <Route path="/surveys" component={SurveysList}/>
+                    <Route path="/survey" component={SurveyForm}/>
+                    <Route path="/result" component={Result}/>
+                    <Route path="/login" component={Login}/>
+                    <Redirect to="/home"/>
+                </Switch>
+                {/*{!this.props.app.loggedIn ? null :*/
+                }
+                <Header isLogged={this.props.app.logged_in}/>
+            </div>
+        );//end of return
+
+    }//this is end of render
+
 }//This is end of class
 
-    
 
 const mapStateToProps = state => {
     return {
@@ -146,9 +139,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default withRouter(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(withErrorHandler(App, axios))
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(App, axios)));

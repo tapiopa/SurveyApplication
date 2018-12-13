@@ -6,7 +6,8 @@ import FormControl from '@material-ui/core/FormControl';
 
 class AnswerOpt extends React.Component {
   state = {
-    value: ''
+    value: "",
+      Answer: {}
   };
 
   // handleChange = event => {
@@ -36,20 +37,28 @@ class AnswerOpt extends React.Component {
         Answer.AnswerOpt = event.target.value;
         Answer.questionId = this.props.questionId;
         Answer.answerId = event.target.id;
-        options.Options.map(option => {
+        let newOptions = options.Options.slice(0);
+        newOptions.forEach(option => {
             const newOption = {...option};
             // const props = option.props.slice(0);
             const props = {...newOption.props};
+            console.log("AnswerOpt, handleChange, option", option);
             if (props.name === Answer.answerId) {
                 props.checked = true;
             } else {
                 props.checked = null;
             }
-           return newOption;
+            newOption.props = props;
+            option = newOption;
+            // option.props = props;
+           // return option;
+           // return newOption;
             // option.props = props;
         });
+
+
         console.log("AnswerOpt, handleChange, Answer", Answer);
-        this.setState({Answer: Answer});
+        this.setState({Answer});
         console.log("AnswerOpt, handleChange, this.state AFTER", this.state);
         // console.log("SurveyForm, onSave, answer Element", answerElement);
         const answerElement = document.getElementById(Answer.answerId);
@@ -60,6 +69,26 @@ class AnswerOpt extends React.Component {
         console.log("AnswerOpt, handleChange, answer Element AFTER",  document.getElementById(Answer.answerId));
         this.props.onSave(Answer);
     };
+
+    // handleChange = (event) => {
+    //     // console.log("AnswerOpt, handleChange, this.state BEFORE", this.state);
+    //     // console.log("AnswerOpt, handleChange, event target", event.target);
+    //     let Answer = Object.assign({}, this.state.Answer);
+    //
+    //     Answer.AnswerOpt = event.target.value;
+    //     Answer.questionId = this.props.questionId;
+    //     Answer.answerId = event.target.id;
+    //     // console.log("AnswerOpt, handleChange, Answer", Answer);
+    //     this.setState({Answer});
+    //     // console.log("AnswerOpt, handleChange, this.state AFTER", this.state);
+    //     const answerElement = document.getElementById(Answer.answerId);
+    //     if (answerElement && answerElement !== "undefined") {
+    //         // console.log("!!!AnswerOpt, handleChange, answer Element SET");
+    //         document.getElementById(Answer.answerId).checked = true;
+    //     }
+    //     // console.log("AnswerOpt, handleChange, answer Element AFTER",  document.getElementById(Answer.answerId));
+    //     this.props.onSave(Answer);
+    // };
 
     isAnswerSelected = (answer_id) => {
         // console.log("AnswerOpt, isAnswerSelected, this.props.Answer", this.props.Answer, "answer_id", answer_id);
@@ -88,10 +117,10 @@ class AnswerOpt extends React.Component {
         return <FormControlLabel
                 key={ans.id}
                 value={ans.answer_option}
-                valueSelected={() => this.isAnswerSelected(ans.id)}
-                onChange={() => this.handleRadioButtonChange(ans.id)}
+                // valueSelected={() => this.isAnswerSelected(ans.id)}
+                // onChange={() => this.handleRadioButtonChange(ans.id)}
                 name={ans.id}
-                checked={this.isAnswerSelected(ans.id)}
+                // checked={this.isAnswerSelected(ans.id)}
                 control={<Radio
                     id={ans.id}
                     // checked={null}
@@ -110,8 +139,9 @@ class AnswerOpt extends React.Component {
         <RadioGroup
           aria-label="position"
           name="position"
-          value={this.state.value}
+          value={this.state.Answer.answer_option}
           onChange={(event) => this.handleChange(event, {Options})}
+          // onChange={this.handleChange}
           row
         >
           {Options}
