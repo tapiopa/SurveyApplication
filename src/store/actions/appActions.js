@@ -62,7 +62,7 @@ export const asyncLoginUser = (user_id) => {
 
 const userLogin = (logindata) => {
     console.log("ƒappActions, userLogin, logindata", logindata);
-    return {type: USER_LOGIN, data: logindata};
+    return {type: USER_LOGIN, data: logindata, userType: logindata.type};
 };
 
 const userLoginFailed = (error) => {
@@ -83,31 +83,29 @@ export const asyncUserLogin = (account, password) => {
                 } else if (response.data.err && response.data.message) {
                     dispatch(userLoginFailed(response.data.message));
                 } else {
-                    if(response.data.status){
-                    // console.log("asyncUserLogin, token", token);
-                    const data = decode(response.data.token);
-                    // console.log("asyncUserLogin, data", data);
-                    axios.get(`/users/firstname/${data.owner}`)
-                    .then(nameResponse => {
-                        // console.log("asyncUserLogin, nameResponse", nameResponse);
-                        if (nameResponse.status === 200) {
-                            if (nameResponse.data.errno) {
-                                dispatch(fetchFirstNameFailed(nameResponse.data.sqlMessage));
-                            } else {
-                                // console.log("asyncFetchFirstName, response", response);
-                                data.firstname = nameResponse.data[0].firstname;
-                                dispatch(userLogin(data));
+                    if (response.data.status) {
+                        // console.log("asyncUserLogin, token", token);
+                        const data = decode(response.data.token);
+                        // console.log("asyncUserLogin, data", data);
+                        axios.get(`/users/firstname/${data.owner}`)
+                        .then(nameResponse => {
+                            // console.log("asyncUserLogin, nameResponse", nameResponse);
+                            if (nameResponse.status === 200) {
+                                if (nameResponse.data.errno) {
+                                    dispatch(fetchFirstNameFailed(nameResponse.data.sqlMessage));
+                                } else {
+                                    // console.log("asyncFetchFirstName, response", response);
+                                    data.firstname = nameResponse.data[0].firstname;
+                                    dispatch(userLogin(data));
+                                }
                             }
-                        }
-
-                    })
-                    .catch(error => {
-                        fetchFirstNameFailed(error);
-                    });
-                }
-                else{
-                    dispatch(userLoginFailed(response.data.status));
-                }
+                        })
+                        .catch(error => {
+                            fetchFirstNameFailed(error);
+                        });
+                    } else {
+                        dispatch(userLoginFailed(response.data.status));
+                    }
                 }
             }
         })
@@ -123,28 +121,28 @@ const fetchFirstname = (firstname, account_id) => {
 };
 
 const fetchFirstNameFailed = (error) => {
-    return {type:FETCH_USER_FIRSTNAME_FAILED, error};
+    return {type: FETCH_USER_FIRSTNAME_FAILED, error};
 }
 
 export const asyncFetchFirstName = (account_id) => {
     const comp = `/users/firstname/${account_id}`;
     console.log("asyncFetchFirstName, account_id", account_id, "comp", comp);
-   return dispatch => {
-       axios.get(comp)
-       .then(response => {
-           if (response.status === 200) {
-               if (response.data.errno) {
-                   dispatch(fetchFirstNameFailed(response.data.sqlMessage));
-               } else {
-                   console.log("asyncFetchFirstName, response", response);
-                   const firstname = response && response.data && response.data[0] && response.data[0].firstname;
-                   dispatch(fetchFirstname(firstname, account_id));
-               }
-           }
+    return dispatch => {
+        axios.get(comp)
+        .then(response => {
+            if (response.status === 200) {
+                if (response.data.errno) {
+                    dispatch(fetchFirstNameFailed(response.data.sqlMessage));
+                } else {
+                    console.log("asyncFetchFirstName, response", response);
+                    const firstname = response && response.data && response.data[0] && response.data[0].firstname;
+                    dispatch(fetchFirstname(firstname, account_id));
+                }
+            }
 
-       })
-       .catch(error => {
-           fetchFirstNameFailed(error);
-       });
-   }
+        })
+        .catch(error => {
+            fetchFirstNameFailed(error);
+        });
+    }
 };

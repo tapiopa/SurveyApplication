@@ -57,7 +57,8 @@ export class Header extends Component {
     }
 
     const toolbarStyle = {
-        margin: "0 auto",
+        marginLeft:  !this.props.app.logged_in ? 'auto' : '0',
+        marginRight:  !this.props.app.logged_in ? 'auto' : '0',
         fontSize: "2rem",
         fontWeight: 400,
         letterSpacing: ".6rem",
@@ -69,12 +70,12 @@ export class Header extends Component {
       <div>
         <AppBar {...navProps}>
 
-        {!this.props.app.logged_in ? null : <Drawer isLogged={this.props.app.logged_in}/> }
+        {!this.props.app.loggedIn ? null : <Drawer isLogged={this.props.app.logged_in}/> }
             
 
-        {this.props.app.logged_in ? null : <Toolbar style={{...toolbarStyle}}> Survey App </Toolbar> }
-        
-          {!this.props.app.logged_in ? null :  <div style={{...btnStyle}}>
+        <Toolbar style={{...toolbarStyle}}> Survey App </Toolbar>
+
+          {!this.props.app.loggedIn ? null :  <div style={{...btnStyle}}>
           <Button
             style = {{color:"#E8BD36", outline:"none", letterSpacing:".4rem", boxShadow:"0px 0px 5px"}}
             aria-owns={anchorEl ? 'simple-menu' : undefined}

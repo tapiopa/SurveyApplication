@@ -4,6 +4,7 @@ export default class AuthHandler {
   login = (account, password) => {
     // Get a token from api server using the fetch api
     //Intead of axios, fetch has been used for experiencing difference betweem axios
+      console.log("?????????????AuthHandler, login, account", account, "password", password);
     return this.fetch(`http://localhost:3000/login`, {
       method: 'POST',
       body: JSON.stringify({

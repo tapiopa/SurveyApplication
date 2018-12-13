@@ -3,8 +3,13 @@ import {Route, withRouter, NavLink, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from '../axios-survey';
 
-import { asyncFetchFirstName, setUserAccountFK, setAccountId, asyncLoginUser, logoutUser} from '../store/actions/';
-
+import {
+    asyncFetchFirstName,
+    setUserAccountFK,
+    setAccountId,
+    asyncLoginUser,
+    logoutUser
+} from "../store/actions";
 import classes from './App.css';
 
 
@@ -25,63 +30,75 @@ import Login from '../components/Login/Login';
 import AuthHandler from '../components/Login/AuthHandler';
 import SurveyForm from '../components/Surveys/Survey/SurveyForm';
 import Header from './Header';
-
+import Google from '../components/Google/components/Google';
+import Landing from "../components/Google/components/Landing";
+import Dashboard from "../components/Google/components/Dashboard";
+import SurveyNew from "../components/Google/components/surveys/SurveyNew";
 
 
 class App extends Component {
-  AuthHandler = new AuthHandler();
-  constructor(){
-    super();
-      this.state = {
-        id: ''
-      };
-  }
+    AuthHandler = new AuthHandler();
+  // constructor(){
+  //   super();
+  //     this.state = {
+  //       id: ''
+  //     };
+  // }
 
-  componentDidMount() {
-    // this.props.onFetchFirstname(this.props.app.account_id);
+    constructor() {
     //         // this.props.onSetAccountId(this.props.app.account_id);
-    //         // this.props.onSetUserAccountFK(this.props.app.account_id);
+        super();
     console.log('App, componentDidMount, props', this.props);
-      if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
-        this.props.onLoginUser(this.AuthHandler.getData().id);
-        this._setInfo();
+        this.state = {
+            id: ''
+        };
       }      
-  }
 
-  _setInfo(){
-    this.setState({ id: this.AuthHandler.getData().id}, function () {
-        console.log("state for the props: "  + this.state.id);
-  });
-  }
 
-  _handleLogout = () => {
-      console.log("App, handleLogout");
-      this.AuthHandler.logout();
-      this.props.onLogoutUser();
-
-      this.props.history.replace('/login');
-  };
-
-  componentDidUpdate() {
-    if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
-      alert('token has expired');
-      this._handleLogout();
+    componentDidMount() {
+        // this.props.onFetchFirstname(this.props.app.account_id);
+        //         // this.props.onSetAccountId(this.props.app.account_id);
+        //         // this.props.onSetUserAccountFK(this.props.app.account_id);
+        console.log('App, componentDidMount, props', this.props);
+        if (this.AuthHandler.loggedIn() && this.AuthHandler.tokenCheck()) {
+            this.props.onLoginUser(this.AuthHandler.getData().id);
+            this._setInfo();
+        }
     }
-  }
 
-  render() {
-
-    const footerStyle= {
-      padding: "1.5rem 0",
-      background: "#2d343a",
-      color: "white",
-      fontSize:"1.5rem",
+    _setInfo() {
+        this.setState({id: this.AuthHandler.getData().id}, function () {
+            console.log("state for the props: " + this.state.id);
+        });
     }
+
+    _handleLogout = () => {
+        console.log("App, handleLogout");
+        this.AuthHandler.logout();
+        this.props.onLogoutUser();
+        this.props.history.replace('/login');
+    };
+
+    componentDidUpdate() {
+        if (this.AuthHandler.isTokenExpired(localStorage.getItem('id_token'))) {
+            alert('token has expired');
+            this._handleLogout();
+        }
+    }
+
+    render() {
+
+        const footerStyle= {
+            padding: "1.5rem 0",
+            background: "#2d343a",
+            color: "white",
+            fontSize:"1.5rem",
+          }
 
     return (
       <div className={classes.App}>
-      <Header history={this.props.history}/>                      
-        <Switch>
+          <Header history={this.props.history}/>
+          <Switch>
           <Route path="/home" component={HomePage} />
           <Route path="/account" component={Account}/>
           <Route path="/user" component={User} />
@@ -103,7 +120,6 @@ class App extends Component {
 }//this is end of render
 }//This is end of class
 
-    
 
 const mapStateToProps = state => {
     return {
