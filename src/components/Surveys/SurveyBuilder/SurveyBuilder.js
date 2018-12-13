@@ -428,7 +428,7 @@ class SurveyBuilder extends Component {
     };
 
     editQuestion(question) {
-        alert("Edit question")
+        // alert("Edit question")
         //alert(`edit value: ${value}`);
         this.setState({
             inputId: question.id,
