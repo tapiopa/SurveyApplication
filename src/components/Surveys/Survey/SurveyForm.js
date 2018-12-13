@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 
 import AnswerOpt from './AnswerOpt';
 
-import {asyncGetSurveyAndQuestions, asynRegisterAnswer} from "../../../store/actions";
+import {asyncGetSurveyAndQuestions, asynRegisterAnswer, logoutUser} from "../../../store/actions";
 import {connect} from "react-redux";
 import axios from "../../../axios-survey";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
@@ -89,6 +89,8 @@ class SurveyForm extends Component {
         const {Answer} = this.state;
         console.log("SurveyForm, handleSubmit, Answer", Answer);
         Answer.forEach( (val) => this.props.onRegisterAnswer(val.AnswerOpt, val.questionId, this.props.app.user_id));
+        alert("Thank you for participating in this survey!");
+        this.props.history.push("/surveys");
         //apiCalls.registerAnswer(val.AnswerOpt, val.questionId));
         alert("Thanks you for taking the survey");
         
@@ -194,7 +196,8 @@ const maptStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onGetSurveyAndQuestions: (survey_id) => dispatch(asyncGetSurveyAndQuestions(survey_id)),
-        onRegisterAnswer: (answer, question, user_id) => dispatch(asynRegisterAnswer(answer, question, user_id))
+        onRegisterAnswer: (answer, question, user_id) => dispatch(asynRegisterAnswer(answer, question, user_id)),
+        onLogoutUser: () => dispatch(logoutUser())
     }
 };
 

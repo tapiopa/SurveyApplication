@@ -26,7 +26,8 @@ import {
     asyncSaveAccount,
     asyncSaveNewAccount,
     setAccountId,
-    resetAccount
+    resetAccount,
+    logoutUser
 } from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 
@@ -574,7 +575,8 @@ const mapDispatchToProps = dispatch => {
         onSaveAccount: account => dispatch(asyncSaveAccount(account)),
         onSaveNewAccount: account => dispatch(asyncSaveNewAccount(account)),
         onSetAccountId: account_id => dispatch(setAccountId(account_id)),
-        onResetAccount: () => dispatch(resetAccount())
+        onResetAccount: () => dispatch(resetAccount()),
+        onLogoutUser: () => dispatch(logoutUser())
     };
 };
 

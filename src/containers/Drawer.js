@@ -9,9 +9,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import {Link} from 'react-router-dom'
-
+import AuthHandler from '../components/Login/AuthHandler';
 
 export class Drawer extends Component {  
+  AuthHandler = new AuthHandler ();
     state = {
         left: false,
       };
@@ -31,46 +32,6 @@ export class Drawer extends Component {
             textDecoration:'none'
         }
     }
-
-      
-
-    //   const menuItems = [
-    //       {
-    //           name: "Home",
-    //           link: "/home"
-    //       },
-    //       {
-    //         name: "Survey Manager",
-    //         link: "/surveysmanager"
-    //     },
-    //     {
-    //         name: "Accounts Manager",
-    //         link: "/accountsmanager"
-    //     },
-    //     {
-    //         name: "Users Manager",
-    //         link: "/usersmanager"
-    //     },
-    //     {
-    //         name: "Survey",
-    //         link: "/survey"
-    //     },
-    //   ]
-
-    //   const sideList = (
-    //     <div>
-    //       {menuItems.map( (items, idx) => {
-    //         return (
-    //         <List key={idx} style={style.link} component={Link} to={items.link}>
-    //             <ListItem button>
-    //                 <ListItemText primary={items.name} />
-    //             </ListItem>
-    //         </List>)
-    //       })}
-
-    //     </div>
-    //   );
-
       const menuItemsAdmin = [
           {
               name: "Home",
@@ -85,6 +46,10 @@ export class Drawer extends Component {
               name: "Users Manager",
               link: "/usersmanager",
               
+          },
+          {
+            name: "Result Chart",
+            link: "/result"
           },
           {
             name: "Survey Manager",
@@ -110,7 +75,69 @@ export class Drawer extends Component {
 
         </div>
       );
-      
+      //From here company
+
+      const menuItemsCompany = [
+        {
+            name: "Home",
+            link: "/home",
+        },
+        {
+            name: "Surveys",
+            link: "/surveys",
+            
+        },
+        {
+          name: "Result Chart",
+          link: "/result"
+        },
+        {
+          name: "Survey Manager",
+          link: "/surveysmanager"
+        }
+    ]
+
+    const sideListCompany = (
+      <div>
+        {menuItemsCompany.map( (items, idx) => {
+          return (
+          <List key={idx} style={style.link} component={Link} to={items.link}>
+              <ListItem button>
+                  <ListItemText primary={items.name} />
+              </ListItem>
+          </List>)
+        })}
+
+      </div>
+    );
+
+    //From here Client
+
+    const menuItemsClient = [
+      {
+          name: "Home",
+          link: "/home",
+      },
+      {
+          name: "Surveys",
+          link: "/surveys",
+      }
+  ]
+
+  const sideListClient = (
+    <div>
+      {menuItemsClient.map( (items, idx) => {
+        return (
+        <List key={idx} style={style.link} component={Link} to={items.link}>
+            <ListItem button>
+                <ListItemText primary={items.name} />
+            </ListItem>
+        </List>)
+      })}
+
+    </div>
+  );
+
     return (
       <div style={style.drawerStyle}>
         <IconButton onClick={this.toggleDrawer('left', true)} style={{outline:"none"}} color="inherit" aria-label="Menu">
@@ -129,9 +156,16 @@ export class Drawer extends Component {
           onClick={this.toggleDrawer('left', false)}
           onKeyDown={this.toggleDrawer('left', false)}
         >
-        
-
-        {!this.props.isLogged ? null : sideListAdmin  }
+      
+        {!this.props.isLogged ? null : [
+          this.AuthHandler.getData().type === "admin" ? sideListAdmin :
+          [
+            this.AuthHandler.getData().type === "company" ? sideListCompany : [
+              this.AuthHandler.getData().type === "client" ? sideListClient : null
+            ]
+          ]
+        ]
+        }
           
         </div>
       </SwipeableDrawer>

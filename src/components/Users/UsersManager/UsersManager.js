@@ -11,7 +11,8 @@ import {
     asyncFetchUser,
     resetUser,
     asyncDeleteUser,
-    selectUser
+    selectUser,
+    logoutUser
 } from "../../../store/actions";
 import { Table,Button, ButtonGroup,} from 'react-bootstrap';
 
@@ -104,7 +105,8 @@ const mapDispatchToProps = (dispatch) => {
         onFetchUser: (user) => dispatch(asyncFetchUser(user)),
         onResetUser: (routing, newUser) => dispatch(resetUser(routing, newUser)),
         onDeleteUser: (user_id) => dispatch(asyncDeleteUser(user_id)),
-        onSelectUser: (user_kd) => dispatch(selectUser(user_kd))
+        onSelectUser: (user_kd) => dispatch(selectUser(user_kd)),
+        onLogoutUser: () => dispatch(logoutUser())
     }
 };
 

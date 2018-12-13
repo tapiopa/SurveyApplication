@@ -15,6 +15,10 @@ export {
     asyncDeleteAnswer,
     asyncFetchSurvey,
     asyncSaveSurvey,
+    editSurvey,
+    setSurveyTitle,
+    setQuestionString,
+    setAnswerString,
 } from "./surveyBuilderActions";
 
 export {
