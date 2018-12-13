@@ -61,7 +61,6 @@ class SurveysManager extends Component {
                     </thead>
                     <tbody>
                     {this.props.surveysManager.surveys && this.props.surveysManager.surveys.map(survey => {
-                        if (this.props.app.type === "company" && this.props.app.user_id === survey.owner)
                         return (
                             <tr key={survey.id}>
                                 <td>{survey.id}</td>
