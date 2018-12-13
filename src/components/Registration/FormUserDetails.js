@@ -6,6 +6,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 export class FormUserDetails extends Component {
   continue = e => {
@@ -52,6 +56,34 @@ export class FormUserDetails extends Component {
             onChange={handleChange('email')}
           />
           </FormControl>
+
+          <br/>
+          <FormControl component="fieldset">
+          <InputLabel style={{marginTop:"3rem"}} htmlFor="adornment-email">Select Your Service Type</InputLabel>
+            <RadioGroup
+              aria-label="position"
+              name="position"
+              value={values.type}
+              onChange={handleChange('type')}
+              style={{marginTop:"6rem"}}
+              row
+            >
+          <FormControlLabel
+                value={"Customer"}
+                control={<Radio color="primary" />}
+                label={"Customer"}
+                labelPlacement="top"
+            />
+          <FormControlLabel
+                value={"Company"}
+                control={<Radio color="primary" />}
+                label={"Company"}
+                labelPlacement="top"
+            />
+            </RadioGroup>
+            </FormControl>
+              <br />
+
           <br />
 
           <RaisedButton
