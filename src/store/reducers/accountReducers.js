@@ -92,7 +92,7 @@ const accountReducers = (state = initialState, action) => {
                 password: action.account.password,
                 newAccount: false,
                 editing: false,
-                fetchSuccess: true
+                saveSuccess: true
             };
             console.log("accountReducers, create new account, return action.account", {...newAccount});
             return {...newAccount};

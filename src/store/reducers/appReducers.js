@@ -54,12 +54,15 @@ const appReducers = (state = initialState, action) => {
            return  {account_id: action.id, firstname: action.name}
         }
         case SET_ACCOUNT_ID_NAME: {
-            return {
+            const newApp = {
                 loggedIn: true,
                 logged_in: true,
                 account_id: action.account.id,
                 user_id: action.user.id,
-                firstname: action.user.firstname}
+                firstname: action.user.firstname
+            };
+            console.log("appReducers, set account id name, newApp", newApp);
+            return {...newApp};
         }
         case FETCH_USER_FIRSTNAME: {
             // console.log("appReducers, fetch user firstname, state", state);

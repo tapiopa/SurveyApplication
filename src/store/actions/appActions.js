@@ -113,6 +113,7 @@ export const asyncUserLogin = (account, password) => {
 };
 
 export const setAppUserAccountIdName = (account, user) => {
+    console.log("appActions, setAppUserAccountIdName, account", account, "user", user);
     return {type: SET_ACCOUNT_ID_NAME, account: account, user: user}
 };
 

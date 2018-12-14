@@ -32,18 +32,24 @@ export class FormUserDetails extends Component {
 
     componentWillReceiveProps(nextProps, nextContext) {
         console.log("Success, componentWillReceiveProps, nextProps", nextProps);
-        console.log("Success componentWillReceiveProps, logged in", nextProps.app.loggedIn);
+        const loggedInUndefined = (nextProps.app.logged_in === "undefined" &&
+                                    nextProps.app.loggedIn === "undefined");
+        const loggedIn = !loggedInUndefined && (nextProps.app.loggedIn || nextProps.app.logged_in);
+        console.log("Success componentWillReceiveProps, logged in", loggedIn);
+        console.log("Success componentWillReceiveProps, user is saved", nextProps.user.saveSuccess);
+        console.log("Success componentWillReceiveProps, account is saved", nextProps.account.saveSuccess);
         if (nextProps.user && nextProps.user.saveSuccess &&
             nextProps.account && nextProps.account.saveSuccess &&
-            nextProps.app && !(nextProps.app.loggedIn || nextProps.app.logged_in)) {
+            !loggedIn) {
             console.log("@@@ Success, componentWillReceiveProps, nextProps when logged in", nextProps);
             this.setAccountFK(nextProps.user, nextProps.account);
         }
-        if (nextProps.app.loggedIn && nextProps.user.accountFK) {
+        if (loggedIn && nextProps.user.accountFK) {
             console.log("Success, componentWillReceiveProps, logged in and accountFK", nextProps);
             this.autHandler.login(nextProps.account.account, nextProps.account.password);
             console.log("Success, componentWillReceiveProps, logged in and accountFK, GO HOME");
             this.props.history.replace("/home");
+
         }
     }
 
