@@ -185,7 +185,7 @@ class Account extends Component {
         console.log('Account, updateState, props', someProps);
         console.log('updateState, account id', someProps.account.id);
         this.setState({
-            id: /* someProps.account.id */this.AuthHandler.getData().id,
+            id: someProps.account.id,
             accountName: someProps.account.account,
             password: '',
             confirmPassword: '',
@@ -423,7 +423,7 @@ class Account extends Component {
                             type="text"
                             name="username"
                             id="username"
-                            defaultValue={this.state.id}
+                            defaultValue={this.props.account.id}
                             disabled={true}
                         />
                     </FormGroup>
@@ -549,7 +549,7 @@ class Account extends Component {
                     </ButtonToolbar>
                 </form>
 
-                {/*<button className="btn btn-success" onClick={this.logState}>Log</button>*/}
+                <button className="btn btn-success" onClick={this.logState}>Log</button>
             </div>
         );
     }
