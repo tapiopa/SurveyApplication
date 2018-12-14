@@ -19,7 +19,7 @@ class Result extends Component {
   componentDidMount() {
     if(this.AuthHandler.getData().type === "admin"){
       axios
-      .get(`http://localhost:3000/surveys/owner/`)
+      .get(`http://localhost:3000/surveys/`)
       .then(res => {
         const surveys = res.data;
         this.setState({ surveys });

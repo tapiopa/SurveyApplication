@@ -10,7 +10,12 @@ import {
     // LIST_ACCOUNTS,
     SAVE_ACCOUNT,
     RESET_ACCOUNT,
-    SET_ACCOUNT_ID, CANCEL_EDIT_ACCOUNT, FETCH_ACCOUNT_FAILED, CREATE_ACCOUNT_FAILED, SAVE_ACCOUNT_FAILED
+    SET_ACCOUNT_ID,
+    CANCEL_EDIT_ACCOUNT,
+    FETCH_ACCOUNT_FAILED,
+    CREATE_ACCOUNT_FAILED,
+    SAVE_ACCOUNT_FAILED,
+    CREATE_NEW_ACCOUNT
 } from "../actions/actionsTypes";
 
 // import {updateObject} from "../utility";
@@ -77,6 +82,22 @@ const accountReducers = (state = initialState, action) => {
         case CREATE_ACCOUNT_FAILED: {
             return updateObject(state, {error: true, errorMessage: action.error});
         }
+
+        case CREATE_NEW_ACCOUNT: {
+            const newAccount = {
+                id: action.account.id,
+                account: action.account.account,
+                expireDate: action.account.expireDate,
+                joinedDate: action.account.joinedDate,
+                password: action.account.password,
+                newAccount: false,
+                editing: false,
+                fetchSuccess: true
+            };
+            console.log("accountReducers, create new account, return action.account", {...newAccount});
+            return {...newAccount};
+        }
+
         case EDIT_ACCOUNT: {
             let account = action.account;
             account = {

@@ -11,7 +11,7 @@ import {
     SAVE_ACCOUNT,
     SAVE_ACCOUNT_FAILED,
     CANCEL_EDIT_ACCOUNT,
-    SET_ACCOUNT_ID
+    SET_ACCOUNT_ID, CREATE_NEW_ACCOUNT
 } from "./actionsTypes";
 
 import axios from "../../axios-survey";
@@ -52,11 +52,12 @@ export const setAccountId = (account_id) => {
 };
 
 const createAccount = (id) => {
-    console.log("createAccount, account", id);
-    return {type: CREATE_ACCOUNT, id: id}
+    console.log("@@@ createAccount, account", id);
+    return {type: CREATE_ACCOUNT, id}
 };
 
 export const createAccountFailed = (error) => {
+    console.log("¡¡¡ createAccountFailed, error", error);
     return {type: CREATE_ACCOUNT_FAILED, error}
 };
 
@@ -82,6 +83,11 @@ export const asyncCreateAccount = () => {
     }
 };
 
+const createNewAccount = (account) => {
+    console.log("accountActions, createNewAccount, account");
+    return {type: CREATE_NEW_ACCOUNT, account};
+};
+
 export const asyncCreateNewAccount = (account) => {
     // console.log("asyncCreateAccount, account", account);
     return dispatch => {
@@ -90,33 +96,34 @@ export const asyncCreateNewAccount = (account) => {
             console.log("asyncCreateAccount, maxId", maxResponse.data[0].maxId);
             if (maxResponse.status === 200){
                 if (maxResponse.data.errno) {
-                    console.log("ERROR", maxResponse.data.sqlMessage)
+                    console.log("asyncCreateNewAccount, ERROR", maxResponse.data.sqlMessage)
                 } else {
                     // dispatch(createAccount(response.data[0].maxId + 1));
                     account.id = maxResponse.data[0].maxId + 1;
-                    console.log("asyncCreateNewAccount, account", account);
+                    console.log("asyncCreateNewAccount, account with maxId", account);
                     axios.post(`/accounts/`, account)
                     .then(response => {
-                        console.log("asyncSaveNewAccount, response", response);
+                        console.log("asyncCreateNewAccount, post account response", response);
                         if (response.status === 200){
                             if (response.data.errno) {
                                 console.log("ERROR", response.data.sqlMessage)
                             } else {
                                 account.saveSuccess = true;
-                                dispatch(saveAccount(account));
+                                console.log("!!!asyncCreateAccount, account with successful save", account);
+                                dispatch(createNewAccount(account));
                             }
                         }
                     })
-                    .catch(error => {
-                        console.log("asyncSaveNewAccount error: ", error);
-                        dispatch(saveAccountFailed(error));
-                    });
+                    // .catch(error => {
+                    //     console.log("asyncCreateNewAccount post account error: ", error);
+                    //     dispatch(createAccountFailed(error));
+                    // });
 
                 }
             }
         })
         .catch(error => {
-            console.log("asyncCreateAccount error: ", error);
+            console.log("asyncCreateAccount maxID error: ", error);
             dispatch(createAccountFailed(error));
         });
 

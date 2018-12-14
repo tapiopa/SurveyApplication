@@ -549,7 +549,7 @@ class Account extends Component {
                     </ButtonToolbar>
                 </form>
 
-                <button className="btn btn-success" onClick={this.logState}>Log</button>
+                {/*<button className="btn btn-success" onClick={this.logState}>Log</button>*/}
             </div>
         );
     }

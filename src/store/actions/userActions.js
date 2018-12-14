@@ -76,14 +76,16 @@ export const asyncSetUserAccountFK = (user, account_id) => {
             console.log("action asyncSetUserAccountFK, response", response);
             if(response.status === 200) {
                 if (response.data.errno) {
-                    console.log("ERROR", response.data.sqlMessage);
+                    console.log("userActions, asyncSetUserAccountFK, response ERROR", response.data.sqlMessage);
                     dispatch(setUserAccountFKFailed(response.data.sqlMessage));
                 } else {
+                    console.log("userAction asyncSetUserAccountFK, save successful!!!!");
                     dispatch(setUserAccountFK(account_id));
                 }
             }
         })
         .catch(error => {
+            console.log("!!!userActions, asyncSetUserAccountFK, axios put ERROR¡¡¡", error);
             dispatch(setUserAccountFKFailed(error))
         })
 

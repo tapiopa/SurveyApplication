@@ -399,6 +399,12 @@ class User extends Component {
                 {/*<label>ID</label><p>state: {this.state.id}, props: {this.props.user.id}.</p>*/}
                 <form className={classes.Form}>
                     <FormGroup>
+                        <ControlLabel className={classes.Label} htmlFor="id">First Name</ControlLabel>
+                        <FormControl className={classes.Input} disabled={true}
+                                     type="text" name="id" id="id"
+                                     defaultValue={this.state.id}/>
+                    </FormGroup>
+                    <FormGroup>
                         <ControlLabel className={classes.Label} htmlFor="firstname">First Name</ControlLabel>
                         <FormControl className={classes.Input}
                                      type="text" name="firstname" id="firstname"

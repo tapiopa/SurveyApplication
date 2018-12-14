@@ -98,6 +98,7 @@ export const SELECT_USER = 'SELECT_USER';
 /**************** ACCOUNT ACTIONS **************************/
 export const FETCH_ACCOUNT = 'FETCH_ACCOUNT';
 export const CREATE_ACCOUNT = 'CREATE_ACCOUNT';
+export const CREATE_NEW_ACCOUNT = 'CREATE_NEW_ACCOUNT';
 export const EDIT_ACCOUNT  = 'EDIT_ACCOUNT';
 export const CANCEL_EDIT_ACCOUNT  = 'CANCEL_EDIT_ACCOUNT';
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';

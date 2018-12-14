@@ -8,22 +8,16 @@ import FormPersonalDetails from './FormPersonalDetails';
 import Confirm from './Confirm';
 import Success from './Success';
 
-// import {
-//     asyncCreateAccount,
-//     asyncSaveNewAccount,
-//     setAccountId,
-//     resetAccount
-// } from "../../../store/actions/index";
 import axios from "../../axios-survey";
 import {connect} from 'react-redux';
 import {
     // asyncFetchAccount,
     // asyncListAccounts,,
     asyncCreateAccount,
-    asyncSaveAccount,
-    asyncSaveNewAccount,
-    cancelEditAccount,
-    editAccount
+    // asyncSaveAccount,
+    // asyncSaveNewAccount,
+    // cancelEditAccount,
+    // editAccount
 } from "../../store/actions";
 
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
@@ -130,10 +124,10 @@ const mapDispatchToProps = (dispatch) => {
         // onFetchAccount: (account_id) => dispatch(asyncFetchAccount(account_id)),
         onCreateAccount: (account) => dispatch(asyncCreateAccount(account)),
         // onListAccounts: () => dispatch(asyncListAccounts()),
-        onEditAccount: (account) => dispatch(editAccount(account)),
-        onCancelEditAccount: (account) => dispatch(cancelEditAccount(account)),
-        onSaveAccount: (account) => dispatch(asyncSaveAccount(account)),
-        onSaveNewAccount: (account) => dispatch(asyncSaveNewAccount(account)),
+        // onEditAccount: (account) => dispatch(editAccount(account)),
+        // onCancelEditAccount: (account) => dispatch(cancelEditAccount(account)),
+        // onSaveAccount: (account) => dispatch(asyncSaveAccount(account)),
+        // onSaveNewAccount: (account) => dispatch(asyncSaveNewAccount(account)),
         // onSetAccountId: (account_id) => dispatch(setAccountId(account_id)),
         // onResetAccount: () => dispatch(resetAccount())
     }
