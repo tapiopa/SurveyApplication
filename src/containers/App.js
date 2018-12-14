@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, withRouter, NavLink, Switch} from 'react-router-dom';
+import {Route, withRouter, Redirect, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import axios from '../axios-survey';
 
@@ -30,20 +30,10 @@ import Login from '../components/Login/Login';
 import AuthHandler from '../components/Login/AuthHandler';
 import SurveyForm from '../components/Surveys/Survey/SurveyForm';
 import Header from './Header';
-import Google from '../components/Google/components/Google';
-import Landing from "../components/Google/components/Landing";
-import Dashboard from "../components/Google/components/Dashboard";
-import SurveyNew from "../components/Google/components/surveys/SurveyNew";
 
 
 class App extends Component {
     AuthHandler = new AuthHandler();
-  // constructor(){
-  //   super();
-  //     this.state = {
-  //       id: ''
-  //     };
-  // }
 
     constructor() {
     //         // this.props.onSetAccountId(this.props.app.account_id);
@@ -102,7 +92,6 @@ class App extends Component {
           <Route path="/home" component={HomePage} />
           <Route path="/account" component={Account}/>
           <Route path="/user" component={User} />
-          {/*<Route path="/home" component={HomePage}/>*/}
           <Route path="/surveybuilder" component={SurveyBuilder} />
           <Route path="/surveysmanager" component={SurveysManager} />
           <Route path="/accountsmanager" component={AccountsManager} />
@@ -112,6 +101,7 @@ class App extends Component {
           <Route path="/survey" component={SurveyForm} />
           <Route path="/result" component={Result} />
           <Route path="/login" component={Login}/>
+          <Redirect to="/home"/>
         </Switch>
         {/*{!this.props.app.loggedIn ? null :*/}
         <footer style={{...footerStyle}}>&copy; Survey Inc</footer>

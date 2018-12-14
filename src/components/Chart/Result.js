@@ -14,17 +14,26 @@ class Result extends Component {
     this.state = {
       surveys: [],
       owner: this.AuthHandler.getData().owner
-      /*       Here owner is hard coded!! but we need to define owner id based on user login session
-      can be done with jwt payload or redux */
     };
   }
   componentDidMount() {
-    axios
+    if(this.AuthHandler.getData().type === "admin"){
+      axios
+      .get(`http://localhost:3000/surveys/owner/`)
+      .then(res => {
+        const surveys = res.data;
+        this.setState({ surveys });
+      });
+    }
+    else{
+      axios
       .get(`http://localhost:3000/surveys/owner/` + this.state.owner)
       .then(res => {
         const surveys = res.data;
         this.setState({ surveys });
       });
+    }
+
   }
 
   render() {
